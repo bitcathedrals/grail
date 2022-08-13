@@ -60,7 +60,7 @@
 (defconst grail-release-version "0.3.1"
   "the release number of grail.el")
 
-(defconst grail-maintainer-email "codermattie@gmail.com"
+(defconst grail-maintainer-email "codermattie@runbox.com"
   "The maintainer's e-mail address")
 
 (defconst grail-project-url "http://www.emacswiki.org/emacs/Grail"
@@ -325,8 +325,7 @@
     ;; establish the root of the USER_ELISP configuration tree.
     ;;
 
-    (defvar grail-elisp-root
-      (expand-file-name (concat (getenv "USER_ELISP") "/"))
+    (defvar grail-elisp-root "/Users/michaelmattie/coding/emacs/emacs/"
       "The root of the user's elisp tree")
 
     (grail-report-info "grail" "checking elisp-root" grail-elisp-root)
@@ -464,9 +463,9 @@
     ;; customize writes settings to a data-file rather than
     ;; appending them to code.
 
-    (setq user-init-file
-      (setq custom-file
-        grail-settings-file)) )
+    ;; (setq user-init-file
+    ;;   (setq custom-file
+    ;;     grail-settings-file))
 
   ;;
   ;; ELPA and record the platform load-path before
@@ -584,48 +583,13 @@
     (set-file-modes grail-server-state
       (file-modes-symbolic-to-number "go-rwx" (file-modes grail-server-state)))
 
-    (require 'server)
+    (grail-configure-display)
+    (grail-load-display (window-frame))
 
-    (setq
-      server-use-tcp t
-      server-auth-dir grail-server-state) )
-
-  (grail-ignore
-    "interface loading"
-    "configuring for daemon or application"
-
-    (if (daemonp)
-      (grail-ignore
-        "daemon mode"
-        "setting hooks to defer configuring graphical properties"
-
-        (add-hook 'before-make-frame-hook 'grail-configure-display t)
-        (add-hook 'after-make-frame-functions 'grail-load-display t) )
-
-      (grail-ignore
-        "application mode"
-        "running graphical config immediately"
-
-        (grail-ignore
-          "emacs server"
-          "starting the server"
-
-          (let
-            (( server-file (getenv "EMACS_SERVER_FILE") ))
-
-            (if (file-exists-p server-file)
-              (grail-report-info "grail" "start server file already exists"
-                server-file)
-              (server-start) )) )
-
-        (grail-configure-display)
-        (grail-load-display (window-frame))
-
-        ;; do this so the per frame stuff loads for all frames
-        (add-hook 'after-make-frame-functions 'grail-load-display t) ) ))
+    (add-hook 'after-make-frame-functions 'grail-load-display t) ) ))
 
   (grail-ignore
     "Grail Profiles"
     "loading Grail Profiles"
 
-    (grail-load-requested-profiles) ) )
+    (grail-load-requested-profiles) )

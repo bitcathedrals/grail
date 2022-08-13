@@ -32,9 +32,10 @@
 ;;----------------------------------------------------------------------
 
 ;; registers
-(use-grail-profiles 0 "jabber-emacs" "dwim-complete" "net-paste")
 
-(use-grail-profiles 10 "activate-buffer-status")
+;; (use-grail-profiles 0 "jabber-emacs" "dwim-complete" "net-paste")
+
+;; (use-grail-profiles 10 "activate-buffer-status")
 
 ;;----------------------------------------------------------------------
 ;;                    General Modifications
