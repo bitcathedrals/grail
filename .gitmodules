@@ -7,3 +7,15 @@
 [submodule "emacs/dist/git/helm"]
 	path = emacs/dist/git/helm
 	url = https://github.com/emacs-helm/helm.git
+[submodule "emacs/dist/git/slime"]
+	path = emacs/dist/git/slime
+	url = https://github.com/slime/slime.git
+[submodule "emacs/dist/git/pastebin"]
+	path = emacs/dist/git/pastebin
+	url = https://github.com/slime/slime.git
+[submodule "emacs/dist/git/smartparens"]
+	path = emacs/dist/git/smartparens
+	url = https://github.com/slime/slime.git
+[submodule "emacs/dist/git/dpaste"]
+	path = emacs/dist/git/dpaste
+	url = https://github.com/slime/slime.git
