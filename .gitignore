@@ -5,7 +5,7 @@
 # *.[oa]
 # *~
 
-emacs/dist
-emacs/tmpfiles
+emacs/dist/elpa
+
 
 
