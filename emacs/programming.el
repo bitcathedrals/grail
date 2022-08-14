@@ -24,23 +24,19 @@
 ;; programming packages not dependent on third party support
 ;;----------------------------------------------------------------------
 
-;; profiles not ready yet
-(mask-grail-profiles "clojure")
-
 ;; re-usable programming modules
 
 ;; (use-grail-profiles 0 "code-highlighting" "syntax-tools" "code-formatting")
 
 ;; higher level functionality
 
-;; (use-grail-profiles 1 "version-control")
+(use-grail-profiles 0 "code-highlighting")
 
-;; (use-grail-profiles 2 "emacs-lisp" "common-lisp" "sql" "scheme" "perl5"
-;;                      "shell-scripting" "web" "python" "clojure")
+(use-grail-profiles 1 "emacs-lisp" "common-lisp" "shell-scripting")
 
 ;; advanced functionality
 
-;; (use-grail-profiles 3 "template" "slime")
+(use-grail-profiles 3 "slime")
 
 ;;----------------------------------------------------------------------
 ;;                          misc tools
