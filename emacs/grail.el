@@ -149,7 +149,7 @@
   (condition-case trap-error
     (progn
       (grail-report-error fail-where fail-what info)
-      (throw 'grail-abort 'grail-abort) )
+      (throw 'grail-abort 'grail-abort))
 
     ('error
       (grail-signal-fail fail-where "could not throw a grail-fail abort" trap-error) ) ))
@@ -205,7 +205,7 @@
 
      ('error
        (grail-report-error ,where ,what trap-error)
-       nil) ) )
+       nil) )) 
 
 (defmacro grail-require ( profile where what &rest body )
   `(if (featurep ',profile)
@@ -447,7 +447,7 @@
     "loading grail loader"
 
     (grail-load-user-elisp "grail-load")
-    (grail-report-info "grail" "loader loaded" "grail-load") )
+    (grail-report-info "grail" "loader loaded" "grail-load"))
 
   (grail-ignore
     "emacs persistent state"
@@ -540,7 +540,8 @@
                                         "grail-profile.el"
                                         "configure-frame.el"
                                         "configure-display.el"
-                                        "load-display.el"))
+                                        "load-display.el"
+                                        "elisp.el"))
 
   (grail-ignore
     "user-elisp loading"
@@ -571,25 +572,19 @@
 
               (grail-try-elisp config-file)) ))
 
-        config-files) ) )
+        config-files) ))
 
   (grail-ignore
-    "Emacs Server"
-    "configuration before use"
-
-    ;; make sure there is a directory for server data
-    (grail-dir-always grail-server-state)
-
-    (set-file-modes grail-server-state
-      (file-modes-symbolic-to-number "go-rwx" (file-modes grail-server-state)))
+    "Load Display"
+    "configure the display configuration to load when a window is created"
 
     (grail-configure-display)
     (grail-load-display (window-frame))
 
-    (add-hook 'after-make-frame-functions 'grail-load-display t) ) ))
+    (add-hook 'after-make-frame-functions 'grail-load-display t) ))
 
   (grail-ignore
     "Grail Profiles"
     "loading Grail Profiles"
 
-    (grail-load-requested-profiles) )
+    (grail-load-requested-profiles)) )
