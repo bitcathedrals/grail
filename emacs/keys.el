@@ -100,6 +100,17 @@
   ("p" . push-mark-command)
   ("g" . pop-global-mark))
 
+(defvar swap-parens-keymap '(("[" . "(")
+                             ("]" . ")")
+                             ("(" . "[")
+                             (")" . "]")) )
 
+(defun bind-swap-parens ()
+  (interactive)
 
+  (mapc (lambda (key-pair) (global-set-key (kbd (car key-pair))
+                             `(lambda ()
+                                (interactive)
+                                (insert-char ,(aref (cdr key-pair) 0)) )) )
+    swap-parens-keymap))
 
