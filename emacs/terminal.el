@@ -63,3 +63,7 @@
     ("t" . full-term)
     ("s" . shell-term)
     ("c" . shell-command) )
+
+;; setup shell-mode in case I use it
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
