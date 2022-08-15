@@ -1,9 +1,3 @@
-[submodule "emacs/emacs/local/dist/helm"]
-	path = emacs/emacs/local/dist/helm
-	url = https://github.com/emacs-helm/helm.git
-[submodule "emacs/emacs/dist/helm"]
-	path = emacs/emacs/dist/helm
-	url = https://github.com/emacs-helm/helm.git
 [submodule "emacs/dist/git/helm"]
 	path = emacs/dist/git/helm
 	url = https://github.com/emacs-helm/helm.git
