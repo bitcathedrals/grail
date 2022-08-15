@@ -4,7 +4,7 @@
 
 ;; adaptive fill for maintaining indentation inside comments
 
-(grail-load-package 'filladapt "file" "http://www.wonderworks.com/download/filladapt.el")
+(require 'filladapt)
 
 (add-hook 'emacs-lisp-mode-hook 'turn-on-filladapt-mode)
 

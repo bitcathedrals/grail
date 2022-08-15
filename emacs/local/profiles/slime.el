@@ -11,7 +11,7 @@
 
 (defconst cl-repl-name (borg-repl/repl-name cl-lisp-name))
 
-(grail-load-package 'slime "git" "https://github.com/slime/slime")
+(require 'slime)
 
 ;;
 ;; mode defaults

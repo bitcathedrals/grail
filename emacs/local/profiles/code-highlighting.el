@@ -5,7 +5,7 @@
 ;; mic-paren fancy paren/delimited highlighting. It is particularly
 ;;           valuable for reverse highlighting regions.
 
-(grail-load-package 'mic-paren "file" "http://www.emacswiki.org/cgi-bin/emacs/download/mic-paren.el")
+(require 'mic-paren)
 
 ;;----------------------------------------------------------------------
 ;; paren mode configuration - most important mode of them all

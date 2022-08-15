@@ -5,9 +5,9 @@
 ;;
 ;; interface to netpaste services
 ;;----------------------------------------------------------------------
-(grail-load-package 'dpaste "git" "https://github.com/gregnewman/dpaste.el.git")
+(require 'dpaste)
 
-(grail-load-package 'pastebin "git" "https://github.com/nicferrier/elpastebin.git")
+(require 'pastebin)
 
 ;; title construction
 

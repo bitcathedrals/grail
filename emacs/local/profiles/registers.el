@@ -5,7 +5,7 @@
 (require 'utilities)
 (require 'dwim-tab)
 
-(grail-load-package 'register-list "pkg")
+(require 'register-list)
 
 (defvar reg-keyword-register-map
   "map of keywords to registers" '())
