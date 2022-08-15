@@ -4,12 +4,12 @@
 [submodule "emacs/dist/git/slime"]
 	path = emacs/dist/git/slime
 	url = https://github.com/slime/slime.git
-[submodule "emacs/dist/git/pastebin"]
-	path = emacs/dist/git/pastebin
-	url = https://github.com/slime/slime.git
 [submodule "emacs/dist/git/smartparens"]
 	path = emacs/dist/git/smartparens
-	url = https://github.com/slime/slime.git
+	url = https://github.com/Fuco1/smartparens.git
 [submodule "emacs/dist/git/dpaste"]
 	path = emacs/dist/git/dpaste
-	url = https://github.com/slime/slime.git
+	url = https://github.com/gregnewman/dpaste.el.git
+[submodule "emacs/dist/git/pastebin"]
+	path = emacs/dist/git/pastebin
+	url = https://github.com/cnsunyour/emacs-pastebin.git
