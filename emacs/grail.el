@@ -1,7 +1,6 @@
 ;;----------------------------------------------------------------------
 ;; grail.el
 ;;----------------------------------------------------------------------
-(require 'cl)
 (require 'subr-x)
 
 ;; Grail loads an .emacs configuration in a robust, modular, and mode
@@ -325,7 +324,7 @@
     ;; establish the root of the USER_ELISP configuration tree.
     ;;
 
-    (defvar grail-elisp-root "/Users/mattie/coding/emacs/emacs/"
+    (defvar grail-elisp-root "/Users/michaelmattie/coding/emacs/emacs/"
       "The root of the user's elisp tree")
 
     (grail-report-info "grail" "checking elisp-root" grail-elisp-root)
@@ -523,10 +522,7 @@
     "pre-defined user elisp files"
 
     (let
-      (( config-files (grail-match-path grail-elisp-root
-                        '(("type" "file")
-                          ("path" ".*\.elc?$"))) )
-
+      ((config-files (grail-elisp-files-only grail-elisp-root))
         (no-load (append grail-config-load-ordered grail-config-load-masked)) )
 
       (mapc
@@ -553,4 +549,4 @@
     "Grail Profiles"
     "loading Grail Profiles"
 
-    (grail-load-requested-profiles)) )
+    (grail-load-all-profiles)) )
