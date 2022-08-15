@@ -371,10 +371,6 @@
     (concat grail-dist-dir "/archive/")
     "The directory for managing distributed packages")
 
-  (defconst grail-dist-docs
-    (concat grail-dist-dir "/docs/")
-    "the directory containing third party docs")
-
   (defconst grail-dist-templates
     (concat grail-dist-dir "/templates/")
     "the directory containing third party docs")
@@ -384,30 +380,10 @@
     (concat grail-dist-dir "/" grail-elisp-dir)
     "The directory containing third-party elisp extensions of Emacs.")
 
-  (defconst grail-cvs-dir "cvs/")
-  (defconst grail-dist-cvs
-    (concat grail-dist-dir "/" grail-cvs-dir)
-    "cvs version control managed third party elisp")
-
-  (defconst grail-bzr-dir "bzr/")
-  (defconst grail-dist-bzr
-    (concat grail-dist-dir "/" grail-bzr-dir)
-    "bzr version control managed third party elisp")
-
   (defconst grail-git-dir "git/")
   (defconst grail-dist-git
     (concat grail-dist-dir "/" grail-git-dir)
     "git version control managed third party elisp")
-
-  (defconst grail-svn-dir "svn/")
-  (defconst grail-dist-svn
-    (concat grail-dist-dir "/" grail-svn-dir)
-    "subversion version control managed third party elisp")
-
-  (defconst grail-hg-dir "hg/")
-  (defconst grail-dist-hg
-    (concat grail-dist-dir "/" grail-hg-dir)
-    "mercurial version control managed third party elisp")
 
   (defvar grail-elpa-load-path nil
     "The load-path extensions made by ELPA package activation")
@@ -454,18 +430,8 @@
     "make state dir, redirect user-init-file and custom-file variables to grail-settings-file"
 
     ;; make sure there is a directory for session state and persistent data
-    (grail-dir-always grail-state-path)
+    (grail-dir-always grail-state-path))
 
-    ;; the user-init-file _must_ be changed otherwise emacs will
-    ;; scribble all over grail which is not OK.
-
-    ;; The customize file path also needs to be set so that
-    ;; customize writes settings to a data-file rather than
-    ;; appending them to code.
-
-    ;; (setq user-init-file
-    ;;   (setq custom-file
-    ;;     grail-settings-file))
 
   ;;
   ;; ELPA and record the platform load-path before
@@ -477,7 +443,7 @@
     "loading ELPA packages"
 
     (setq grail-platform-load-path load-path)
-    (load-elpa-when-installed) )
+    (load-elpa-when-installed))
 
   ;;
   ;; first update of load-path so my library functions
@@ -500,7 +466,7 @@
     "loading grail profile"
 
     (grail-load-user-elisp "grail-profile")
-    (grail-report-info "grail" "profile loaded" "grail-profile") )
+    (grail-report-info "grail" "profile loaded" "grail-profile"))
 
   ;;
   ;; Host specific adaptation
@@ -581,7 +547,7 @@
     (grail-configure-display)
     (grail-load-display (window-frame))
 
-    (add-hook 'after-make-frame-functions 'grail-load-display t) ))
+    (add-hook 'after-make-frame-functions 'grail-load-display t) )
 
   (grail-ignore
     "Grail Profiles"

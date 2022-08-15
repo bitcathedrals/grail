@@ -267,7 +267,7 @@
 
           (grail-update-load-path)
 
-          (unless (grail-install-sentinel pkg-name (concat pkg-name ".el"))
+          (unless (grail-install-sentinel pkg-name)
             (grail-signal-fail "grail-load"
               "package not found in local/dist table assuming missing upstream after install attempt" (list pkg-name)) )
 
@@ -275,7 +275,7 @@
 
           (grail-report-info "grail-load" "profile loaded on install/retry" package) ) )
 
-      (unless (grail-install-sentinel pkg-name (concat pkg-name ".el"))
+      (unless (grail-install-sentinel pkg-name)
         (grail-signal-fail "grail-load"
           "package not found in local/dist table assuming missing upstream after install attempt" (list pkg-name)) )
 

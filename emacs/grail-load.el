@@ -1,37 +1,10 @@
 ;;;----------------------------------------------------------------------
 ;; grail-load.el
 ;;----------------------------------------------------------------------
-(require 'cl)
 
 ;;
 ;; grail-match - return a list of paths that match a given criteria
 ;;
-
-(defun grail-match-path-attributes ( path filter-name filter-value )
-  "create predicate filters for path/mode values"
-
-  (catch 'result
-    (cond
-      ((string-equal "type" filter-name)
-        (let
-          ((file-type (nth 1 path)))
-
-          (cond
-            ((and (eq file-type t) (string-equal filter-value "dir")) (throw 'result t))
-            ((and (stringp file-type) (string-equal filter-value "lnk")) (throw 'result t))
-            ((and (eq file-type nil) (string-equal filter-value "file")) (throw 'result t)) ) ))
-
-      ((string-equal "path" filter-name)
-        (when (equal 0 (string-match filter-value (car path)))
-          (throw 'result t))) )
-    nil))
-
-(defmacro grail-match-path-logic ( path filter &rest body )
-  `(if (eq 'not (car ,filter))
-     (when (grail-match-path-attributes ,path (car (cdr ,filter)) (car (cdr (cdr ,filter))))
-       ,@body)
-     (unless (grail-match-path-attributes ,path (car ,filter) (car (cdr ,filter)))
-       ,@body) ) )
 
 (defun grail-match-path ( directory filters )
   (let
@@ -56,68 +29,68 @@
 ;; grail-match - return a list of paths that match a given criteria
 ;;
 
-(defun grail-dirs-filter ( dir-list )
-  (cond
-    ((eq nil dir-list)   '() )
-    ((listp dir-list)    (let
-                           ((exists-list nil))
+(defun grail-elisp-files-only ( path-arg )
+  (directory-files path-arg t ".*\.elc?$"))
 
-                           (mapc (lambda ( dir )
-                                   (when (grail-dir-if-ok dir)
-                                     (setq exists-list (cons dir exists-list))) )
-                             dir-list)
+(defun grail-subdirs-only ( path-arg &optional test )
+  (let
+    ((dirs '()))   
+     
+    (mapc
+     (lambda ( path )
+       (let
+	   ((name (file-name-base path)))
 
-                           exists-list) )
-    ((stringp dir-list)  (if (grail-dir-if-ok dir-list) (list dir-list) '()) )
-    (t                   (grail-signal-fail "grail-dirs-filter" "checking directory accessibility" "cannot read directory") ) ))
+	 (when (and (not (string-equal "." name))
+		    (not (string-equal ".." name))
+		    (file-directory-p path)
+		    (if test (funcall test path) t))
+           (setq dirs (cons path dirs))) ))
 
-(defun grail-dirs ( path )
-  (if (and path (grail-dir-if-ok path))
-    (grail-dirs-filter
-      (grail-match-path path
-        '(("type" "dir")
-           (not "path" "^\.\.?$")) ))
-    '()) )
+       (directory-files path-arg t))
 
-(defun grail-recurse-load-path ( dir )
-  (when (grail-dir-if-ok dir)
+      dirs))
+
+(defun grail-dirs-recurse ( dir &optional test )
+  (if (and dir (file-directory-p dir))
+      (cons dir (mapcar 'grail-dirs-recurse (grail-subdirs-only dir test)))
+    '() ))
+
+
+(defun grail-new-load-path ( &rest libraries )
+  (let
+      ((elisp-dirs '())
+       (lib-list  nil))
+
+    (mapc
+       (lambda ( lib-arg )
+	 (if (listp lib-arg)
+	   (setq lib-list (append lib-arg lib-list))
+	   (setq lib-list (cons lib-arg lib-list)) ))
+       libraries)
+      
+    (mapc
+     (lambda ( lib-dir )
+       (progn
+	 (when (grail-elisp-files-only lib-dir)
+	   (setq elisp-dirs (cons lib-dir elisp-dirs)))
+
+	 (let
+	     ((sub-dirs (mapcar (lambda ( nested-dir )
+				  (grail-dirs-recurse nested-dir 'grail-elisp-files-only))
+				  (grail-subdirs-only lib-dir)) ))
+	   (setq elisp-dirs (append sub-dirs elisp-dirs)) )))
+     lib-list)
+
     (let
-      (( elisp-files (grail-match-path dir
-                       '(("type" "file")
-                         ("path" ".*\.elc?$")) ) )
-        ( elisp-dirs nil ))
+	((final-path-list elisp-dirs))
 
-      (when elisp-files
-        (setq elisp-dirs (cons dir elisp-dirs)))
+      (when grail-platform-load-path
+	(setq final-path-list (append grail-platform-load-path elisp-dirs)))
 
-      (mapc
-        (lambda ( dir )
-          (let
-            ((next-level (grail-recurse-load-path dir) ))
+      (setq load-path final-path-list))
 
-            (when next-level
-                  (setq elisp-dirs (append next-level elisp-dirs)) ) ) )
-        (grail-dirs dir) )
-      elisp-dirs) ))
-
-(defmacro grail-new-load-path ( &rest body )
-  `(let
-     (( new-load-path grail-platform-load-path )
-      ( search-results nil ))
-
-     ,@(mapcar
-        (lambda ( path )
-          `(progn
-             (setq search-results
-               (if (listp ,path)
-                 (grail-dirs-filter ,path)
-                 (grail-recurse-load-path ,path)))
-
-             (when search-results
-               (setq new-load-path (append search-results new-load-path))) ))
-         body)
-
-     new-load-path))
+    lib-list))
 
 ;;
 ;; keep a table of all the dirs where we install so we can later
@@ -125,30 +98,21 @@
 ;; if we have installed a package vs. it being built-in to emacs.
 ;;
 
-(defvar grail-package-path-table (make-hash-table :test 'equal))
+(defvar grail-library-table (make-hash-table :test 'equal))
 
-(puthash "elisp" grail-dist-elisp grail-package-path-table)
-
-(defun grail-update-package-paths ( dir-list )
+(defun grail-update-library-dirs ( library-list )
   (mapc
-    (lambda ( dir )
-      (when (file-accessible-directory-p dir)
-        (let
-          (( sub-dirs
-             (grail-match-path dir
-               '(("type" "dir")
-                 (not "path" "^\.\.?$"))) ))
+    (lambda ( lib-dir )
+      (unless (gethash (file-name-base lib-dir) grail-library-table)
+        (puthash (file-name-base lib-dir) lib-dir grail-library-table)) )
+    library-list))
 
-          (when sub-dirs
-            (mapc
-              (lambda ( sub-dir )
-                (let
-                  (( dir-name (file-name-nondirectory sub-dir) ))
-
-                  (unless (gethash dir-name grail-package-path-table)
-                    (puthash dir-name sub-dir grail-package-path-table)) ))
-              sub-dirs)) )))
-      dir-list))
+(defun grail-update-library-files ( library-dir )
+  (mapc
+   (lambda ( elisp-file )
+      (unless (gethash (file-name-sans-extension elisp-file) grail-library-table)
+        (puthash (file-name-sans-extension elisp-file) elisp-file grail-library-table)))
+   (grail-elisp-files-only library-dir)) )
 
 (defun grail-update-load-path ()
   "grail-update-load-path
@@ -157,83 +121,37 @@
    added. everything is pre-pended to grail-platform-load-path.
   "
   (let
-    ((new-load-path
-       (grail-new-load-path
+    ((libraries
+      (grail-new-load-path
+	;;
+	;; my code smells like roses so load first.
+	;;
+	grail-local-elisp
 
-         ;;
-         ;; ELPA kinda stale
-         ;;
-         grail-elpa-load-path
+	;;
+	;; fresh elisp
+	;;
 
-         ;;
-         ;; my code smells like roses so load first.
-         ;;
+	grail-dist-elisp
 
-         grail-local-elisp
 
-         ;;
-         ;; fresh elisp
-         ;;
+	;;
+	;; fresh version control
+	;;
+	grail-dist-git
 
-         grail-dist-elisp
+	;;
+	;; ELPA kinda stale
+	;;
+	grail-elpa-load-path)))
+    
+    (grail-update-library-dirs libraries)
 
-         ;;
-         ;; fresh version control
-         ;;
+    (grail-update-library-files grail-local-elisp)
+    (grail-update-library-files grail-dist-elisp) ))
 
-         grail-dist-cvs
-         grail-dist-git
-         grail-dist-bzr
-         grail-dist-hg
-         grail-dist-svn )))
-
-    (when new-load-path
-      (setq load-path new-load-path))
-
-    (grail-update-package-paths (list grail-dist-cvs grail-dist-git grail-dist-bzr grail-dist-hg grail-dist-svn)) ))
-
-(defun grail-package-resource-internal ( pkg-dir resource )
-  (catch 'found
-    (unless (grail-dir-if-ok pkg-dir)
-      (throw 'found nil) )
-
-    (let
-      (( found-paths
-         (grail-match-path pkg-dir
-           `(("path" ,resource))) ))
-
-      (when found-paths
-        (throw 'found found-paths))
-
-      (let
-        (( sub-dirs
-           (grail-match-path pkg-dir
-             '(("type" "dir")
-               (not "path" "^\.\.?$"))) ))
-
-        (unless sub-dirs
-          (throw 'found nil) )
-
-        (mapc
-          (lambda ( dir )
-            (let
-              (( next-level (grail-package-resource-internal dir resource) ))
-
-              (when next-level
-                (throw 'found next-level)) ))
-          sub-dirs))
-      nil)) )
-
-(defun grail-package-resource ( package resource )
-  (let
-    (( pkg-lookup (or (grail-package-resource-internal (gethash package grail-package-path-table) resource)
-                      (grail-package-resource-internal (gethash "elisp" grail-package-path-table) resource) ) ))
-
-    (when pkg-lookup
-      (car pkg-lookup) ) ))
-
-(defun grail-install-sentinel ( package path )
-  (grail-package-resource package path) )
+(defun grail-install-sentinel ( package )
+  (gethash package grail-library-table))
 
 ;;
 ;; user interface loading
