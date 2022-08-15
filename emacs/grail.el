@@ -325,7 +325,7 @@
     ;; establish the root of the USER_ELISP configuration tree.
     ;;
 
-    (defvar grail-elisp-root "/Users/michaelmattie/coding/emacs/emacs/"
+    (defvar grail-elisp-root "/Users/mattie/coding/emacs/emacs/"
       "The root of the user's elisp tree")
 
     (grail-report-info "grail" "checking elisp-root" grail-elisp-root)
