@@ -114,3 +114,5 @@
                                 (insert-char ,(aref (cdr key-pair) 0)) )) )
     swap-parens-keymap))
 
+(bind-swap-parens)
+
