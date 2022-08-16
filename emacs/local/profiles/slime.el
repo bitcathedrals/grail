@@ -20,7 +20,7 @@
 (setq
   slime-net-coding-system 'utf-8-unix
 
-  inferior-lisp-program "sbcl"
+  inferior-lisp-program (executable-find "sbcl")
 
   slime-words-of-encouragement '("The name is Bond. James Bond."
                                   "These are your father's parentheses. Elegant weapons from a more civilized age."
