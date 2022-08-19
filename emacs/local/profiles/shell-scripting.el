@@ -25,12 +25,6 @@
 
   (local-set-key (kbd "<return>") 'hard-electric-newline)
 
-  (grail-require profile/syntax-tools
-    "shell scripting profile"
-    "smart syntax"
-
-    (profile/syntax-tools-mode-setup) )
-
   (turn-on-dwim-tab) )
 
 (add-hook 'sh-mode-hook 'profile/shell-mode-setup t)

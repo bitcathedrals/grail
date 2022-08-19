@@ -110,13 +110,6 @@
   (buffer-ring/add profile/elisp-name)
   (buffer-ring/local-keybindings)
 
-  (grail-require profile/syntax-tools
-    "emacs-lisp"
-    "syntax"
-
-    (profile/syntax-tools-mode-setup)
-    (profile/syntax-tools-lisp) )
-
   (borg-repl/bind-repl profile/elisp-name
     'profile/elisp-repl-new
     'eval-last-sexp

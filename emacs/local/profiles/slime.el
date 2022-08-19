@@ -47,13 +47,6 @@
     (dwim-complete-mode-add-type cl-lisp-name "mode")) )
 
 (defun profile/slime-common-setup ()
-  (grail-require profile/syntax-tools
-    "emacs-lisp"
-    "syntax"
-
-    (profile/syntax-tools-mode-setup)
-    (profile/syntax-tools-lisp) )
-
   (grail-require profile/dwim-complete
     "slime common setup"
     "enable dwim-tabe"
