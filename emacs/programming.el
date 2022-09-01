@@ -26,7 +26,7 @@
 
 ;; re-usable programming modules
 
-;; (use-grail-profiles 0 "code-highlighting" "syntax-tools" "code-formatting")
+;; (use-grail-profiles 0 "code-formatting")
 
 ;; higher level functionality
 

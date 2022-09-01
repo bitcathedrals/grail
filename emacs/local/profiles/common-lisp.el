@@ -28,13 +28,6 @@
   (buffer-ring/add cl-lisp-name)
   (buffer-ring/local-keybindings)
 
-  (grail-require profile/syntax-tools
-    "common lisp"
-    "initializing syntax tools"
-
-    (profile/syntax-tools-mode-setup)
-    (profile/syntax-tools-lisp) )
-
   (grail-require profile/dwim-complete
     "common lisp"
     "initializing dwim-complete"
