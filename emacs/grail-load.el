@@ -232,8 +232,6 @@
 ;; font stuff
 ;;
 
-(defvar grail-font-best nil)
-
 (defun grail-select-best-font-family ( frame )
   (catch 'best-font
     (dolist (canidate grail-font-family)
@@ -242,19 +240,36 @@
 
     (car (font-family-list frame)) ))
 
+(defconst font-attributes-masked '("pixelsize", "spacing"))
+
 (defun grail-format-font ( family size frame )
-  (let
-    (( font-spec (aref (font-info family frame) 1) ))
-    (concat (replace-regexp-in-string
-              "pixelsize=[[:digit:]]+"
-              (format "pixelsize=%s" size) font-spec)
-      ":spacing=m") ))
+  (let*
+    (
+      (frame-spec (aref (font-info family frame) 1))
+      (customized (concat "spacing=m:height=" (number-to-string grail-font-size)))
+
+      (font-data (split-string frame-spec ":"))
+      (font-family (car field-list))
+      (font-details (cdr field-list))
+    )
+
+    (string-join
+      (append
+        (list font-family)
+        (mapcar
+          (lambda (field)
+            (let
+              ((key-value (split-string field "=")))
+
+              (when (not (member (car key-value) font-attributes-masked))
+                field) ))
+          font-details)
+        (list customized))
+      ":") ))
 
 (defun grail-set-best-font ( frame )
-  (set-frame-parameter frame 'font grail-font-best)
-
-  (set-face-attribute 'default frame
-    :font grail-font-best) )
+  (set-frame-parameter frame 'font (grail-format-font (grail-select-best-font-family frame) grail-font-size frame))
+  (set-face-attribute 'default frame :font (grail-format-font (grail-select-best-font-family frame) grail-font-size frame)) )
 
 ;;
 ;; ELPA
