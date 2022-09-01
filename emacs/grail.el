@@ -551,13 +551,18 @@
         config-files) ))
 
   (grail-ignore
-    "Load Display"
+    "Load Base Display"
+    "configure the display configuration for terminals" 
+
+    (grail-try-user-elisp "load-display"))
+
+  (grail-ignore
+    "Load Graphical Display"
     "configure the display configuration to load when a window is created"
 
     (grail-configure-display)
-    (grail-load-display (window-frame))
 
-    (add-hook 'after-make-frame-functions 'grail-load-display t) )
+    (add-hook 'after-make-frame-functions 'grail-load-display t))
 
   (grail-ignore
     "Grail Profiles"

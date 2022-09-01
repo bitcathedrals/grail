@@ -212,17 +212,21 @@
         ;; set the best font for current frame
         (grail-set-best-font new-frame) )
 
-      (let
-        ((grail-frame new-frame))
+      (eval-after-load 'cperl-mode '(display-faces-for-cperl))
+      (eval-after-load 'ediff-mode '(display-faces-for-ediff))
+      (eval-after-load 'whitespace-mode '(display-faces-for-whitespace-mode))
+      (eval-after-load 'web-mode '(display-faces-for-web-mode))
+      (eval-after-load 'helm '(display-faces-for-helm))
+      (eval-after-load 'mic-paren '(display-faces-for-paren))
+      (eval-after-load 'flyspell '(display-faces-for-flyspell))
+      (eval-after-load 'term '(display-faces-for-term)) )
 
-        (grail-try-user-elisp "load-display") )
-
-      (setq grail-display-loaded t) )
+      (setq grail-display-loaded t))
 
     (let
       ((grail-frame new-frame))
 
-      (grail-try-user-elisp "configure-frame") ) ))
+      (grail-try-user-elisp "configure-frame")) )
 
 ;;
 ;; font stuff

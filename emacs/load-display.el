@@ -4,45 +4,48 @@
 
 (defconst codermattie-bg-color "grey5")
 
-(set-face-background 'default codermattie-bg-color)
-(set-face-foreground 'default "grey55")
+(defun display-faces-terminal ()
+  (set-face-background 'font-lock-type-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-type-face "green4")
 
-;; comments are set off-tempature to distingiush them better.
-;; orange was chosen as a red that wasn't harsh.
-(set-face-background 'font-lock-comment-face codermattie-bg-color)
-(set-face-foreground 'font-lock-comment-face "orange3")
+  (set-face-background 'font-lock-function-name-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-function-name-face "aquamarine4")
 
-;; grammar is the lightest shade of blue
-(set-face-background 'font-lock-keyword-face codermattie-bg-color)
-(set-face-foreground 'font-lock-keyword-face "DeepSkyBlue4")
+  (set-face-background 'font-lock-variable-name-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-variable-name-face "aquamarine3")
 
-(set-face-background 'font-lock-builtin-face codermattie-bg-color)
-(set-face-foreground 'font-lock-builtin-face "DeepSkyBlue4")
+  (set-face-background 'help-key-binding codermattie-bg-color)
+  (set-face-foreground 'help-key-binding "green4"))
 
-;; this should be for any form of literal value in code medium contrast.
-(set-face-background 'font-lock-string-face codermattie-bg-color)
-(set-face-foreground 'font-lock-string-face "grey50")
+(defun display-faces-general ()
+  (set-face-background 'default codermattie-bg-color)
+  (set-face-foreground 'default "grey55"))
 
-(set-face-background 'font-lock-constant-face codermattie-bg-color)
-(set-face-foreground 'font-lock-constant-face "grey50")
+  ;; comments are set off-tempature to distingiush them better.
+  ;; orange was chosen as a red that wasn't harsh.
+  (set-face-background 'font-lock-comment-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-comment-face "orange3")
 
-(set-face-background 'font-lock-constant-face codermattie-bg-color)
-(set-face-foreground 'font-lock-constant-face "grey50")
+  ;; grammar is the lightest shade of blue
+  (set-face-background 'font-lock-keyword-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-keyword-face "DeepSkyBlue4")
 
-(set-face-background 'font-lock-warning-face codermattie-bg-color)
-;;(set-face-attribute  'font-lock-warning-face :underline "red")
-(set-face-foreground 'font-lock-warning-face "grey70")
+  (set-face-background 'font-lock-builtin-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-builtin-face "DeepSkyBlue4")
 
-;; decl is dark green
+  ;; this should be for any form of literal value in code medium contrast.
+  (set-face-background 'font-lock-string-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-string-face "grey50")
 
-(set-face-background 'font-lock-type-face codermattie-bg-color)
-(set-face-foreground 'font-lock-type-face "green4")
+  (set-face-background 'font-lock-constant-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-constant-face "grey50")
 
-(set-face-background 'font-lock-function-name-face codermattie-bg-color)
-(set-face-foreground 'font-lock-function-name-face "aquamarine4")
+  (set-face-background 'font-lock-constant-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-constant-face "grey50")
 
-(set-face-background 'font-lock-variable-name-face codermattie-bg-color)
-(set-face-foreground 'font-lock-variable-name-face "aquamarine3")
+  (set-face-background 'font-lock-warning-face codermattie-bg-color)
+  ;;(set-face-attribute  'font-lock-warning-face :underline "red")
+  (set-face-foreground 'font-lock-warning-face "grey70")
 
 (defun display-faces-for-cperl ()
   (setq cperl-invalid-face nil)
@@ -150,13 +153,7 @@
 (defun display-faces-for-term ()
   (set-face-foreground 'term "DarkOrange2") )
 
-(eval-after-load 'cperl-mode '(display-faces-for-cperl))
-(eval-after-load 'ediff-mode '(display-faces-for-ediff))
-(eval-after-load 'whitespace-mode '(display-faces-for-whitespace-mode))
-(eval-after-load 'web-mode '(display-faces-for-web-mode))
-(eval-after-load 'helm '(display-faces-for-helm))
-(eval-after-load 'mic-paren '(display-faces-for-paren))
-(eval-after-load 'flyspell '(display-faces-for-flyspell))
-(eval-after-load 'term '(display-faces-for-term))
+(display-faces-terminal)
+(display-faces-general)
 
 (provide 'user-display)
