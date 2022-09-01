@@ -241,6 +241,9 @@
       use-dialog-box nil
       cursor-type 'hollow)
 
+    ;; this never worked as a frame parameter.
+    (set-cursor-color "yellow")
+
     (blink-cursor-mode 0)
 
     (setq grail-graphical-config (grail-graphical-frame-configuration frame))
