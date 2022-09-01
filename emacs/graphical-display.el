@@ -248,9 +248,7 @@
 
     (setq grail-graphical-config (grail-graphical-frame-configuration frame))
 
-    (setq default-frame-alist grail-graphical-config)
-
-    (modify-all-frame-parameters grail-graphical-config) ))
+    (setq default-frame-alist grail-graphical-config) ))
 
 (provide 'graphical-display)
 
