@@ -1,10 +1,6 @@
 ;;;----------------------------------------------------------------------
 ;; grail-profile.el
 ;;----------------------------------------------------------------------
-(require 'cl)
-(require 'async-exec)
-(require 'sync-exec)
-
 (defvar grail-masked
   nil
   "List of grail profiles masked by the user.")
