@@ -1,3 +1,4 @@
+
 ;;----------------------------------------------------------------------
 ;; grail.el
 ;;----------------------------------------------------------------------
@@ -423,7 +424,7 @@
   (defvar grail-font-family nil
     "a list of preferred font families")
 
-  (defvar grail-font-size 24
+  (defvar grail-font-size 12
     "preferred size of fonts")
 
   ;;----------------------------------------------------------------------
@@ -498,9 +499,10 @@
 
     (grail-try-user-elisp
       (cond
-        ((string-equal "gnu/linux" system-type)  "systems/linux")
-        ((string-equal "darwin"    system-type)  "systems/darwin")
-        ((string-equal "windows"   system-type)  "systems/windows")))
+        ((string-equal "gnu/linux"      system-type)  "systems/linux")
+        ((string-equal "darwin"         system-type)  "systems/macos")
+        ((string-equal "gnu/kfreebsd"   system-type)  "systems/freebsd")
+        ((string-equal "gnu/windows-nt" system-type)  "systems/windows")) )
 
     (grail-try-user-elisp
       (concat "hosts/" (system-name)))
@@ -552,7 +554,7 @@
 
   (grail-ignore
     "Load Base Display"
-    "configure the display configuration for terminals" 
+    "configure the display configuration for terminals"
 
     (grail-try-user-elisp "load-display"))
 
