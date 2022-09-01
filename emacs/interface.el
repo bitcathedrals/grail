@@ -8,7 +8,9 @@
 
 ;; disable things I don't use from eating screen-space
 
-(tool-bar-mode -1)                            ;; cannot be set with setq
+(when (display-graphic-p)
+  (tool-bar-mode -1) )
+
 (scroll-bar-mode -1)                          ;; disable the scrollbar
 (menu-bar-mode -1)                            ;; disable the menu bar as well
 
