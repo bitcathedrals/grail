@@ -8,7 +8,7 @@
 ;; emacs gets trashed if there is no font specified through
 ;; the grail system
 (setq grail-font-family '("DejaVu Sans Mono" "Courier New"))
-(setq grail-font-size 140)
+(setq grail-font-size 160)
 
 (let
   ((user-brew-path (concat (getenv "HOME") "/homebrew/bin/")))

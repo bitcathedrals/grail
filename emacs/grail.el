@@ -1,4 +1,3 @@
-
 ;;----------------------------------------------------------------------
 ;; grail.el
 ;;----------------------------------------------------------------------
@@ -516,13 +515,13 @@
 
   (defconst grail-config-load-ordered '( "elisp.el"))
 
-  (defconst grail-config-load-masked '( "grail.el"
-                                        "grail-load.el"
-                                        "grail-profile.el"
-                                        "configure-frame.el"
-                                        "configure-display.el"
-                                        "load-display.el"
-                                        "elisp.el"))
+  (defconst grail-config-load-masked '("grail.el"
+                                       "grail-load.el"
+                                       "grail-profile.el"
+                                       "configure-display.el"
+                                       "graphical-display.el"
+                                       "load-display.el"
+                                       "elisp.el"))
 
   (grail-ignore
     "user-elisp loading"
@@ -559,12 +558,12 @@
     (grail-try-user-elisp "load-display"))
 
   (grail-ignore
-    "Load Graphical Display"
-    "configure the display configuration to load when a window is created"
+    "Load the Graphical Display Hook"
+    "configure the graphical display for GUI's"
 
-    (grail-configure-display)
+    (grail-try-user-elisp "graphical-display")
 
-    (add-hook 'after-make-frame-functions 'grail-load-display t))
+    (add-hook 'after-make-frame-functions 'grail-load-graphical))
 
   (grail-ignore
     "Grail Profiles"
