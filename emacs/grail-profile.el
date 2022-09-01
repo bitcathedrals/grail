@@ -95,7 +95,7 @@
    request a list of string quoted groups to be loaded after the configuration
    files have been loaded.
   "
-  (grail-info "grail: adding [" (pp-to-string order) "]: " (pp-to-string requested)) 
+  (grail-info "grail: adding [" (pp-to-string order) "]: " (pp-to-string requested))
 
   (let
     ((combined '()))
@@ -103,16 +103,16 @@
     (mapc
      (lambda ( level )
        (when (equal (car level) order)
-	 (setq combined (append requested (cdr level))) ))
-     grail-loading)
+         (setq combined (append requested (cdr level))) ))
+         grail-loading)
 
     (if combined
       (setq grail-loading (mapcar
- 			   (lambda ( level )
-			     (if (equal (car level) order)
-			       (cons order combined)
-			       level))
-			   grail-loading))
+                            (lambda ( level )
+                              (if (equal (car level) order)
+                                (cons order combined)
+                                level))
+                            grail-loading))
       (setq grail-loading (cons (cons order requested) grail-loading)) ) ))
 
 (defun mask-grail-profiles ( &rest mask )
