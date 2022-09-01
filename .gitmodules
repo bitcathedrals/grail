@@ -13,3 +13,6 @@
 [submodule "emacs/dist/git/pastebin"]
 	path = emacs/dist/git/pastebin
 	url = https://github.com/cnsunyour/emacs-pastebin.git
+[submodule "pythonsh"]
+	path = pythonsh
+	url = git@github.com:coderofmattie/pythonsh.git

@@ -423,7 +423,7 @@
   (defvar grail-font-family nil
     "a list of preferred font families")
 
-  (defvar grail-font-size 24
+  (defvar grail-font-size 12
     "preferred size of fonts")
 
   ;;----------------------------------------------------------------------
@@ -498,9 +498,10 @@
 
     (grail-try-user-elisp
       (cond
-        ((string-equal "gnu/linux" system-type)  "systems/linux")
-        ((string-equal "darwin"    system-type)  "systems/darwin")
-        ((string-equal "windows"   system-type)  "systems/windows")))
+        ((string-equal "gnu/linux"      system-type)  "systems/linux")
+        ((string-equal "darwin"         system-type)  "systems/macos")
+        ((string-equal "gnu/kfreebsd"   system-type)  "systems/freebsd")
+        ((string-equal "gnu/windows-nt" system-type)  "systems/windows")) )
 
     (grail-try-user-elisp
       (concat "hosts/" (system-name)))
@@ -514,13 +515,13 @@
 
   (defconst grail-config-load-ordered '( "elisp.el"))
 
-  (defconst grail-config-load-masked '( "grail.el"
-                                        "grail-load.el"
-                                        "grail-profile.el"
-                                        "configure-frame.el"
-                                        "configure-display.el"
-                                        "load-display.el"
-                                        "elisp.el"))
+  (defconst grail-config-load-masked '("grail.el"
+                                       "grail-load.el"
+                                       "grail-profile.el"
+                                       "configure-display.el"
+                                       "graphical-display.el"
+                                       "load-display.el"
+                                       "elisp.el"))
 
   (grail-ignore
     "user-elisp loading"
@@ -551,13 +552,18 @@
         config-files) ))
 
   (grail-ignore
-    "Load Display"
-    "configure the display configuration to load when a window is created"
+    "Load Base Display"
+    "configure the display configuration for terminals"
 
-    (grail-configure-display)
-    (grail-load-display (window-frame))
+    (grail-try-user-elisp "load-display"))
 
-    (add-hook 'after-make-frame-functions 'grail-load-display t) )
+  (grail-ignore
+    "Load the Graphical Display Hook"
+    "configure the graphical display for GUI's"
+
+    (grail-try-user-elisp "graphical-display")
+
+    (add-hook 'after-make-frame-functions 'grail-load-graphical))
 
   (grail-ignore
     "Grail Profiles"
