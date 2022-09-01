@@ -9,10 +9,9 @@
 ;; disable things I don't use from eating screen-space
 
 (when (display-graphic-p)
-  (tool-bar-mode -1) )
-
-(scroll-bar-mode -1)                          ;; disable the scrollbar
-(menu-bar-mode -1)                            ;; disable the menu bar as well
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1) )
 
 ;; mode-line customization
 
