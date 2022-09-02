@@ -16,9 +16,8 @@
 
 (ad-activate 'term)
 
-(setq explicit-shell-file-name "bash")
-(setq terminal-profile-local-shell "zsh")
-
+(setq explicit-shell-file-name "zsh"
+      explicit-zsh-args '("-i"))
 
 (defun user-terminal-ring ()
   (buffer-ring/add user-terminal-name)
@@ -33,18 +32,14 @@
 (ad-activate 'term)
 (ad-activate 'ansi-term)
 
-(defun full-term ( prefix &optional command )
+(defun full-term ()
   "run a full terminal in full window C-u or (default) split window"
-  (interactive "P")
+  (interactive)
 
-  (unless (and prefix (equal (car prefix) 4))
-    (split-window-horizontally)
-    (other-window 1))
+  (split-window-below)
+  (other-window 1)
 
-  (term
-    (if command
-      command
-      terminal-profile-local-shell)) )
+  (term explicit-shell-file-name))
 
 (defun shell-term ( prefix &optional command )
   "run a local shell in full window C-u or (default) split window"
@@ -62,7 +57,7 @@
 (custom-key-group "execute" "x" t
     ("t" . full-term)
     ("s" . shell-term)
-    ("c" . shell-command) )
+    ("c" . shell-command))
 
 ;; setup shell-mode in case I use it
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
