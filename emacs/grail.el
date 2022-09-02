@@ -423,9 +423,6 @@
   (defvar grail-font-family nil
     "a list of preferred font families")
 
-  (defvar grail-font-size 12
-    "preferred size of fonts")
-
   ;;----------------------------------------------------------------------
   ;; load grail-load
   ;;

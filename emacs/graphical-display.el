@@ -2,6 +2,11 @@
 ;; configure the graphical display
 ;;----------------------------------------------------------------------
 
+(defvar grail-frame-width 120 "default width of the frame in characters")
+(defvar grail-frame-height 100 "default height of the frame in characters")
+(defvar grail-font-size 16 "default font size")
+
+(setq grail-font-size 16)
 
 ;;
 ;; GUI detection
@@ -35,49 +40,12 @@
 
     (car (font-family-list frame)) ))
 
-(defconst font-attributes-masked '("pixelsize", "spacing"))
-
-(defun grail-format-font ( family size frame )
-  (let*
-    (
-      (frame-spec (aref (font-info family frame) 1))
-      (customized (concat "spacing=m:height=" (number-to-string grail-font-size)))
-
-      (font-data (split-string frame-spec ":"))
-      (font-family (car font-data))
-      (font-details (cdr font-data))
-    )
-
-    (string-join
-      (remove nil
-        (append
-          (list font-family)
-          (mapcar
-            (lambda (field)
-              (let
-                ((key-value (split-string field "=")))
-
-                (when (not (member (car key-value) font-attributes-masked))
-                  field) ))
-            font-details)
-          (list customized)))
-      ":") ))
-
+(defun grail-build-font ( frame )
+  (concat (grail-select-best-font-family frame) "-" (int-to-string grail-font-size)) )
 
 ;;
 ;; frame parameters
 ;;
-
-(defun grail-merge-frame-parameters ( emacs-alist-sym &rest pairs )
-  (let
-    (( emacs-alist (eval emacs-alist-sym) ))
-
-    (mapc
-      (lambda ( x )
-        (setq emacs-alist (assq-delete-all (car x) emacs-alist)) )
-      pairs)
-
-    (set emacs-alist-sym (append pairs emacs-alist)) ))
 
 (defun grail-graphical-frame-configuration ( frame )
   (list
@@ -88,7 +56,9 @@
     '(overline . nil)
     '(mouse-color . "red")
     '(cursor-color . "yellow")
-    `(font . ,(grail-format-font (grail-select-best-font-family frame) grail-font-size frame)) ))
+    `(width . ,grail-frame-width)
+    `(height . ,grail-frame-height)
+    `(font . ,(grail-build-font frame)) ))
 
 ;; every fucking measure possible seems to be required
 ;; to change the color of the fucking cursor.
