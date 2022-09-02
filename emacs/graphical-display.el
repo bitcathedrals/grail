@@ -3,7 +3,7 @@
 ;;----------------------------------------------------------------------
 
 (defvar grail-frame-width 120 "default width of the frame in characters")
-(defvar grail-frame-height 100 "default height of the frame in characters")
+(defvar grail-frame-height 80 "default height of the frame in characters")
 (defvar grail-font-size 16 "default font size")
 
 (setq grail-font-size 16)
