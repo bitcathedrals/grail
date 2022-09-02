@@ -4,6 +4,9 @@
 
 (defconst codermattie-bg-color "grey5")
 
+(set-face-background 'default codermattie-bg-color)
+(set-face-foreground 'default "grey55")
+
 (defun display-faces-terminal ()
   (set-face-background 'font-lock-type-face codermattie-bg-color)
   (set-face-foreground 'font-lock-type-face "green4")
@@ -18,8 +21,6 @@
   (set-face-foreground 'help-key-binding "green4"))
 
 (defun display-faces-general ()
-  (set-face-background 'default codermattie-bg-color)
-  (set-face-foreground 'default "grey55"))
 
   ;; comments are set off-tempature to distingiush them better.
   ;; orange was chosen as a red that wasn't harsh.
@@ -45,7 +46,7 @@
 
   (set-face-background 'font-lock-warning-face codermattie-bg-color)
   ;;(set-face-attribute  'font-lock-warning-face :underline "red")
-  (set-face-foreground 'font-lock-warning-face "grey70")
+  (set-face-foreground 'font-lock-warning-face "grey70"))
 
 (display-faces-terminal)
 (display-faces-general)
