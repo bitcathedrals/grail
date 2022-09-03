@@ -16,8 +16,10 @@
   (if (file-exists-p (concat user-brew-path "brew"))
     (setq exec-path (cons user-brew-path exec-path))) )
 
-(setq exec-path (seq-uniq (cons "/usr/local/bin" exec-path)))
+(setq exec-path (seq-uniq (append
+                            '("/Applications/Emacs.app/Contents/MacOS/bin"
+                              "/usr/local/bin")
+                          exec-path)) )
 
 ;; for some reason when I run emacs out of the dock
 ;; /usr/local/bin is missing.
-
