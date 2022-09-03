@@ -115,4 +115,3 @@
     swap-parens-keymap))
 
 (bind-swap-parens)
-

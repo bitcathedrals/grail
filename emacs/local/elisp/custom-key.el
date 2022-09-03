@@ -2,6 +2,7 @@
 ;; custom-key
 ;;----------------------------------------------------------------------
 (require 'subr-x)
+(require 'cl)
 
 (defun keybindings-help-first-line ( fn )
   (let
@@ -71,6 +72,7 @@
   "descriptions of custom key groups")
 
 (defun keybindings-help-global ()
+  "display keybinding help"
   (interactive)
 
   (switch-to-buffer
@@ -172,7 +174,10 @@
                  (cdr key-fn-pair)) ) )
          body) ))
 
-(global-unset-key (kbd "C-c h h"))
-(global-set-key   (kbd "C-c h h") 'keybindings-help-global)
+(custom-key-group "help" "h" t
+  ("v" . describe-variable)
+  ("f" . describe-function)
+  ("k" . describe-key)
+  ("g" . keybindings-help-global))
 
 (provide 'custom-key)
