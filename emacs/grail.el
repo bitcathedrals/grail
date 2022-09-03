@@ -566,4 +566,12 @@
     "Grail Profiles"
     "loading Grail Profiles"
 
-    (grail-load-all-profiles)) )
+    (grail-load-all-profiles))
+
+  (grail-ignore
+    "Grail Server"
+    "Staring Emacs server"
+
+    (unless server-process
+      (server-start) ))
+  )
