@@ -1,5 +1,5 @@
 ;;----------------------------------------------------------------------
-;; configure the graphical display
+;; graphical-display
 ;;----------------------------------------------------------------------
 
 (defvar grail-frame-width 120 "default width of the frame in characters")
@@ -60,22 +60,63 @@
     `(height . ,grail-frame-height)
     `(font . ,(grail-build-font frame)) ))
 
-;; every fucking measure possible seems to be required
-;; to change the color of the fucking cursor.
+(defconst codermattie-bg-color "grey5")
 
-;; set some defaults for frames.
+(defun display-faces-general ()
 
-(defun grail-update-frame-parameters ( update-list frame-list )
-  (mapcar
-    (lambda (update)
-      (when (assoc (car update) frame-list)
-        (setq frame-list (assq-delete-all (car update) frame-list)))
+  (set-face-background 'font-lock-type-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-type-face "green4")
 
-      (setq frame-list (cons update frame-list)) )
+  (set-face-background 'font-lock-function-name-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-function-name-face "aquamarine4")
 
-    update-list)
+  (set-face-background 'font-lock-variable-name-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-variable-name-face "aquamarine3")
 
-  frame-list)
+  ;; comments are set off-tempature to distingiush them better.
+  ;; orange was chosen as a red that wasn't harsh.
+  (set-face-background 'font-lock-comment-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-comment-face "orange3")
+
+  ;; grammar is the lightest shade of blue
+  (set-face-background 'font-lock-keyword-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-keyword-face "DeepSkyBlue4")
+
+  (set-face-background 'font-lock-builtin-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-builtin-face "DeepSkyBlue4")
+
+  ;; this should be for any form of literal value in code medium contrast.
+  (set-face-background 'font-lock-string-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-string-face "grey50")
+
+  (set-face-background 'font-lock-constant-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-constant-face "grey50")
+
+  (set-face-background 'font-lock-constant-face codermattie-bg-color)
+  (set-face-foreground 'font-lock-constant-face "grey50")
+
+  (set-face-background 'font-lock-warning-face codermattie-bg-color)
+  ;;(set-face-attribute  'font-lock-warning-face :underline "red")
+  (set-face-foreground 'font-lock-warning-face "grey70"))
+
+(defconst grail-micparen-background "grey40")
+
+(defun display-mic-paren ()
+  (grail-ignore
+    "Load and configure mic-paren"
+    "configure mic-paren which performs background highlighting"
+
+    (require 'mic-paren)
+    (paren-activate)
+
+    (set-face-background 'paren-face-match grail-micparen-background)
+    (set-face-foreground 'paren-face-match "orange3")
+
+    (set-face-background 'paren-face-mismatch grail-micparen-background)
+    (set-face-foreground 'paren-face-mismatch "red")
+
+    (set-face-background 'paren-face-no-match grail-micparen-background)
+    (set-face-foreground 'paren-face-no-match "DarkCyan") ))
 
 (defun display-faces-for-cperl ()
   (setq cperl-invalid-face nil)
@@ -219,6 +260,12 @@
     (setq grail-graphical-config (grail-graphical-frame-configuration frame))
 
     (setq default-frame-alist grail-graphical-config) ))
+
+(set-face-background 'default codermattie-bg-color)
+(set-face-foreground 'default "grey55")
+
+(display-faces-general)
+(display-mic-paren)
 
 (provide 'graphical-display)
 

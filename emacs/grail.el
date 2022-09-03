@@ -550,13 +550,13 @@
 
   (grail-ignore
     "Load Terminal Display"
-    "Configure the display for terminals"
+    "Configure the display for Terminals"
 
-    (grail-try-user-elisp "load-display"))
+    (grail-try-user-elisp "terminal-display"))
 
   (grail-ignore
     "Load Graphical Display"
-    "Configure the display for graphical windows"
+    "Configure the display for Graphical Windows"
 
     (grail-try-user-elisp "graphical-display")
 
