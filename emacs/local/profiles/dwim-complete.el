@@ -84,14 +84,10 @@
 (defun dwim-complete/make-completions ( completions-fn )
   `("candidates" . ,completions-fn))
 
-(defun dwim-complete/make-action ( &optional fn )
-  `("action" . ,(if fn fn (lambda (selection) selection))))
-
 (defun dwim-complete/make-source ( name completions-fn action )
   (list
     (dwim-complete/make-name name)
-    (dwim-complete/make-completions completions-fn)
-    (dwim-complete/make-action action)))
+    (dwim-complete/make-completions completions-fn) ))
 
 ;;
 ;; accessor functions
@@ -103,19 +99,12 @@
 (defun dwim-complete-get-completions (source)
   (cdr (assoc "candidates" source)))
 
-(defun dwim-complete-get-action (source)
-  (cdr (assoc "action" source)))
-
 ;;
 ;; dwim-complete sources data table
 ;;
 
 (defvar dwim-complete-mode-sources nil "Global dwim-complete sources")
 (defvar-local dwim-complete-local-sources nil "local dwim-complete sources")
-
-;;
-;; table functions
-;;
 
 (defun dwim-complete-get-sources (mode)
   (let
@@ -135,21 +124,37 @@
 
 (defconst dwim-complete-refresh-interval 5 "how many seconds between refreshes of dwim-complete data")
 
+(defvar-local dwim-complete-build-generator
+  (lambda ()
+    nil)
+  "dwim-complete-build-generator is a function that generates a list of helm source objects")
+
 (defvar-local dwim-complete-local-fetch
   (lex-cache-lambda
     dwim-complete-refresh-interval
     (lambda ()
-      (dwim-complete-build-helm dwim-complete-buffer-mode)) ))
+      (append
+        (dwim-complete-build-helm-from-mode dwim-complete-buffer-mode)
+        (funcall dwim-complete-build-generator)) )) )
 
-(defun dwim-complete-build-helm-source ( source )
+;;
+;; helm builders
+;;
+
+(defun dwim-complete-build-helm-from-source ( source )
   (helm-build-sync-source (dwim-complete-get-name source)
     :candidates (sort (funcall (dwim-complete-get-completions source)) 'string-lessp)
     :fuzzy-match dwim-complete-fuzzy-match))
 
-(defun dwim-complete-build-helm ( mode )
+(defun dwim-complete-build-helm-from-generator ( name completions )
+  (helm-build-sync-source name
+    :candidates (sort completions 'string-lessp)
+    :fuzzy-match dwim-complete-fuzzy-match))
+
+(defun dwim-complete-build-helm-from-mode ( mode )
   (mapcar
     (lambda (table-entry)
-      (dwim-complete-build-helm-source table-entry))
+      (dwim-complete-build-helm-from-source table-entry))
       (dwim-complete-get-sources mode)) )
 
 (defun dwim-complete/mode-add ( mode source &optional local )
@@ -182,8 +187,11 @@
    'dwim-tab-stem-trigger
    'dwim-complete/complete))
 
-(defun dwim-complete/setup-for-buffer (mode)
+(defun dwim-complete/setup-for-buffer ( mode &optional generator )
   (set (make-local-variable 'dwim-complete-buffer-mode) mode)
+
+  (when generator
+    (setq dwim-complete-build-generator generator))
 
   (make-local-variable 'dwim-complete-stem-start)
   (make-local-variable 'dwim-complete-stem-stop)
