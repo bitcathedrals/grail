@@ -1,14 +1,10 @@
-;;----------------------------------------------------------------------
-;; dwim-complete.el - advanced global completion system
 ;;
-;; description:
+;; dwim-complete.el - An advanced global completion system
 ;;
-;; a completion system designed to be used as a engine for multiple
-;; modules and as a interface that is generally usable throughout Emacs.
-;; currently helm is outstanding for this purpose.
-;;----------------------------------------------------------------------
+
 (require 'thingatpt)
 (require 'subr-x)
+(require 'lex-cache)
 (require 'helm)
 
 ;;
@@ -23,13 +19,19 @@
 ;; interface to helm
 ;;
 
-(defun dwim-complete/helm ( prompt input helm-buffer helm-source )
+(defun dwim-complete-buffer ()
+  (get-buffer-create "*complete*"))
+
+(defun dwim-complete/helm ( prompt input source-list )
   (helm
-    :sources helm-source
+    :sources source-list
     :input input
     :prompt prompt
-    :buffer helm-buffer))
+    :buffer (dwim-complete-buffer)))
 
+;;
+;; dwim input construction
+;;
 
 (defvar dwim-complete-stem-start nil)
 (defvar dwim-complete-stem-stop nil)
@@ -78,7 +80,7 @@
   `("name" . ,name))
 
 (defun dwim-complete/make-completions ( completions-fn )
-  `("candidates" . completions-fn))
+  `("candidates" . ,completions-fn))
 
 (defun dwim-complete/make-action ( &optional fn )
   `("action" . ,(if fn fn (lambda (selection) selection))))
@@ -94,13 +96,13 @@
 ;;
 
 (defun dwim-complete-get-name (source)
-  (assoc "name" source))
+  (cdr (assoc "name" source)))
 
 (defun dwim-complete-get-completions (source)
-  (assoc "candidates" source))
+  (cdr (assoc "candidates" source)))
 
 (defun dwim-complete-get-action (source)
-  (assoc "action" source))
+  (cdr (assoc "action" source)))
 
 ;;
 ;; dwim-complete sources data table
@@ -109,88 +111,76 @@
 (defvar dwim-complete-mode-sources nil "Global dwim-complete sources")
 (defvar-local dwim-complete-local-sources nil "local dwim-complete sources")
 
-(defun dwim-complete-mode-add-source ( mode-name source &optional local )
-  (if local
-    (setq dwim-complete-local-sources (cons source dwim-complete-local-sources))
-    (let
-      ((global (assoc mode-name dwim-complete-mode-sources)))
+;;
+;; table functions
+;;
 
-      (if global
-        (setcdr global (cons source (cdr global)))
-        (setq dwim-complete-mode-sources
-          (cons `(,mode-name . ,(list source)) dwim-complete-mode-sources)) )) ))
-
-(defun dwim-complete-get-sources (mode-name select-field)
+(defun dwim-complete-get-sources (mode)
   (let
-    ((merged-table (assoc mode-name dwim-complete-mode-sources))
-     (completers nil))
+    ((merged-table (assoc mode dwim-complete-mode-sources)))
+
+    (when merged-table
+      (setq merged-table (cdr merged-table)))
 
     (when dwim-complete-local-sources
       (setq merged-table (append dwim-complete-local-sources merged-table)))
 
-    (when merged-table
-      (mapcar
-        (lambda ( source )
-          (setq completers (cons (select-field source) completers)))
-        merged-table))
-
-    completers))
+    merged-table))
 
 ;;
-;; build helm source from sources table
+;; helm source cache
 ;;
 
-(defun dwim-complete/buffer ()
-  (get-buffer-create "*complete*"))
+(defconst dwim-complete-refresh-interval 3 "how many seconds between refreshes of dwim-complete data")
 
-(defun dwim-complete-build-candidates ()
-  (let
-    ((completers (dwim-complete-get-sources major-mode 'dwim-complete-get-completions)))
-    ((completions nil))
+(defvar-local dwim-complete-local-fetch
+  (lex-cache-lambda
+    dwim-complete-refresh-interval
+    (lambda ()
+      (dwim-complete-build-helm major-mode)) ))
 
-    (when completers
-      (mapcar
-        (lambda ( complete )
-          (setq completions (append (complete) completions)))
-        completers)
+(defun dwim-complete-build-helm-source ( source )
+  (helm-build-sync-source (dwim-complete-get-name source)
+    :candidates (sort (funcall (dwim-complete-get-completions source)) 'string-lessp)
+    :fuzzy-match dwim-complete-fuzzy-match))
 
-      (sort completions 'string-lessp)) ))
+(defun dwim-complete-build-helm ( mode )
+  (mapcar
+    (lambda (table-entry)
+      (dwim-complete-build-helm-source table-entry))
+      (dwim-complete-get-sources mode)) )
 
-(defun dwim-build-helm-source ()
-  (let
-    ((candidates (dwim-complete-build-candidates)))
+(defun dwim-complete/mode-add ( mode source &optional local )
+  (if local
+    (setq dwim-complete-local-sources (cons source dwim-complete-local-sources))
+    (let
+      ((global (assoc mode dwim-complete-mode-sources)))
 
-    (when candidates
-      (helm-build-sync-source major-mode
-        :candidates (dwim-complete-build-candidates)
-        :fuzzy-match dwim-complete-fuzzy-match
-        :buffer (dwim-compete/buffer))) ))
+      (if global
+        (setcdr global (cons source (cdr global)))
+        (setq dwim-complete-mode-sources (list `(,mode . ,(list source)))) ) )) )
 
+;;
+;; dwim-key.el
+;;
 
 (defun dwim-complete/complete ()
   "Attempt to perform a completion of what is behind the cursor."
   (interactive)
-  (let
-    ((helm-source (dwim-build-helm-source)))
+  (dwim-complete/helm
+    "complete: "                            ;; prompt
+    (dwim-complete-behind-point)            ;; input
+    (funcall dwim-complete-local-fetch)) )  ;; sources
 
-    (if helm-source
-      (dwim-complete/helm
-        "complete: "                  ;; prompt
-        (dwim-complete-behind-point)  ;; input
-        (dwim-complete/buffer)        ;; buffer
-        helm-source                   ;; sources
-        )
-      (message "no completions available for mode: %s" (major-mode)) )))
-
-(defun dwim-complete/for-buffer ()
+(defun dwim-complete/setup-for-buffer ()
   (make-local-variable 'dwim-complete-stem-start)
   (make-local-variable 'dwim-complete-stem-stop)
 
-  (local-set-key (kbd "<M-tab>") 'dwim-complete/complete) )
+  (local-set-key (kbd "<M-tab>") 'dwim-complete/complete))
 
-;;----------------------------------------------------------------------
+;;
 ;; keybindings and interfaces.
-;;----------------------------------------------------------------------
+;;
 
 (defun dwim-complete-vcs-or-file ()
   "dwim-complete vcs for file completion: use <spc> for contents search."
