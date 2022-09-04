@@ -1,8 +1,7 @@
 ;;----------------------------------------------------------------------
 ;; dwim-tab.el
 ;;----------------------------------------------------------------------
-(eval-when-compile
-  (require 'cl))
+(require 'cl)
 
 (defvar dwim-tab-register-expand nil
   "dwim-tab function for expanding registers")
