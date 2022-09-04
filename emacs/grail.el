@@ -2,8 +2,9 @@
 ;; grail.el
 ;;----------------------------------------------------------------------
 (require 'subr-x)
+(require 'server)
 
-;; Grail loads an .emacs configuration in a robust, modular, and mode
+;; Grail loads an Emacs configuration in a robust, modular, and mode
 ;; aware manner.
 
 ;; The user has the opportunity to split their emacs configuration
@@ -12,10 +13,8 @@
 ;; directly by name, then the configuration will work properly when
 ;; emacs in started in different modes:
 
-;; * batch mode    - non-interactive library functions only
 ;; * tty           - a console frame
 ;; * gui           - a graphical frame
-;; * deamon        - a headless emacs server
 
 ;; The error trapping in grail catches errors in both errors in grail
 ;; itself, and in the configuration. This allows Emacs to start
@@ -56,13 +55,10 @@
 ;; detailed description of the file and directory structure that is
 ;; significant to Grail.
 
-(defconst grail-release-version "0.3.1"
-  "the release number of grail.el")
-
 (defconst grail-maintainer-email "codermattie@runbox.com"
   "The maintainer's e-mail address")
 
-(defconst grail-project-url "http://www.emacswiki.org/emacs/Grail"
+(defconst grail-project-url "https://github.com/bitcathedrals/grail/"
   "the project page for Grail")
 
 ;;
@@ -497,7 +493,7 @@
       (cond
         ((string-equal "gnu/linux"      system-type)  "systems/linux")
         ((string-equal "darwin"         system-type)  "systems/macos")
-        ((string-equal "gnu/kfreebsd"   system-type)  "systems/freebsd")
+        ((string-equal "berkeley-unix"  system-type)  "systems/freebsd")
         ((string-equal "gnu/windows-nt" system-type)  "systems/windows")) )
 
     (grail-try-user-elisp
@@ -550,13 +546,13 @@
 
   (grail-ignore
     "Load Terminal Display"
-    "Configure the display for terminals"
+    "Configure the display for Terminals"
 
-    (grail-try-user-elisp "load-display"))
+    (grail-try-user-elisp "terminal-display"))
 
   (grail-ignore
     "Load Graphical Display"
-    "Configure the display for graphical windows"
+    "Configure the display for Graphical Windows"
 
     (grail-try-user-elisp "graphical-display")
 
@@ -566,4 +562,12 @@
     "Grail Profiles"
     "loading Grail Profiles"
 
-    (grail-load-all-profiles)) )
+    (grail-load-all-profiles))
+
+  (grail-ignore
+    "Grail Server"
+    "Staring Emacs server"
+
+    (unless server-process
+      (server-start) ))
+  )
