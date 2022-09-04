@@ -9,7 +9,7 @@
 (require 'buffer-ring)
 (require 'programming-generic)
 
-(defconst elisp/mode-name major-mode)
+(defconst elisp/mode-name "elisp-mode")
 (defconst elisp/repl-name (borg-repl/repl-name elisp/mode-name))
 
 ;;
@@ -20,67 +20,37 @@
   lisp-indent-offset 2)
 
 ;;
-;; key-binding search functions
+;; search functions
 ;;
 
 (defun elisp-list-fn-signatures ()
   (interactive)
   (occur "(defun"))
 
-
-;;
-;; walk the symbol tables
-;;
-
-(defun emacs-lisp-function-symbols ()
-  (let
-    (( name-list ))
-
-    (mapatoms
-      (lambda ( sym )
-        (when (functionp sym)
-          (setq name-list (cons (symbol-name sym) name-list ))) )
-      obarray)
-
-    name-list))
-
-  (defun emacs-lisp-variable-symbols ()
-    (let
-      (( name-list ))
-
-      (mapatoms
-        (lambda ( sym )
-          (unless (functionp sym)
-            (setq name-list (cons (symbol-name sym) name-list ))) )
-        obarray)
-
-      name-list))
-
-
 ;;
 ;; dwim tab completion backend
 ;;
 
 (grail-require profile/dwim-complete
-  "emacs-lisp"
-  "defining dwim-complete sources"
+  "emacs-lisp requires dwim-complete"
+  "building dwim-complete support for emacs lisp"
 
-  (defun dwim-complete/emacs-lisp-fn-source ()
-    (dwim-complete/make-source "functions"
+  (defun emacs-lisp-helm-generator ()
+    (lambda ()
+      (let
+        ((functions nil)
+         (variables nil))
 
-      (lambda ()
-        (emacs-lisp-function-symbols))
+        (mapatoms
+          (lambda ( entry )
+            (if (functionp entry)
+              (setq functions (cons (symbol-name entry) functions))
+              (setq variables (cons (symbol-name entry) variables))) )
+          obarray)
 
-      'dwim-complete-replace-stem))
-
-
-  (defun dwim-complete/emacs-lisp-var-source ()
-    (dwim-complete/make-source "variables"
-
-      (lambda ()
-        (emacs-lisp-variable-symbols))
-
-      'dwim-complete-replace-stem)) )
+        (list
+          (dwim-complete-build-helm-from-generator "functions" functions)
+          (dwim-complete-build-helm-from-generator "variables" variables)) )) ))
 
 ;;
 ;; borg-repl backend
@@ -122,15 +92,7 @@
     "emacs-lisp"
     "initializing dwim-complete"
 
-    (dwim-complete/mode-add
-      elisp/mode-name
-      (dwim-complete/emacs-lisp-fn-source))
-
-    (dwim-complete/mode-add
-      elisp/mode-name
-      (dwim-complete/emacs-lisp-var-source))
-
-    (dwim-complete/setup-for-buffer))
+    (dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator)))
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
