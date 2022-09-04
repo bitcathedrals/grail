@@ -1,11 +1,19 @@
-;;----------------------------------------------------------------------
+;;
 ;; lex-cache.el - cache data lexically
 ;;
 ;; description:
 ;;
 ;; cache a piece of data lexically.
-;;----------------------------------------------------------------------
+;;
 (require 'cl)
+
+;;
+;; consider using timers to update the data.
+;;
+
+;;
+;; consider using async to update the data - https://github.com/jwiegley/emacs-async
+;;
 
 ;;
 ;; cache expiration
