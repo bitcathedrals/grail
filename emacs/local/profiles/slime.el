@@ -1,15 +1,15 @@
-;;----------------------------------------------------------------------
+;;
 ;; slime
 ;;
 ;; slime profile for common lisp coding
-;;----------------------------------------------------------------------
-(require 'custom-key)
+;;
 (require 'borg-repl)
 (require 'programming-generic)
 (require 'mode-tools)
 (require 'profile/common-lisp)
 
-(defconst cl-repl-name (borg-repl/repl-name cl-lisp-name))
+(defconst slime/mode-name "slime")
+(defconst slime/repl-name (borg-repl/repl-name slime/mode-name))
 
 (require 'slime)
 
@@ -34,53 +34,51 @@
   "slime"
   "dwim complete source creation"
 
-  (defun profile/slime-candidates ()
+  (defun slime/slime-candidates ()
     (car (slime-simple-completions "")))
 
-  (defun profile/slime-source ()
-    (dwim-complete/make-source "slime"
+  (defun slime/slime-source ()
+    (dwim-complete/make-source
+      slime/mode-name
       'profile/slime-candidates
       'dwim-complete-replace-stem ))
 
-  (unless (dwim-complete-mode-check-type cl-lisp-name "mode")
-    (dwim-complete-mode-add-source cl-lisp-name (profile/slime-source))
-    (dwim-complete-mode-add-type cl-lisp-name "mode")) )
-
-(defun profile/slime-common-setup ()
-  (grail-require profile/dwim-complete
-    "slime common setup"
-    "enable dwim-tabe"
-
-    (dwim-complete/set-mode cl-lisp-name)
-    (dwim-complete/for-buffer) ) )
+  (dwim-complete/mode-add
+    slime/mode-name
+    (slime/slime-source)) )
 
 ;;
 ;; repl buffer setup
 ;;
 
-(defun profile/slime-repl-setup ()
-  (profile/slime-common-setup)
+(defun slime/slime-repl-setup ()
+  (grail-require profile/dwim-complete
+    "slime buffer setup"
+    "enable dwim-tab"
+
+    (dwim-complete/setup-for-buffer slime/mode-name))
 
   (turn-on-dwim-tab 'lisp-indent-line)
 
-  (buffer-ring/add cl-repl-name)
+  (buffer-ring/add slime/repl-name)
   (buffer-ring/local-keybindings) )
 
-(add-hook 'slime-connected-hook 'profile/slime-repl-setup t)
+(add-hook 'slime-connected-hook 'slime/slime-repl-setup t)
 
 ;;
 ;; integration into common lisp
 ;;
 
 (defun profile/slime-mode-setup ()
-  (profile/slime-common-setup)
-
   ;; turn on minor mode
   (slime-mode t)
 
-  (dwim-tab-localize-context (dwim-tab-make-expander 'dwim-tab-stem-trigger 'slime-complete-symbol))
+  (dwim-tab-localize-context
+    (dwim-tab-make-expander
+      'dwim-tab-stem-trigger
+      'slime-complete-symbol))
 
-  (borg-repl/bind-repl cl-repl-name
+  (borg-repl/bind-repl slime/repl-name
     'slime
     'slime-eval-last-expression
     'slime-eval-region
@@ -89,7 +87,7 @@
 
   (borg-repl/bind-connect 'slime-connect)
 
-  (borg-repl/bind-macro-expand 'slime-macroexpand-1) )
+  (borg-repl/bind-macro-expand 'slime-macroexpand-1))
 
 (add-hook 'lisp-mode-hook 'profile/slime-mode-setup t)
 

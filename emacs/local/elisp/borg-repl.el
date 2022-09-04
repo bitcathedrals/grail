@@ -6,7 +6,6 @@
 (defun borg-repl/repl-name ( mode-name )
   (concat mode-name "/repl") )
 
-
 (defun borg-repl/error-msg ( msg &rest info )
   (message "borg-repl Error: %s %s" msg
     (if info

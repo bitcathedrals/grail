@@ -38,23 +38,15 @@
 ;; other window is more useful. there is no really good way
 ;; for buffer switching outside of buffer ring
 
-;; using it for complete now. will come up with something else.
-;; (global-set-key (kbd "<M-tab>") 'other-window-non-interactive)
-
 (global-set-key (kbd "<prior>") 'beginning-of-buffer)
 (global-set-key (kbd "<next>")  'end-of-buffer)
 
 (global-set-key (kbd "M-g")  'goto-line)
 
-(global-set-key (kbd "<backtab>") 'next-buffer)
-
-(global-set-key (kbd "<f1>") 'toggle-ucase-word)
+(global-set-key (kbd "<M-tab>") 'other-window-forward)
 
 ;; line number mode
 (global-set-key (kbd "C-c C-l")  'linum-mode)
-
-;; ido mode
-(global-set-key (kbd "C-c C-i")  'ido-mode)
 
 ;; registers
 (custom-key-group "registers" "r" t
