@@ -40,7 +40,7 @@
       (list (nth 3 (decode-time)) (nth 4 (decode-time)) (nth 5 (decode-time)) ))
     string))
 
-(defun other-window-non-interactive ()
+(defun other-window-forward ()
   (interactive)
   (other-window 1))
 

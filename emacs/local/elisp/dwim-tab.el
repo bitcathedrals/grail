@@ -1,8 +1,7 @@
 ;;----------------------------------------------------------------------
 ;; dwim-tab.el
 ;;----------------------------------------------------------------------
-(eval-when-compile
-  (require 'cl))
+(require 'cl)
 
 (defvar dwim-tab-register-expand nil
   "dwim-tab function for expanding registers")
@@ -14,12 +13,13 @@
 (defvar-local dwim-tab-local-context nil
   "A function, or list of functions ")
 
-(defvar dwim-tab-indent 'indent-according-to-mode)
+(defvar-local dwim-tab-indent 'indent-according-to-mode)
 
 (defun dwim-tab-set-register-expand ( expander )
   (setq dwim-tab-register-expand expander))
 
 (defun dwim-tab-stem-trigger ()
+  (interactive)
   (if (looking-at-p "\\>")
     t
     nil))
@@ -33,10 +33,10 @@
 (defun dwim-tab-make-expander ( context expander )
   (cons context expander))
 
-(defun dwim-tab-expanders-by-regex ()
+(defun dwim-tab-expanders-by-context ()
   (let
-    (( all-expanders (append dwim-tab-local-context dwim-tab-global-context))
-     ( relevant-expanders nil) )
+    ((all-expanders (append dwim-tab-local-context dwim-tab-global-context))
+     (relevant-expanders nil) )
 
     (mapc
       (lambda ( expander )
@@ -49,20 +49,21 @@
       relevant-expanders) ))
 
 (defun dwim-tab-localize-context ( &rest locals )
-  "dwim-tab-local-context function-list
+  "dwim-tab-local-context context-list
 
-   Add a context function to the Tab hook. If the function detects that
-   the point is within it's context, or turf then it should DTRT and
-   return non-nil.
+   Add a context to the local Tab hook. If the context function detects
+   that the point is within it's context, or turf then it should
+   DTRT and return non-nil. The expansion function should expand
+   at the point.
   "
   (apply 'add-to-list 'dwim-tab-local-context locals))
 
 (defun dwim-tab-globalize-context ( &rest globals )
   "dwim-tab-globalize-context function
 
-   Add a context function to the Tab hook. If the function detects that
+   Add a context to the global Tab hook. If the function detects that
    the point is within it's context, or turf then it should DTRT and
-   return non-nil.
+   return non-nil. The expander should expand at the point.
   "
   (apply 'add-to-list 'dwim-tab-global-context globals))
 
@@ -86,7 +87,7 @@
   "
   (interactive)
   (let
-    ((complete (dwim-tab-expanders-by-regex))
+    ((complete (dwim-tab-expanders-by-context))
      (point-before (point))
      (success nil))
 
@@ -129,10 +130,8 @@
 (defun turn-on-dwim-tab ( &optional indent-function )
   (interactive)
 
-  (if indent-function
-    (progn
-      (make-variable-buffer-local 'dwim-tab-indent)
-      (setq dwim-tab-indent indent-function)))
+  (when indent-function
+      (setq dwim-tab-indent indent-function))
 
   (local-set-key (kbd "TAB") 'dwim-tab-do-magic))
 
