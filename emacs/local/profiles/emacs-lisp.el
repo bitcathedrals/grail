@@ -31,7 +31,7 @@
 
 
 ;;
-;; generic completion tools
+;; walk the symbol tables
 ;;
 
 (defun emacs-lisp-function-symbols ()
@@ -46,20 +46,6 @@
 
     name-list))
 
-(defconst emacs-lisp-refresh-completion-interval 1)
-
-;;
-;; dwim tab completion backend
-;;
-
-(grail-require profile/dwim-complete
-  "emacs-lisp"
-  "defining dwim-complete sources"
-
-  (lex-cache dwim-complete/elisp-fn-candidates emacs-lisp-refresh-completion-interval
-    (lambda ()
-      (emacs-lisp-function-symbols) ))
-
   (defun emacs-lisp-variable-symbols ()
     (let
       (( name-list ))
@@ -71,6 +57,22 @@
         obarray)
 
       name-list))
+
+
+;;
+;; dwim tab completion backend
+;;
+
+(defconst emacs-lisp-refresh-completion-interval 1)
+
+(grail-require profile/dwim-complete
+  "emacs-lisp"
+  "defining dwim-complete sources"
+
+  (lex-cache dwim-complete/elisp-fn-candidates emacs-lisp-refresh-completion-interval
+    (lambda ()
+      (emacs-lisp-function-symbols) ))
+
 
   (lex-cache dwim-complete/elisp-var-candidates emacs-lisp-refresh-completion-interval
     (lambda ()
@@ -134,9 +136,9 @@
 
     (dwim-complete/set-mode profile/elisp-name)
 
-    (dwim-complete/for-buffer) )
+    (dwim-complete/for-buffer))
 
-  (turn-on-dwim-tab 'lisp-indent-line) )
+  (turn-on-dwim-tab 'lisp-indent-line))
 
 (add-hook 'emacs-lisp-mode-hook 'emacs-lisp/profile t)
 
