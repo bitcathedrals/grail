@@ -5,6 +5,8 @@
 (require 'thingatpt)
 (require 'subr-x)
 (require 'lex-cache)
+(require 'dwim-tab)
+
 (require 'helm)
 
 ;;
@@ -131,13 +133,13 @@
 ;; helm source cache
 ;;
 
-(defconst dwim-complete-refresh-interval 3 "how many seconds between refreshes of dwim-complete data")
+(defconst dwim-complete-refresh-interval 5 "how many seconds between refreshes of dwim-complete data")
 
 (defvar-local dwim-complete-local-fetch
   (lex-cache-lambda
     dwim-complete-refresh-interval
     (lambda ()
-      (dwim-complete-build-helm major-mode)) ))
+      (dwim-complete-build-helm dwim-complete-buffer-mode)) ))
 
 (defun dwim-complete-build-helm-source ( source )
   (helm-build-sync-source (dwim-complete-get-name source)
@@ -161,7 +163,7 @@
         (setq dwim-complete-mode-sources (list `(,mode . ,(list source)))) ) )) )
 
 ;;
-;; dwim-key.el
+;; completion command
 ;;
 
 (defun dwim-complete/complete ()
@@ -172,12 +174,23 @@
     (dwim-complete-behind-point)            ;; input
     (funcall dwim-complete-local-fetch)) )  ;; sources
 
-(defun dwim-complete/setup-for-buffer ()
+;;
+;; dwim-tab integration
+;;
+(defun dwim-complete-make-context ()
+  (cons
+   'dwim-tab-stem-trigger
+   'dwim-complete/complete))
+
+(defun dwim-complete/setup-for-buffer (mode)
+  (set (make-local-variable 'dwim-complete-buffer-mode) mode)
+
   (make-local-variable 'dwim-complete-stem-start)
   (make-local-variable 'dwim-complete-stem-stop)
 
-  (local-set-key (kbd "<M-tab>") 'dwim-complete/complete))
+  (dwim-tab-localize-context (dwim-complete-make-context)) )
 
+;;  (local-set-key (kbd "<M-tab>") 'dwim-complete/complete)
 ;;
 ;; keybindings and interfaces.
 ;;
