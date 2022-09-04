@@ -190,7 +190,6 @@
 
   (dwim-tab-localize-context (dwim-complete-make-context)) )
 
-;;  (local-set-key (kbd "<M-tab>") 'dwim-complete/complete)
 ;;
 ;; keybindings and interfaces.
 ;;
