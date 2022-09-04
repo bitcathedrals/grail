@@ -5,24 +5,31 @@
 ;;
 ;; cache a piece of data lexically.
 ;;----------------------------------------------------------------------
+(require 'cl)
 
-;;----------------------------------------------------------------------
+;;
 ;; cache expiration
-;;----------------------------------------------------------------------
+;;
 
-(defun lex-cache-create-timestamp ()
+(defun lex-cache-timestamp ()
   (truncate (time-to-seconds (current-time))))
 
-(defun lex-cache-timestamp-expired-p ( timestamp interval )
-  (if (> (lex-cache-create-timestamp) (+ timestamp interval))
+(defun lex-cache-expired ( timestamp interval )
+  (if (> (lex-cache-timestamp) (+ timestamp interval))
     t
     nil))
 
-(defun lex-cache-need-update-p ( timestamp interval )
-  (and timestamp (lex-cache-timestamp-expired-p timestamp interval)))
+(defun lex-cache-refresh ( timestamp interval )
+  (or
+    (not timestamp)
+    (lex-cache-expired timestamp interval)) )
 
 (defun lex-cache-minutes ( min )
   (* 60 min))
+
+;;
+;; lexical caching creation
+;;
 
 (defun lex-cache-bind ( symbol cache-fn )
    (fset symbol cache-fn)
@@ -32,31 +39,30 @@
   (lexical-let
     ((builder-fn builder)
      (data nil)
-     (data-interval interval)
-     (data-timestamp nil))
+     (interval interval)
+     (timestamp nil))
 
     (lambda ( &optional update-flag )
-      (when (eq 'force update-flag)
-        (setq data nil))
-
-      (if update-flag
-        (when (or (not data) (lex-cache-need-update-p data-timestamp data-interval))
+      (if (or
+            update-flag
+            (not data)
+            (lex-cache-refresh timestamp interval))
+        (progn
           (setq
             data (funcall builder-fn)
-            data-timestamp (lex-cache-create-timestamp))
-          nil)
-        (if (and data (not (lex-cache-need-update-p data-timestamp data-interval)))
-          data
-          (progn
-            (setq
-              data (funcall builder-fn)
-              data-timestamp (lex-cache-create-timestamp))
-            data)) )) ))
+            timestamp (lex-cache-timestamp))
+          data)
+        data)) ))
 
-(defmacro lex-cache ( binding interval &rest body )
+(defmacro lex-cache ( binding interval fn )
   `(lex-cache-bind ',binding
-     (lex-cache-build
-       ,@body
-       ,interval)) )
+     ,(lex-cache-build
+       fn
+       interval)) )
+
+(defmacro lex-cache-lambda ( interval fn )
+  `(lex-cache-build
+     ,fn
+     ,interval))
 
 (provide 'lex-cache)
