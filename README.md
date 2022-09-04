@@ -59,9 +59,11 @@ git clone https://github.com/bitcathedrals/grail.git emacs-grail
 
 Second you need to cd into emacs-grail and you need to initialize the dependencies. One dependency will be my pythonsh toolbox for running py.sh commands, the rest are Elisp packages.
 
+The install.sh script executes the submodule command for you:
+
 ```bash
 cd emacs-grail
-git submodule update --init --recursive
+scripts/install.sh
 ```
 
 Third you need to create the symlinks that point the Emacs load at grail:
