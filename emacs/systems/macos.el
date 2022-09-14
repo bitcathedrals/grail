@@ -10,16 +10,24 @@
 (setq grail-font-family '("DejaVu Sans Mono" "Courier New"))
 (setq grail-font-size 160)
 
-(let
-  ((user-brew-path (concat (getenv "HOME") "/homebrew/bin")))
-
-  (if (file-exists-p (concat user-brew-path "brew"))
-    (setq exec-path (cons user-brew-path exec-path))) )
-
 (setq exec-path (seq-uniq (append
                             '("/Applications/Emacs.app/Contents/MacOS/bin"
                               "/usr/local/bin")
                           exec-path)) )
 
-;; for some reason when I run emacs out of the dock
-;; /usr/local/bin is missing.
+(defvar brew-user-install (concat (getenv "HOME") "/homebrew/bin/brew"))
+
+;;
+;; set brew correctly
+;;
+
+(let
+  ((brew (if (file-executable-p brew-user-install) brew-user-install "/usr/local/bin/brew")))
+
+  (let
+    ((brew-prefix (string-trim-right (shell-command-to-string "brew --prefix")) ))
+
+    (setq exec-path (seq-uniq (append
+                                (list (concat brew-prefix "/bin") (concat brew-prefix "/sbin"))
+                                exec-path) )) ))
+
