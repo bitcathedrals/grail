@@ -1,6 +1,6 @@
-;;----------------------------------------------------------------------
-;; common lisp
-;;----------------------------------------------------------------------
+;;
+;; common lisp profile
+;;
 (require 'buffer-ring)
 (require 'dwim-tab)
 (require 'programming-generic)
@@ -14,9 +14,9 @@
 
 (require 'lisp-mode)
 
-;;----------------------------------------------------------------------
+;;
 ;; auto mode list additions
-;;----------------------------------------------------------------------
+;;
 
 (setq
   auto-mode-alist (append '(("\\.cl$" . lisp-mode)
@@ -32,9 +32,9 @@
     "common lisp"
     "initializing dwim-complete"
 
-    (dwim-complete/for-buffer) )
+    (dwim-complete/for-buffer "cl"))
 
-  (turn-on-dwim-tab 'lisp-indent-line) )
+  (turn-on-dwim-tab 'lisp-indent-line))
 
 (add-hook 'lisp-mode-hook 'profile/cl-mode-setup t)
 

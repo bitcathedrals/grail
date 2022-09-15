@@ -40,8 +40,7 @@
   (defun slime/slime-source ()
     (dwim-complete/make-source
       slime/mode-name
-      'profile/slime-candidates
-      'dwim-complete-replace-stem ))
+      'profile/slime-candidates))
 
   (dwim-complete/mode-add
     slime/mode-name
@@ -53,7 +52,7 @@
 
 (defun slime/slime-repl-setup ()
   (grail-require profile/dwim-complete
-    "slime buffer setup"
+    "profile/slime"
     "enable dwim-tab"
 
     (dwim-complete/setup-for-buffer slime/mode-name))
@@ -61,9 +60,35 @@
   (turn-on-dwim-tab 'lisp-indent-line)
 
   (buffer-ring/add slime/repl-name)
-  (buffer-ring/local-keybindings) )
+  (buffer-ring/local-keybindings))
 
 (add-hook 'slime-connected-hook 'slime/slime-repl-setup t)
+
+;;
+;; integration into common lisp
+;;
+
+(defun profile/slime-mode-setup ()
+  ;; turn on minor mode
+  (slime-mode t)
+
+  (dwim-tab-localize-context
+    (dwim-tab-make-expander
+      'dwim-tab-stem-trigger
+      'slime-complete-symbol))
+
+  (borg-repl/bind-repl slime/repl-name
+    'slime
+    'slime-eval-last-expression
+    'slime-eval-region
+    'slime-eval-buffer
+    'slime-eval-defun)
+
+  (borg-repl/bind-connect 'slime-connect)
+
+  (borg-repl/bind-macro-expand 'slime-macroexpand-1))
+
+(add-hook 'lisp-mode-hook 'profile/slime-mode-setup t)
 
 ;;
 ;; integration into common lisp
