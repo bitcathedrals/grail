@@ -506,7 +506,7 @@
   ;; load the user configuration elisp
   ;;
 
-  (defconst grail-config-load-ordered '( "elisp.el"))
+  (defconst grail-config-load-ordered '("elisp.el"))
 
   (defconst grail-config-load-masked '("grail.el"
                                        "grail-load.el"
