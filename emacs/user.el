@@ -147,13 +147,15 @@
 (eval-after-load 'erc
   '(progn
      (setq
-       erc-default-server "irc.freenode.net"
+       erc-default-server "irc.libera.chat"
        erc-default-port "6667"
-       erc-nick "codermattie")
+       erc-nick "JohnGalt")
 
     ;; turn on truncate mode before erc eats all available RAM.
+     (erc-truncate-mode 1)
+
      (require 'erc-truncate)
-     (erc-truncate-mode 1)))
+     (require 'erc-credentials)) )
 
 (defun erc-mode-customization ()
   (buffer-ring/add "erc")
