@@ -98,4 +98,3 @@ Note: the keybinding C-h is remapped to backspace as on the freeBSD console the 
 For most languages C-c e e will eval the line, C-c e d will eval a define. These are in the help.
 
 For all of the key mappings defined with my custom-key system invoking C-c <group> h will bring up a description of the chord.
-
