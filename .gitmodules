@@ -19,3 +19,6 @@
 [submodule "emacs/dist/git/mic-paren"]
 	path = emacs/dist/git/mic-paren
 	url = https://github.com/emacsattic/mic-paren.git
+[submodule "emacs/dist/git/async"]
+	path = emacs/dist/git/async
+	url = https://github.com/jwiegley/emacs-async.git
