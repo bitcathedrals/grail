@@ -152,9 +152,10 @@
        erc-nick "JohnGalt")
 
     ;; turn on truncate mode before erc eats all available RAM.
+     (require 'erc-truncate)
      (erc-truncate-mode 1)
 
-     (require 'erc-truncate)
+     (setq erc-prompt-for-nickserv-password nil)
      (require 'erc-credentials)) )
 
 (defun erc-mode-customization ()
