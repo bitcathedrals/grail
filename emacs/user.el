@@ -156,7 +156,10 @@
      (erc-truncate-mode 1)
 
      (setq erc-prompt-for-nickserv-password nil)
-     (require 'erc-credentials)) )
+     (require 'erc-credentials)
+
+     (setq erc-autojoin-channels-alist
+       '(("Libera.Chat" "#emacs"))) ))
 
 (defun erc-mode-customization ()
   (buffer-ring/add "erc")
