@@ -22,3 +22,7 @@
 [submodule "emacs/dist/git/async"]
 	path = emacs/dist/git/async
 	url = https://github.com/jwiegley/emacs-async.git
+[submodule "emacs/dist/git/geiser"]
+	path = emacs/dist/git/geiser
+	url = https://github.com/emacsmirror/geiser.git
+	branch = master
