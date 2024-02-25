@@ -159,7 +159,9 @@
      (require 'erc-credentials)
 
      (setq erc-autojoin-channels-alist
-       '(("Libera.Chat" "#emacs"))) ))
+       '(("Libera.Chat" "#emacs")))
+
+     (setq erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT"))) ))
 
 (defun erc-mode-customization ()
   (buffer-ring/add "erc")
