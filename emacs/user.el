@@ -144,24 +144,23 @@
 
 ;; emacs IRC client is handy when on #emacs ...
 
-(eval-after-load 'erc
-  '(progn
-     (setq
-       erc-default-server "irc.libera.chat"
-       erc-default-port "6667"
-       erc-nick "JohnGalt")
+(setq
+  erc-default-server "irc.libera.chat"
+  erc-default-port "6667"
+  erc-nick "JohnGalt")
 
-    ;; turn on truncate mode before erc eats all available RAM.
-     (require 'erc-truncate)
-     (erc-truncate-mode 1)
+;; turn on truncate mode before erc eats all available RAM.
+(require 'erc-truncate)
+(erc-truncate-mode 1)
 
-     (setq erc-prompt-for-nickserv-password nil)
-     (require 'erc-credentials)
+(setq erc-prompt-for-nickserv-password nil)
 
-     (setq erc-autojoin-channels-alist
-       '(("Libera.Chat" "#emacs")))
+(require 'erc-credentials)
 
-     (setq erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT"))) ))
+;;     (setq erc-autojoin-channels-alist
+;;       '(("Libera.Chat" "#emacs")))
+
+(setq erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")))
 
 (defun erc-mode-customization ()
   (buffer-ring/add "erc")
