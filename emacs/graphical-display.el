@@ -99,7 +99,7 @@
   ;;(set-face-attribute  'font-lock-warning-face :underline "red")
   (set-face-foreground 'font-lock-warning-face "grey70"))
 
-(defconst grail-micparen-background "grey40")
+(defconst grail-micparen-background "grey10")
 
 (defun display-mic-paren ()
   (grail-ignore
