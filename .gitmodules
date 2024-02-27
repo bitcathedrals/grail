@@ -22,3 +22,27 @@
 [submodule "emacs/dist/git/async"]
 	path = emacs/dist/git/async
 	url = https://github.com/jwiegley/emacs-async.git
+[submodule "emacs/dist/git/geiser"]
+	path = emacs/dist/git/geiser
+	url = https://github.com/emacsmirror/geiser.git
+	branch = master
+[submodule "emacs/dist/git/magit"]
+	path = emacs/dist/git/magit
+	url = https://github.com/magit/magit.git
+	branch = main
+[submodule "emacs/dist/git/compat"]
+	path = emacs/dist/git/compat
+	url = https://github.com/emacs-compat/compat.git
+	branch = main
+[submodule "emacs/dist/git/dash"]
+	path = emacs/dist/git/dash
+	url = https://github.com/magnars/dash.el.git
+	branch = master
+[submodule "emacs/dist/git/transient"]
+	path = emacs/dist/git/transient
+	url = https://github.com/magit/transient.git
+	branch = main
+[submodule "emacs/dist/git/with-editor"]
+	path = emacs/dist/git/with-editor
+	url = https://github.com/magit/with-editor.git
+	branch = main

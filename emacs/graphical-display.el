@@ -99,7 +99,7 @@
   ;;(set-face-attribute  'font-lock-warning-face :underline "red")
   (set-face-foreground 'font-lock-warning-face "grey70"))
 
-(defconst grail-micparen-background "grey40")
+(defconst grail-micparen-background "grey10")
 
 (defun display-mic-paren ()
   (grail-ignore
@@ -132,13 +132,13 @@
 
 (defun display-faces-for-ediff ()
   (let
-    ((diff-bg-color "AntiqueWhite4")
-     (diff-bg-selected-color "CadetBlue")
+    ((diff-bg-color "black")
+     (diff-bg-selected-color "grey15")
 
-     (diff-fg-color "grey35")
+     (diff-fg-color "grey60")
 
      (diff-fine-bg "SkyBlue4")
-     (diff-fine-fg "grey65"))
+     (diff-fine-fg "black"))
 
     (set-face-background 'ediff-current-diff-A diff-bg-selected-color)
     (set-face-foreground 'ediff-current-diff-A diff-fg-color)

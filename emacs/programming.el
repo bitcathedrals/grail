@@ -39,6 +39,33 @@
 (use-grail-profiles 3 "slime")
 
 ;;----------------------------------------------------------------------
+;;                          version control
+;;----------------------------------------------------------------------
+(require 'magit)
+
+;; refresh after edit
+(with-eval-after-load 'magit-mode
+  (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
+
+(custom-key-group "magit git" "v" t
+  ("v" . magit-status)
+  ("l" . magit-log)
+
+  ("e" . magit-ediff-dwim)
+
+  ("a" . magit-stage)
+  ("u" . magit-unstage)
+  ("c" . magit-commit)
+  ("&" . magit-commit-squash)
+  ("x" . magit-commit-amend)
+
+  ("+" . magit-ediff-show-staged)
+  ("*" . magit-ediff-show-unstaged)
+  ("s" . magit-ediff-show-stash)
+
+  ("r" . magit-ediff-resolve-all))
+
+;;----------------------------------------------------------------------
 ;;                          misc tools
 ;;----------------------------------------------------------------------
 
