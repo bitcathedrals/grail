@@ -68,10 +68,7 @@
       ("f" . fn-search)
       ("g" . grep)
       ("r" . rgrep)
-      ("o" . occur)
-;;    ("i" . tags-uber-incremental)
-;;    ("t" . tags-uber-search)
-      ) )
+      ("o" . occur)) )
 
   (custom-key-group "code editing" "c" nil
     ("c" . toggle-comment-region)
@@ -79,7 +76,7 @@
     ("i" . indent-region)
     ("s" . sort-lines) )
 
-  ;; found this on emacs-wiki , all scripts are automatically made executable.
-  (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t) )
+  (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
+  (ruler-mode))
 
 (provide 'programming-generic)
