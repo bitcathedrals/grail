@@ -63,7 +63,8 @@
   ("*" . magit-ediff-show-unstaged)
   ("s" . magit-ediff-show-stash)
 
-  ("r" . magit-ediff-resolve-all))
+  ("r" . magit-ediff-resolve-all)
+  ("p" . magit-push))
 
 ;;----------------------------------------------------------------------
 ;;                          misc tools

@@ -157,9 +157,6 @@
 
 (require 'erc-credentials)
 
-;;     (setq erc-autojoin-channels-alist
-;;       '(("Libera.Chat" "#emacs")))
-
 (setq erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")))
 
 (defun erc-mode-customization ()
@@ -187,3 +184,15 @@
 
 (setq auto-mode-alist
   (cons '("\\.firewall$" . conf-mode) auto-mode-alist) )
+
+;;----------------------------------------------------------------------
+;; dpaste
+;;----------------------------------------------------------------------
+(require 'dpaste)
+(setq dpaste-poster "JohnGalt")
+
+;;----------------------------------------------------------------------
+;; force spaces over tabs
+;;----------------------------------------------------------------------
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
