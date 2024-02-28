@@ -10,14 +10,6 @@
 ;; major programming features
 ;;
 
-(require 'working-copy)
-
-;;
-;; working copy enable
-;;
-
-(wc-enable-globally)
-
 ;;----------------------------------------------------------------------
 ;; advanced modes
 ;;----------------------------------------------------------------------
