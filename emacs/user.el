@@ -79,16 +79,11 @@
 ;;----------------------------------------------------------------------
 
 (setq
-  ;; turn off backups and auto-save is just plain dangerous
-  backup-inhibited t
-  auto-save-default nil
+  make-backup-files nil
 
   ;; protect against IO errors by writing to a temp file and then renaming
   ;; so the original is not trashed by partial writes.
-
-  ;; unfortunately this breaks hard-linking so I have been forced to
-  ;; turn it off
-  file-precious-flag nil
+  file-precious-flag t
 
   ;; keep woman from making a frame.
   woman-use-own-frame nil
@@ -104,15 +99,8 @@
   enable-local-eval nil)
 
 ;;----------------------------------------------------------------------
-;; use marmelade to get the latest and greatest stuff
-;;----------------------------------------------------------------------
-;; (eval-after-load "package"
-;;   '(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/")))
-
-;;----------------------------------------------------------------------
 ;; associate major modes with file extensions.
 ;;----------------------------------------------------------------------
-
 (setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist ))
 
 ;----------------------------------------------------------------------

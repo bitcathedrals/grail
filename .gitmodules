@@ -1,48 +1,87 @@
 [submodule "emacs/dist/git/helm"]
 	path = emacs/dist/git/helm
 	url = https://github.com/emacs-helm/helm.git
+  ignore = dirty
+
 [submodule "emacs/dist/git/slime"]
 	path = emacs/dist/git/slime
 	url = https://github.com/slime/slime.git
+  ignore = dirty
+
 [submodule "emacs/dist/git/smartparens"]
 	path = emacs/dist/git/smartparens
 	url = https://github.com/Fuco1/smartparens.git
+  ignore = dirty
+
 [submodule "emacs/dist/git/dpaste"]
 	path = emacs/dist/git/dpaste
 	url = https://github.com/gregnewman/dpaste.el.git
+  ignore = dirty
+
 [submodule "emacs/dist/git/pastebin"]
 	path = emacs/dist/git/pastebin
 	url = https://github.com/cnsunyour/emacs-pastebin.git
+  ignore = dirty
+
 [submodule "pythonsh"]
 	path = pythonsh
 	url = git@github.com:coderofmattie/pythonsh.git
+  ignore = dirty
+
 [submodule "emacs/dist/git/mic-paren"]
 	path = emacs/dist/git/mic-paren
 	url = https://github.com/emacsattic/mic-paren.git
+  ignore = dirty
+
 [submodule "emacs/dist/git/async"]
 	path = emacs/dist/git/async
 	url = https://github.com/jwiegley/emacs-async.git
+  ignore = dirty
+
 [submodule "emacs/dist/git/geiser"]
 	path = emacs/dist/git/geiser
 	url = https://github.com/emacsmirror/geiser.git
 	branch = master
+  ignore = dirty
+
 [submodule "emacs/dist/git/magit"]
 	path = emacs/dist/git/magit
 	url = https://github.com/magit/magit.git
 	branch = main
+  ignore = dirty
+
 [submodule "emacs/dist/git/compat"]
 	path = emacs/dist/git/compat
 	url = https://github.com/emacs-compat/compat.git
 	branch = main
+  ignore = dirty
+
 [submodule "emacs/dist/git/dash"]
 	path = emacs/dist/git/dash
 	url = https://github.com/magnars/dash.el.git
 	branch = master
+  ignore = dirty
+
 [submodule "emacs/dist/git/transient"]
 	path = emacs/dist/git/transient
 	url = https://github.com/magit/transient.git
 	branch = main
+  ignore = dirty
+
 [submodule "emacs/dist/git/with-editor"]
 	path = emacs/dist/git/with-editor
 	url = https://github.com/magit/with-editor.git
 	branch = main
+  ignore = dirty
+
+[submodule "emacs/dist/git/ts-fold"]
+	path = emacs/dist/git/ts-fold
+	url = https://github.com/emacs-tree-sitter/ts-fold.git
+	branch = master
+  ignore = dirty
+
+[submodule "emacs/dist/git/s"]
+	path = emacs/dist/git/s
+	url = https://github.com/magnars/s.el.git
+	branch = master
+  ignore = dirty

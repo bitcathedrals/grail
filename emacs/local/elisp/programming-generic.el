@@ -10,7 +10,6 @@
 ;; major programming features
 ;;
 
-;; (require 'tags-uber)
 (require 'working-copy)
 
 ;;
@@ -18,6 +17,19 @@
 ;;
 
 (wc-enable-globally)
+
+;;----------------------------------------------------------------------
+;; advanced modes
+;;----------------------------------------------------------------------
+
+;; this is totally broken from git
+
+;; (require 'tree-sitter)
+;; (require 'tree-sitter-langs)
+;; (require 'tree-sitter-debug)
+;; (require 'tree-sitter-query)
+
+;; (require 'tree-sitter-hl) -- need to convert font-lock faces later
 
 ;;
 ;; some generic code editing stuff
@@ -77,6 +89,11 @@
     ("s" . sort-lines) )
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
-  (ruler-mode))
+  (ruler-mode)
+
+  ;; (tree-sitter-mode)
+  ;; (ts-fold-mode)
+
+  )
 
 (provide 'programming-generic)
