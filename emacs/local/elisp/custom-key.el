@@ -1,8 +1,8 @@
+;; -*-no-byte-compile: t; -*-
 ;;----------------------------------------------------------------------
 ;; custom-key
 ;;----------------------------------------------------------------------
 (require 'subr-x)
-(require 'cl)
 
 (defun keybindings-help-first-line ( fn )
   (let
@@ -50,7 +50,7 @@
   (kill-buffer (get-buffer keybindings-help-buffer-name)) )
 
 (defun keybindings-help-local ( group-name keymap )
-  (lexical-let
+  (let
     ((doc-string (keybindings-local-display group-name keymap)))
 
     (lambda ()

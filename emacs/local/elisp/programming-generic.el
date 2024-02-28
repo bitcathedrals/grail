@@ -85,7 +85,6 @@
 
   ;; (tree-sitter-mode)
   ;; (ts-fold-mode)
-
   )
 
 (provide 'programming-generic)
