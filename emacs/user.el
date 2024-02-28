@@ -184,3 +184,11 @@
 ;;----------------------------------------------------------------------
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
+
+;;----------------------------------------------------------------------
+;; tramping around
+;;----------------------------------------------------------------------
+(defun ssh-dired (host)
+  (interactive "sEnter Host: ")
+  (message "attempting to connect to host %s" host)
+  (find-file (format "/ssh:%s:~/" host)) )
