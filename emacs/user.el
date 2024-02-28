@@ -187,3 +187,9 @@
 
 (setq auto-mode-alist
   (cons '("\\.firewall$" . conf-mode) auto-mode-alist) )
+
+;;----------------------------------------------------------------------
+;; dpaste
+;;----------------------------------------------------------------------
+(require 'dpaste)
+(setq dpaste-poster "JohnGalt")
