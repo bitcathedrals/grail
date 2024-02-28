@@ -46,3 +46,11 @@
 	path = emacs/dist/git/with-editor
 	url = https://github.com/magit/with-editor.git
 	branch = main
+[submodule "emacs/dist/git/ts-fold"]
+	path = emacs/dist/git/ts-fold
+	url = https://github.com/emacs-tree-sitter/ts-fold.git
+	branch = master
+[submodule "emacs/dist/git/s"]
+	path = emacs/dist/git/s
+	url = https://github.com/magnars/s.el.git
+	branch = master
