@@ -10,7 +10,7 @@
           "recompile-elisp-all"
           (format "re-compiling directory: %s" dir)
 
-          (byte-recompile-directory dir  t)) ))
+          (byte-recompile-directory dir nil)) ))
     load-path))
 
 (defun compile-elisp-all ()

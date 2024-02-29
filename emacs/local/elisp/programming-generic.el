@@ -5,23 +5,7 @@
 ;; completion etc.
 ;;----------------------------------------------------------------------
 (require 'custom-key)
-
-;;
-;; major programming features
-;;
-
-;;----------------------------------------------------------------------
-;; advanced modes
-;;----------------------------------------------------------------------
-
-;; this is totally broken from git
-
-;; (require 'tree-sitter)
-;; (require 'tree-sitter-langs)
-;; (require 'tree-sitter-debug)
-;; (require 'tree-sitter-query)
-
-;; (require 'tree-sitter-hl) -- need to convert font-lock faces later
+(require 'utilities)
 
 ;;
 ;; some generic code editing stuff
@@ -81,10 +65,6 @@
     ("s" . sort-lines) )
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
-  (ruler-mode)
-
-  ;; (tree-sitter-mode)
-  ;; (ts-fold-mode)
-  )
+  (ruler-mode) )
 
 (provide 'programming-generic)
