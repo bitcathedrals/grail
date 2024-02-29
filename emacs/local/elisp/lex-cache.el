@@ -1,11 +1,6 @@
 ;;
-;; lex-cache.el - cache data lexically
+;; lex-cache.el
 ;;
-;; description:
-;;
-;; cache a piece of data lexically.
-;;
-(require 'cl)
 
 ;;
 ;; consider using timers to update the data.
@@ -13,10 +8,6 @@
 
 ;;
 ;; consider using async to update the data - https://github.com/jwiegley/emacs-async
-;;
-
-;;
-;; cache expiration
 ;;
 
 (defun lex-cache-timestamp ()
@@ -35,16 +26,12 @@
 (defun lex-cache-minutes ( min )
   (* 60 min))
 
-;;
-;; lexical caching creation
-;;
-
 (defun lex-cache-bind ( symbol cache-fn )
    (fset symbol cache-fn)
    symbol)
 
 (defun lex-cache-build ( builder interval )
-  (lexical-let
+  (let
     ((builder-fn builder)
      (data nil)
      (interval interval)
