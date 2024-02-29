@@ -1,13 +1,11 @@
+;; -*- lexical-binding: t -*-
+
 ;;
 ;; lex-cache.el
 ;;
 
 ;;
 ;; consider using timers to update the data.
-;;
-
-;;
-;; consider using async to update the data - https://github.com/jwiegley/emacs-async
 ;;
 
 (defun lex-cache-timestamp ()
