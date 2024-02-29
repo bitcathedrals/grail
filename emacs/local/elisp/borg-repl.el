@@ -207,8 +207,9 @@
       (borg-repl/error-msg "no REPL for this buffer")
       nil) ) )
 
+;;   ("x" . borg-repl/start)
+
 (custom-key-group "borg repl" "e" t
-  ("x" . borg-repl/start)
   ("c" . borg-repl/connect)
   ("e" . borg-repl/statement)
   ("r" . borg-repl/region)

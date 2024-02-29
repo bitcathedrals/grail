@@ -1,3 +1,4 @@
+;; -*-no-byte-compile: t; -*-
 ;;----------------------------------------------------------------------
 ;; programming.el
 ;;
@@ -23,10 +24,6 @@
 ;;----------------------------------------------------------------------
 ;; programming packages not dependent on third party support
 ;;----------------------------------------------------------------------
-
-;; re-usable programming modules
-
-;; (use-grail-profiles 0 "code-formatting")
 
 ;; higher level functionality
 
