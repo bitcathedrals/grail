@@ -262,6 +262,14 @@
 
     (setq default-frame-alist grail-graphical-config) ))
 
+(defun grail-reload-graphics ()
+  "grail-reload-graphics
+
+   reload the graphical display settings for the frame"
+  (interactive)
+
+  (grail-load-graphical (selected-frame)) )
+
 (set-face-background 'default codermattie-bg-color)
 (set-face-foreground 'default "grey55")
 
