@@ -270,6 +270,11 @@
 
   (grail-load-graphical (selected-frame)) )
 
+(defun grail-set-font (font-spec)
+  (interactive "sFont Spec \"<family> <size>\": ")
+
+  (set-frame-font font-spec nil t t))
+
 (set-face-background 'default codermattie-bg-color)
 (set-face-foreground 'default "grey55")
 
