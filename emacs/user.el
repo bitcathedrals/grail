@@ -1,9 +1,6 @@
+;; -*-no-byte-compile: t; -*-
 ;;----------------------------------------------------------------------
 ;; user.el - user interface configuration
-;;
-;; description:
-;;
-;; configuration of core emacs functionality.
 ;;----------------------------------------------------------------------
 (require 'buffer-ring)
 

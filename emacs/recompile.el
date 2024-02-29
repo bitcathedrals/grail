@@ -1,3 +1,4 @@
+;; -*-no-byte-compile: t; -*-
 (defun recompile-elisp-all ()
   (interactive)
 
