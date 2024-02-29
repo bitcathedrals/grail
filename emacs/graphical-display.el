@@ -58,8 +58,7 @@
     '(mouse-color . "red")
     '(cursor-color . "yellow")
     `(width . ,grail-frame-width)
-    `(height . ,grail-frame-height)
-    `(font . ,(grail-build-font frame)) ))
+    `(height . ,grail-frame-height)) )
 
 (defconst codermattie-bg-color "grey5")
 
@@ -262,18 +261,24 @@
 
     (setq default-frame-alist grail-graphical-config) ))
 
+(defun grail-set-font (font-spec)
+  (interactive "sFont Spec \"<family> <size>\": ")
+
+  (set-frame-font font-spec nil t t))
+
+(add-hook 'after-make-frame-functions
+  (lambda (frame)
+    (grail-set-font (grail-build-font frame))) )
+
 (defun grail-reload-graphics ()
   "grail-reload-graphics
 
    reload the graphical display settings for the frame"
   (interactive)
 
+  (grail-set-font (grail-build-font (selected-frame)))
   (grail-load-graphical (selected-frame)) )
 
-(defun grail-set-font (font-spec)
-  (interactive "sFont Spec \"<family> <size>\": ")
-
-  (set-frame-font font-spec nil t t))
 
 (set-face-background 'default codermattie-bg-color)
 (set-face-foreground 'default "grey55")
