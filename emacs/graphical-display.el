@@ -5,9 +5,7 @@
 
 (defvar grail-frame-width 120 "default width of the frame in characters")
 (defvar grail-frame-height 80 "default height of the frame in characters")
-(defvar grail-font-size 16 "default font size")
-
-(setq grail-font-size 16)
+(defvar grail-font-size 18 "default font size")
 
 ;;
 ;; GUI detection
@@ -257,9 +255,10 @@
 
     (blink-cursor-mode 0)
 
-    (setq grail-graphical-config (grail-graphical-frame-configuration frame))
+    (setq grail-graphical-config (grail-graphical-frame-configuration frame)) )
 
-    (setq default-frame-alist grail-graphical-config) ))
+    (setq default-frame-alist grail-graphical-config)
+    (grail-set-font (grail-build-font frame)) )
 
 (defun grail-set-font (font-spec)
   (interactive "sFont Spec \"<family> <size>\": ")
@@ -278,7 +277,6 @@
 
   (grail-set-font (grail-build-font (selected-frame)))
   (grail-load-graphical (selected-frame)) )
-
 
 (set-face-background 'default codermattie-bg-color)
 (set-face-foreground 'default "grey55")
