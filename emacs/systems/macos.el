@@ -9,7 +9,7 @@
 ;; the grail system
 
 (setq grail-font-family '("Cousine" "Hack" "Spleen" "DejaVu Sans Mono" "Courier New"))
-(setq grail-font-size 28)
+(setq grail-font-size 22)
 
 (setq exec-path (seq-uniq (append
                             '("/Applications/Emacs.app/Contents/MacOS/bin"
