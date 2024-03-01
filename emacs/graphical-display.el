@@ -284,5 +284,13 @@
 (display-faces-general)
 (display-mic-paren)
 
+(defun grail-transparency (percent)
+  (interactive "nEnter Percent: ")
+  (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent)))
+
+(defun grail-set-transparency (percent)
+  (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent))
+  (add-to-list 'default-frame-alist '(alpha . `(,percent . ,percent))) )
+
 (provide 'graphical-display)
 
