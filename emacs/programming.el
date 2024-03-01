@@ -123,8 +123,15 @@
 
 (setq
   scheme-program-name "csi"
-  geiser-chicken-binary "chicken"
+  geiser-chicken-binary "csi"
   geiser-active-implementations '(chicken))
+
+(defun scheme ()
+  (interactive)
+  (run-scheme)
+  (pop-to-buffer scheme-buffer))
+
+(add-hook 'inferior-scheme-mode-hook 'pop-to-scheme)
 
 (defconst scheme/mode-name "scheme-mode")
 (defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
