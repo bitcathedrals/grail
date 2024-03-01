@@ -6,6 +6,7 @@
 (defvar grail-frame-width 120 "default width of the frame in characters")
 (defvar grail-frame-height 80 "default height of the frame in characters")
 (defvar grail-font-size 18 "default font size")
+(defvar grail-transparency 100 "default transparency is opaque")
 
 ;;
 ;; GUI detection
@@ -232,20 +233,12 @@
   (eval-after-load 'flyspell '(display-faces-for-flyspell))
   (eval-after-load 'term '(display-faces-for-term)) )
 
-;;
-;; frame loading after first frame.
-;;
-
-(defvar grail-graphical-config nil
-  "grail graphical configuration. nil if never loaded.")
-
-(defun grail-load-graphical ( frame )
+(defun grail-load-graphical (frame)
   "grail-load-display
 
-   load the display after the first frame is created and
-   the graphical related symbols have been defined.
+   load/reload the graphical display configuration
   "
-  (when (and (not grail-graphical-config) (is-frame-gui frame))
+  (when (is-frame-gui frame)
     (setq-default
       use-dialog-box nil
       cursor-type 'hollow)
@@ -255,10 +248,18 @@
 
     (blink-cursor-mode 0)
 
-    (setq grail-graphical-config (grail-graphical-frame-configuration frame)) )
+    (setq grail-graphical-config (grail-graphical-frame-configuration frame))
 
     (setq default-frame-alist grail-graphical-config)
-    (grail-set-font (grail-build-font frame)) )
+
+    (grail-set-font (grail-build-font frame))
+    (grail-set-transparency grail-transparency)
+    (grail-default-transparency grail-transparency) ))
+
+(defun grail-reload-graphical ()
+  "command to reload the graphical configuration"
+  (interactive)
+  (grail-load-graphcial (selected-frame)) )
 
 (defun grail-set-font (font-spec)
   (interactive "sFont Spec \"<family> <size>\": ")
@@ -269,27 +270,18 @@
   (lambda (frame)
     (grail-set-font (grail-build-font frame))) )
 
-(defun grail-reload-graphics ()
-  "grail-reload-graphics
-
-   reload the graphical display settings for the frame"
-  (interactive)
-
-  (grail-set-font (grail-build-font (selected-frame)))
-  (grail-load-graphical (selected-frame)) )
-
 (set-face-background 'default codermattie-bg-color)
 (set-face-foreground 'default "grey55")
 
 (display-faces-general)
 (display-mic-paren)
 
-(defun grail-transparency (percent)
+(defun grail-set-transparency (percent)
   (interactive "nEnter Percent: ")
   (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent)))
 
-(defun grail-set-transparency (percent)
-  (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent))
+(defun grail-default-transparency (percent)
+  (grail-set-transparency percent)
   (add-to-list 'default-frame-alist '(alpha . `(,percent . ,percent))) )
 
 (provide 'graphical-display)
