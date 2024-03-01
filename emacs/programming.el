@@ -121,21 +121,26 @@
 (require 'geiser)
 (require 'geiser-chicken)
 
-(setq geiser-active-implementations '(chicken))
+(setq
+  scheme-program-name "csi"
+  geiser-chicken-binary "chicken"
+  geiser-active-implementations '(chicken))
 
 (defconst scheme/mode-name "scheme-mode")
 (defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
 
-(borg-repl/bind-repl scheme/repl-name
-  'geiser-chicken
-  'scheme-send-last-sexp
-  'scheme-send-region
-  'scheme-load-file
-  'scheme-send-definition)
+(defun mattie-scheme-setup ()
+  (geiser-mode)
 
-(setq
-  scheme-program-name "chicken"
-  geiser-chicken-binary "chicken")
+  (borg-repl/bind-repl scheme/repl-name
+    'geiser-chicken
+    'scheme-send-last-sexp
+    'scheme-send-region
+    'scheme-load-file
+    'scheme-send-definition))
+
+(add-hook 'scheme-mode-hook 'mattie-scheme-setup)
+
 
 
 
