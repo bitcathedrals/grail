@@ -282,7 +282,7 @@
 
 (defun grail-default-transparency (percent)
   (grail-set-transparency percent)
-  (add-to-list 'default-frame-alist '(alpha . `(,percent . ,percent))) )
+  (add-to-list 'default-frame-alist (list 'alpha percent percent)) )
 
 (provide 'graphical-display)
 
