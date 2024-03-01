@@ -82,7 +82,7 @@
   `("name" . ,name))
 
 (defun dwim-complete/make-completions ( completions-fn )
-  `("candidates" . ,completions-fn))
+  `("candidates" . (sort ,completions-fn 'string-lessp)) )
 
 (defun dwim-complete/make-source ( name completions-fn action )
   (list
@@ -143,12 +143,12 @@
 
 (defun dwim-complete-build-helm-from-source ( source )
   (helm-build-sync-source (dwim-complete-get-name source)
-    :candidates (sort (funcall (dwim-complete-get-completions source)) 'string-lessp)
+    :candidates (funcall (dwim-complete-get-completions source))
     :fuzzy-match dwim-complete-fuzzy-match))
 
 (defun dwim-complete-build-helm-from-generator ( name completions )
   (helm-build-sync-source name
-    :candidates (sort completions 'string-lessp)
+    :candidates completions
     :fuzzy-match dwim-complete-fuzzy-match))
 
 (defun dwim-complete-build-helm-from-mode ( mode )

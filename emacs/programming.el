@@ -12,6 +12,8 @@
 
 (require 'programming-generic)
 
+(require 'borg-repl)
+
 ;;----------------------------------------------------------------------
 ;; indentation
 ;;----------------------------------------------------------------------
@@ -80,7 +82,7 @@
                                 ("\\.cc$"      . c++-mode)
                                 ("\\.cpp$"     . c++-mode)
                                 ("\\.h$"       . c++-mode)
-                                 ) auto-mode-alist ))
+                                ("\\.scheme$"  . scheme-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
   (c-set-style "linux")                 ;; base off of linux style
@@ -112,5 +114,28 @@
   (buffer-ring/local-keybindings) )
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
+
+;;----------------------------------------------------------------------
+;; geiser stuff
+;;----------------------------------------------------------------------
+(require 'geiser)
+(require 'geiser-chicken)
+
+(setq geiser-active-implementations '(chicken))
+
+(defconst scheme/mode-name "scheme-mode")
+(defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
+
+(borg-repl/bind-repl scheme/repl-name
+  'geiser-chicken
+  'scheme-send-last-sexp
+  'scheme-send-region
+  'scheme-load-file
+  'scheme-send-definition)
+
+(setq
+  scheme-program-name "chicken"
+  geiser-chicken-binary "chicken")
+
 
 

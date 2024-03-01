@@ -85,3 +85,12 @@
 	url = https://github.com/magnars/s.el.git
 	branch = master
   ignore = dirty
+[submodule "emacs/dist/git/browse-kill-ring"]
+	path = emacs/dist/git/browse-kill-ring
+	url = https://github.com/browse-kill-ring/browse-kill-ring.git
+	branch = master
+[submodule "emacs/dist/git/geiser-chicken"]
+	path = emacs/dist/git/geiser-chicken
+	url = https://gitlab.com/emacs-geiser/chicken.git
+	branch = master
+	ignore = dirty

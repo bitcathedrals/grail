@@ -65,6 +65,6 @@
     ("s" . sort-lines) )
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
-  (ruler-mode) )
+  (ruler-mode))
 
 (provide 'programming-generic)

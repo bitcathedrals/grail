@@ -15,10 +15,7 @@
   ("k" . delete-frame)
   ("x" . delete-other-windows)
   ("s" . split-window-horizontally)
-  ("v" . split-window-vertically)
-  ("m" . maximize-frame)
-  ("f" . fullscreen-frame)
-  ("n" . make-frame-command) )
+  ("v" . split-window-vertically) )
 
 (global-set-key (kbd "C-x e") 'eval-expression)
 
