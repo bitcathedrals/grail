@@ -4,14 +4,12 @@
 ;;----------------------------------------------------------------------
 (require 'buffer-ring)
 
+(setq warning-minimum-level :emergency)
+
 ;;----------------------------------------------------------------------
 ;; crypto
 ;;----------------------------------------------------------------------
-(require 'password-cache)
-
-(setq
-  password-cache t
-  password-cache-expiry nil)
+(require 'easypg')
 
 ;;----------------------------------------------------------------------
 ;; emacs enhancements
