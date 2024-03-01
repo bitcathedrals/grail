@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; macro-extensions.el - a library of routines to deal with macro problems
 ;;

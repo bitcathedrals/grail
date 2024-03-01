@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; net-paste.el - various pastebin services
 ;;

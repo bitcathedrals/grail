@@ -1,8 +1,5 @@
-;;----------------------------------------------------------------------
-;; linux.el
-;; linux specific platform
-;;----------------------------------------------------------------------
+;; -*-no-byte-compile: t; -*-
 
 ;; LGC sans mono is Latin Greek Cryllic only. prefer the full DejaVu Sans Mono
 
-(setq grail-font-family '("DejaVu Sans Mono" "dejavu sans mono" "DejaVu LGC Sans Mono"))
+(setq grail-font-family '("DejaVu Sans Mono"))

@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;
 ;; dwim-complete.el - An advanced global completion system
 ;;

@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;
 ;; emacs-lisp.el - emacs lisp mode configuration
 ;;

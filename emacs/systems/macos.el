@@ -1,8 +1,7 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; macos.el
-;;
-;; configuration for a darwin platform. Make sure you set up the fonts
-;; correctly or emacs barfs on the screen.
 ;;----------------------------------------------------------------------
 
 ;; emacs gets trashed if there is no font specified through

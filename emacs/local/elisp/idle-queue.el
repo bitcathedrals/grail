@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; idle-queue.el - idle queue for managing idle functions
 ;;

@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; register support
 ;; written by Mike Mattie
