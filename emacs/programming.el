@@ -126,7 +126,7 @@
   geiser-chicken-binary "csi"
   geiser-active-implementations '(chicken))
 
-(defun scheme ()
+(defun pop-to-scheme ()
   (interactive)
   (run-scheme)
   (pop-to-buffer scheme-buffer))
@@ -140,7 +140,7 @@
   (geiser-mode)
 
   (borg-repl/bind-repl scheme/repl-name
-    'geiser-chicken
+    'pop-to-scheme
     'scheme-send-last-sexp
     'scheme-send-region
     'scheme-load-file

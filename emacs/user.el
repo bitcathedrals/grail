@@ -7,11 +7,6 @@
 (setq warning-minimum-level :emergency)
 
 ;;----------------------------------------------------------------------
-;; crypto
-;;----------------------------------------------------------------------
-(require 'easypg')
-
-;;----------------------------------------------------------------------
 ;; emacs enhancements
 ;;----------------------------------------------------------------------
 (require 'dwim-tab)
@@ -96,7 +91,7 @@
 ;;----------------------------------------------------------------------
 ;; associate major modes with file extensions.
 ;;----------------------------------------------------------------------
-(setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist ))
+(setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist))
 
 ;----------------------------------------------------------------------
 ;;                    EShell
@@ -166,7 +161,7 @@
 (require 'rw-utilities)
 
 (setq auto-mode-alist
-  (cons '("\\.firewall$" . conf-mode) auto-mode-alist) )
+  (cons '("\\.firewall$" . conf-mode) auto-mode-alist))
 
 ;;----------------------------------------------------------------------
 ;; dpaste
