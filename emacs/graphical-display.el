@@ -2,6 +2,7 @@
 ;;----------------------------------------------------------------------
 ;; graphical-display
 ;;----------------------------------------------------------------------
+(require 'subr-x)
 
 (defvar grail-frame-width 120 "default width of the frame in characters")
 (defvar grail-frame-height 80 "default height of the frame in characters")
@@ -283,6 +284,17 @@
 (defun grail-default-transparency (percent)
   (grail-set-transparency percent)
   (add-to-list 'default-frame-alist (list 'alpha percent percent)) )
+
+(defun show-fonts ()
+  (interactive)
+  (message (concat "available fonts: " (string-join (font-family-list (selected-frame))))))
+
+(defun set-completed-font (font)
+  (interactive (list (completing-read "Font: " (font-family-list (selected-frame)))))
+  (let
+    ((size (read-number "Size: " 26)))
+
+    (grail-set-font (concat font "-" (number-to-string size)))  ))
 
 (provide 'graphical-display)
 
