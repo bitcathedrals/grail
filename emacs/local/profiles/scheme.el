@@ -20,12 +20,11 @@
   geiser-chicken-binary "csi"
   geiser-active-implementations '(chicken))
 
-(defun new-scheme-repl ()
+(defun profile/scheme-repl ()
   "new-scheme-repl
 
    switch to an existing or create a new scheme REPL
   "
-
   (interactive)
   (run-scheme scheme-program-name)
   (pop-to-buffer scheme-buffer))
@@ -42,11 +41,11 @@
     (lambda ()
       (dwim-complete-build-helm-from-generator "scheme/symbols" (geiser-completion--symbol-list))) ) )
 
-(defun mattie-scheme-setup ()
+(defun profile/scheme-setup ()
   (geiser-mode)
 
   (borg-repl/bind-repl scheme/repl-name
-    'new-scheme-repl
+    'profile/scheme-repl
     'scheme-send-last-sexp
     'scheme-send-region
     'scheme-load-file
@@ -57,9 +56,12 @@
   (buffer-ring/add scheme/mode-name)
   (buffer-ring/local-keybindings)
 
-  (turn-on-dwim-tab 'lisp-indent-line))
+  (turn-on-dwim-tab 'lisp-indent-line)
 
-(add-hook 'scheme-mode-hook 'mattie-scheme-setup)
+  (if (not (bufferp scheme-buffer))
+    (profile/scheme-repl)) )
+
+(add-hook 'scheme-mode-hook 'profile/scheme-setup)
 
 (provide 'profile/scheme)
 

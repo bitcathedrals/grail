@@ -96,7 +96,10 @@
 
   (borg-repl/bind-connect 'slime-connect)
 
-  (borg-repl/bind-macro-expand 'slime-macroexpand-1))
+  (borg-repl/bind-macro-expand 'slime-macroexpand-1)
+
+  (if (not (slime-connected-p))
+    (slime)) )
 
 (add-hook 'lisp-mode-hook 'profile/slime-mode-setup t)
 
