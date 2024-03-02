@@ -8,6 +8,7 @@
 
 (require 'geiser)
 (require 'geiser-chicken)
+(require 'geiser-completion)
 
 (defconst scheme/mode-name "scheme")
 (defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
@@ -39,10 +40,7 @@
 
   (dwim-complete/setup-for-buffer scheme/mode-name
     (lambda ()
-      (let
-        ((symbols nil))
-
-        (dwim-complete-build-helm-from-generator "scheme/symbols" symbols)) )) )
+      (dwim-complete-build-helm-from-generator "scheme/symbols" (geiser-completion--symbol-list))) ) )
 
 (defun mattie-scheme-setup ()
   (geiser-mode)
