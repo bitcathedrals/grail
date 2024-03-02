@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; ext-logging.el - support for external logging
 ;;

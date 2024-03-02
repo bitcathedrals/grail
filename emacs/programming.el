@@ -31,7 +31,7 @@
 
 (use-grail-profiles 0 "code-highlighting")
 
-(use-grail-profiles 1 "emacs-lisp" "common-lisp" "shell-scripting")
+(use-grail-profiles 1 "emacs-lisp" "common-lisp" "scheme" "shell-scripting")
 
 ;; advanced functionality
 
@@ -64,13 +64,6 @@
 
   ("r" . magit-ediff-resolve-all)
   ("p" . magit-push))
-
-;;----------------------------------------------------------------------
-;;                          misc tools
-;;----------------------------------------------------------------------
-
-(setq                     ;; cmd window + src
-  gdb-show-main t)
 
 (which-function-mode)
 
@@ -114,28 +107,3 @@
   (buffer-ring/local-keybindings) )
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
-
-;;----------------------------------------------------------------------
-;; geiser stuff
-;;----------------------------------------------------------------------
-(require 'geiser)
-(require 'geiser-chicken)
-
-(setq geiser-active-implementations '(chicken))
-
-(defconst scheme/mode-name "scheme-mode")
-(defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
-
-(borg-repl/bind-repl scheme/repl-name
-  'geiser-chicken
-  'scheme-send-last-sexp
-  'scheme-send-region
-  'scheme-load-file
-  'scheme-send-definition)
-
-(setq
-  scheme-program-name "chicken"
-  geiser-chicken-binary "chicken")
-
-
-

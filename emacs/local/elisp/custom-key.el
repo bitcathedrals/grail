@@ -1,18 +1,21 @@
-;; -*-no-byte-compile: t; -*-
+;; -*- lexical-binding: t -*-
+;; -*- no-byte-compile: t -*-
 ;;----------------------------------------------------------------------
 ;; custom-key
 ;;----------------------------------------------------------------------
 (require 'subr-x)
 
 (defun keybindings-help-first-line ( fn )
-  (let
-    ((docs (documentation fn)))
+  (if (functionp fn)
+    (let
+      ((docs (documentation fn)))
 
-    (if docs
-      (car
-        (split-string docs "
+      (if docs
+        (car
+          (split-string docs "
 "))
-      "?")))
+        "?"))
+    "?"))
 
 (defun keybindings-local-display ( group-name keymap )
   (format "key set: %s

@@ -1,7 +1,7 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;
 ;; slime
-;;
-;; slime profile for common lisp coding
 ;;
 (require 'borg-repl)
 (require 'programming-generic)
@@ -30,33 +30,22 @@
 ;; dwim setup
 ;;
 
+(defun slime/slime-candidates ()
+  (car (slime-simple-completions "")))
+
 (grail-require profile/dwim-complete
   "slime"
   "dwim complete source creation"
 
-  (defun slime/slime-candidates ()
-    (car (slime-simple-completions "")))
-
-  (defun slime/slime-source ()
-    (dwim-complete/make-source
-      slime/mode-name
-      'profile/slime-candidates))
-
-  (dwim-complete/mode-add
-    slime/mode-name
-    (slime/slime-source)) )
+  (dwim-complete/setup-for-buffer elisp/mode-name
+    (lambda ()
+      (dwim-complete-build-helm-from-generator "lisp" (slime/slime-candidates))) ) )
 
 ;;
 ;; repl buffer setup
 ;;
 
 (defun slime/slime-repl-setup ()
-  (grail-require profile/dwim-complete
-    "profile/slime"
-    "enable dwim-tab"
-
-    (dwim-complete/setup-for-buffer slime/mode-name))
-
   (turn-on-dwim-tab 'lisp-indent-line)
 
   (buffer-ring/add slime/repl-name)
@@ -71,11 +60,6 @@
 (defun profile/slime-mode-setup ()
   ;; turn on minor mode
   (slime-mode t)
-
-  (dwim-tab-localize-context
-    (dwim-tab-make-expander
-      'dwim-tab-stem-trigger
-      'slime-complete-symbol))
 
   (borg-repl/bind-repl slime/repl-name
     'slime
@@ -112,7 +96,10 @@
 
   (borg-repl/bind-connect 'slime-connect)
 
-  (borg-repl/bind-macro-expand 'slime-macroexpand-1))
+  (borg-repl/bind-macro-expand 'slime-macroexpand-1)
+
+  (if (not (slime-connected-p))
+    (slime)) )
 
 (add-hook 'lisp-mode-hook 'profile/slime-mode-setup t)
 

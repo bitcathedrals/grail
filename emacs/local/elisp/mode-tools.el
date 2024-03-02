@@ -1,3 +1,4 @@
+;; -*-no-byte-compile: t; -*-
 
 
 (defun mode-overlay-at-pos ( pos mode-symbol )

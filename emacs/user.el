@@ -4,14 +4,7 @@
 ;;----------------------------------------------------------------------
 (require 'buffer-ring)
 
-;;----------------------------------------------------------------------
-;; crypto
-;;----------------------------------------------------------------------
-(require 'password-cache)
-
-(setq
-  password-cache t
-  password-cache-expiry nil)
+(setq warning-minimum-level :emergency)
 
 ;;----------------------------------------------------------------------
 ;; emacs enhancements
@@ -98,7 +91,7 @@
 ;;----------------------------------------------------------------------
 ;; associate major modes with file extensions.
 ;;----------------------------------------------------------------------
-(setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist ))
+(setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist))
 
 ;----------------------------------------------------------------------
 ;;                    EShell
@@ -126,23 +119,20 @@
 ;;----------------------------------------------------------------------
 ;;                    ERC
 ;;----------------------------------------------------------------------
-
-;; emacs IRC client is handy when on #emacs ...
+(require 'erc)
+(require 'erc-truncate)
+(require 'erc-credentials)
 
 (setq
   erc-default-server "irc.libera.chat"
   erc-default-port "6667"
-  erc-nick "JohnGalt")
+  erc-nick "JohnGalt"
+  erc-ignore-list '("whateverdude")
+  erc-prompt-for-nickserv-password nil
+  erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")) )
 
 ;; turn on truncate mode before erc eats all available RAM.
-(require 'erc-truncate)
 (erc-truncate-mode 1)
-
-(setq erc-prompt-for-nickserv-password nil)
-
-(require 'erc-credentials)
-
-(setq erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")))
 
 (defun erc-mode-customization ()
   (buffer-ring/add "erc")
@@ -153,14 +143,24 @@
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
 
 ;;----------------------------------------------------------------------
-;; ido smart completion
+;; helm completion
 ;;----------------------------------------------------------------------
-(require 'ido)
+(require 'helm-files)
+(require 'helm-buffers)
+(require 'helm-grep)
+(require 'helm-occur)
+(require 'helm-regexp)
+(require 'helm-man)
+(require 'helm-ring)
 
-(setq ido-enable-flex-matching t)
-(setq ido-use-filename-at-point 'guess)
-
-(ido-mode 1)
+(custom-key-group "magit git" "c" t
+  ("f" . helm-find-files)
+  ("b" . helm-buffers-list)
+  ("g" . helm-grep-do-git-grep)
+  ("o" . helm-occur)
+  ("r" . helm-regexp)
+  ("m" . helm-man-woman)
+  ("k" . helm-show-kill-ring))
 
 ;;----------------------------------------------------------------------
 ;; read/write perm handling
@@ -168,7 +168,7 @@
 (require 'rw-utilities)
 
 (setq auto-mode-alist
-  (cons '("\\.firewall$" . conf-mode) auto-mode-alist) )
+  (cons '("\\.firewall$" . conf-mode) auto-mode-alist))
 
 ;;----------------------------------------------------------------------
 ;; dpaste

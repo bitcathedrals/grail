@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 ;;
 ;; FreeBSD configuration file
 ;;
