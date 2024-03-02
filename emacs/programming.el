@@ -31,7 +31,7 @@
 
 (use-grail-profiles 0 "code-highlighting")
 
-(use-grail-profiles 1 "emacs-lisp" "common-lisp" "shell-scripting")
+(use-grail-profiles 1 "emacs-lisp" "common-lisp" "scheme" "shell-scripting")
 
 ;; advanced functionality
 
@@ -68,9 +68,6 @@
 ;;----------------------------------------------------------------------
 ;;                          misc tools
 ;;----------------------------------------------------------------------
-
-(setq                     ;; cmd window + src
-  gdb-show-main t)
 
 (which-function-mode)
 
@@ -114,40 +111,3 @@
   (buffer-ring/local-keybindings) )
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
-
-;;----------------------------------------------------------------------
-;; geiser stuff
-;;----------------------------------------------------------------------
-(require 'geiser)
-(require 'geiser-chicken)
-
-(setq
-  scheme-program-name "csi"
-  geiser-chicken-binary "csi"
-  geiser-active-implementations '(chicken))
-
-(defun pop-to-scheme ()
-  (interactive)
-  (run-scheme)
-  (pop-to-buffer scheme-buffer))
-
-(add-hook 'inferior-scheme-mode-hook 'pop-to-scheme)
-
-(defconst scheme/mode-name "scheme-mode")
-(defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
-
-(defun mattie-scheme-setup ()
-  (geiser-mode)
-
-  (borg-repl/bind-repl scheme/repl-name
-    'pop-to-scheme
-    'scheme-send-last-sexp
-    'scheme-send-region
-    'scheme-load-file
-    'scheme-send-definition))
-
-(add-hook 'scheme-mode-hook 'mattie-scheme-setup)
-
-
-
-
