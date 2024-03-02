@@ -60,12 +60,6 @@
       ("r" . rgrep)
       ("o" . occur)) )
 
-  (custom-key-group "code editing" "c" nil
-    ("c" . toggle-comment-region)
-    ("b" . toggle-comment-buffer)
-    ("i" . indent-region)
-    ("s" . sort-lines) )
-
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
   (ruler-mode))
 
