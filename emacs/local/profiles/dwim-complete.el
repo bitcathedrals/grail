@@ -15,7 +15,7 @@
 ;; options
 ;;
 
-(setq helm-execute-action-at-once-if-one t)
+(setq-default helm-execute-action-at-once-if-one t)
 
 (defvar dwim-complete-fuzzy-match t)
 
@@ -27,11 +27,16 @@
   (get-buffer-create "*complete*"))
 
 (defun dwim-complete/helm ( prompt input source-list )
-  (helm
-    :sources source-list
-    :input input
-    :prompt prompt
-    :buffer (dwim-complete-buffer)))
+  (let
+    ((complete (helm
+                 :sources source-list
+                 :input input
+                 :prompt prompt
+                 :buffer (dwim-complete-buffer))))
+
+    (if complete
+      (dwim-complete-replace-stem complete)
+      (message "no completion.")) ))
 
 ;;
 ;; dwim input construction
@@ -50,31 +55,22 @@
           (> (- dwim-complete-stem-stop dwim-complete-stem-start) 0))
 
     (delete-region dwim-complete-stem-start dwim-complete-stem-stop)
-    (goto-char dwim-complete-stem-start) )
+    (goto-char dwim-complete-stem-start))
 
-  (insert (format "%s" completion)))
+  (message (concat "completion is: " completion))
 
-(defun dwim-complete-delete-stem ()
-  (when (and
-          (and dwim-complete-stem-start dwim-complete-stem-stop)
-          (> (- dwim-complete-stem-stop dwim-complete-stem-start) 0))
-
-    (delete-region dwim-complete-stem-start dwim-complete-stem-stop)
-    (goto-char dwim-complete-stem-start)) )
+  (insert completion))
 
 (defun dwim-complete-behind-point ()
   (interactive)
-
   (let
-    ((stem (thing-at-point 'symbol) )
-     (start nil )
-     (end (point)))
+    ((prefix (dwim-tab/prefix)))
 
-    (if stem
+    (if prefix
       (progn
-        (dwim-complete-set-stem (- (point) (length stem)) end)
-        stem)
-      "") ))
+        (dwim-complete-set-stem (dwim-tab/start prefix) (dwim-tab/end prefix))
+        (dwim-tab/stem prefix))
+      nil)) )
 
 ;;
 ;; dwim-complete source data type
@@ -185,9 +181,10 @@
 ;;
 ;; dwim-tab integration
 ;;
+
 (defun dwim-complete-make-context ()
   (cons
-   'dwim-tab-stem-trigger
+   'dwim-tab/word-trigger
    'dwim-complete/complete))
 
 (defun dwim-complete/setup-for-buffer ( mode &optional generator )
@@ -200,14 +197,5 @@
   (make-local-variable 'dwim-complete-stem-stop)
 
   (dwim-tab-localize-context (dwim-complete-make-context)) )
-
-;;
-;; keybindings and interfaces.
-;;
-
-(defun dwim-complete-vcs-or-file ()
-  "dwim-complete vcs for file completion: use <spc> for contents search."
-  (interactive)
-  (helm-browse-project))
 
 (provide 'profile/dwim-complete)

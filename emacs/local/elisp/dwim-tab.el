@@ -1,10 +1,9 @@
+;; -*- lexical-binding: t -*-
 ;; -*-no-byte-compile: t; -*-
 
 ;;----------------------------------------------------------------------
 ;; dwim-tab.el
 ;;----------------------------------------------------------------------
-(require 'cl)
-
 (defvar dwim-tab-register-expand nil
   "dwim-tab function for expanding registers")
 
@@ -20,17 +19,54 @@
 (defun dwim-tab-set-register-expand ( expander )
   (setq dwim-tab-register-expand expander))
 
-(defun dwim-tab-stem-trigger ()
+(defun dwim-tab/word-trigger ()
   (interactive)
-  (if (looking-at-p "\\>")
+
+  (if (thing-at-point 'word)
     t
     nil))
 
-(defun dwim-tab-word-trigger ()
-  (let
-    (( at-point (thing-at-point 'word) ))
+(defun dwim-tab/prefix ()
+  (interactive)
+  (save-excursion
+    (let
+      ((end (point)))
 
-    (stringp at-point) ))
+      (re-search-backward "^\\|\s+\\|[(\\[;\"]")
+
+      (let*
+        ((start (if (looking-at "\s+\\|[(\\[;\"]")
+                  (+ (point) 1)
+                  (point) ))
+         (length (if (< start end)
+                   (- end start)
+                   0)))
+
+        ;; (message "prefix is %d %d %s" start end (buffer-substring-no-properties start end))
+
+        (if (> length 0)
+          (list (buffer-substring-no-properties start end) start end length)
+          nil) )) ))
+
+(defun dwim-tab/stem (prefix)
+  (if prefix
+    (car prefix)
+    nil))
+
+(defun dwim-tab/start (prefix)
+  (if prefix
+    (nth 1 prefix)
+    nil))
+
+(defun dwim-tab/end (prefix)
+  (if prefix
+    (nth 2 prefix)
+    nil))
+
+(defun dwim-tab/length (prefix)
+  (if prefix
+    (nth 3 prefix)
+    nil))
 
 (defun dwim-tab-make-expander ( context expander )
   (cons context expander))
@@ -40,7 +76,7 @@
     ((all-expanders (append dwim-tab-local-context dwim-tab-global-context))
      (relevant-expanders nil) )
 
-    (mapc
+    (mapcar
       (lambda ( expander )
         (when (funcall (car expander))
           (setq relevant-expanders (cons (cdr expander) relevant-expanders))) )
@@ -138,5 +174,3 @@
   (local-set-key (kbd "TAB") 'dwim-tab-do-magic))
 
 (provide 'dwim-tab)
-
-;;; dwim-tab.el ends here
