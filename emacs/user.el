@@ -151,6 +151,7 @@
 (require 'helm-occur)
 (require 'helm-regexp)
 (require 'helm-man)
+(require 'helm-ring)
 
 (custom-key-group "magit git" "c" t
   ("f" . helm-find-files)
@@ -158,7 +159,8 @@
   ("g" . helm-grep-do-git-grep)
   ("o" . helm-occur)
   ("r" . helm-regexp)
-  ("m" . helm-man-woman))
+  ("m" . helm-man-woman)
+  ("k" . helm-show-kill-ring))
 
 ;;----------------------------------------------------------------------
 ;; read/write perm handling
