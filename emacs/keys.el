@@ -11,14 +11,6 @@
 ;; remove keybindings
 (global-unset-key (kbd "<S-tab>"))
 
-(custom-key-group "window manager" "w" t
-  ("k" . delete-frame)
-  ("x" . delete-other-windows)
-  ("s" . split-window-horizontally)
-  ("v" . split-window-vertically) )
-
-(global-set-key (kbd "C-x e") 'eval-expression)
-
 ;; this used to be minimize window, now it exits recursive editing
 ;; which is handy and safer.
 (global-set-key (kbd "C-z")     'top-level)
