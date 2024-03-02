@@ -8,17 +8,13 @@
 (require 'programming-generic)
 
 (defvar cl-function-decl ".*(defun.*")
-(defconst cl-lisp-name "cl-lisp")
+(defconst cl-lisp-name "cl")
 
 (defun cl-list-functions ()
   (interactive)
   (occur cl-function-decl))
 
 (require 'lisp-mode)
-
-;;
-;; auto mode list additions
-;;
 
 (setq
   auto-mode-alist (append '(("\\.cl$" . lisp-mode)
@@ -34,7 +30,7 @@
     "common lisp"
     "initializing dwim-complete"
 
-    (dwim-complete/for-buffer "cl"))
+    (dwim-complete/setup-for-buffer cl-lisp-name))
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
