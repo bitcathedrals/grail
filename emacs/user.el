@@ -146,14 +146,22 @@
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
 
 ;;----------------------------------------------------------------------
-;; ido smart completion
+;; helm completion
 ;;----------------------------------------------------------------------
-(require 'ido)
+(require 'helm-files)
+(require 'helm-buffers)
+(require 'helm-grep)
+(require 'helm-occur)
+(require 'helm-regexp)
+(require 'helm-man)
 
-(setq ido-enable-flex-matching t)
-(setq ido-use-filename-at-point 'guess)
-
-(ido-mode 1)
+(custom-key-group "magit git" "c" t
+  ("f" . helm-find-files)
+  ("b" . helm-buffers-list)
+  ("g" . helm-grep-do-git-grep)
+  ("o" . helm-occur)
+  ("r" . helm-regexp)
+  ("m" . helm-man-woman))
 
 ;;----------------------------------------------------------------------
 ;; read/write perm handling
