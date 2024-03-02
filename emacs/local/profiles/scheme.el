@@ -26,8 +26,13 @@
    switch to an existing or create a new scheme REPL
   "
   (interactive)
-  (run-scheme scheme-program-name)
-  (pop-to-buffer scheme-buffer))
+  (let
+    ((restore (current-buffer)))
+
+    (run-scheme scheme-program-name)
+    (pop-to-buffer scheme-buffer 'display-buffer-pop-up-window)
+    (other window 1)
+    (switch-to-other-buffer restore)) )
 
 (defun scheme-list-functions ()
   (interactive)
@@ -56,10 +61,13 @@
   (buffer-ring/add scheme/mode-name)
   (buffer-ring/local-keybindings)
 
-  (turn-on-dwim-tab 'lisp-indent-line)
+  (turn-on-dwim-tab 'lisp-indent-line) )
 
-  (if (not (bufferp scheme-buffer))
-    (profile/scheme-repl)) )
+;; causes infinite loop
+
+;; (defun profile/auto-launch-scheme ()
+;;   (if (not (bufferp scheme-buffer))
+;;     (pop-to-buffer (scheme-proc) 'display-buffer-pop-up-window)) )
 
 (add-hook 'scheme-mode-hook 'profile/scheme-setup)
 
