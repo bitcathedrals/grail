@@ -1,3 +1,4 @@
+
 ;; -*-no-byte-compile: t; -*-
 ;;----------------------------------------------------------------------
 ;; user.el - user interface configuration
@@ -182,8 +183,4 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 
-;;----------------------------------------------------------------------0
-;; kill ring
-;;----------------------------------------------------------------------
-(require 'browse-kill-ring)
 
