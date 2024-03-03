@@ -31,7 +31,7 @@
 ;;
 
 (defun slime/slime-candidates ()
-  (car (slime-simple-completions "")))
+  (slime-simple-completions ""))
 
 (grail-require profile/dwim-complete
   "slime"
