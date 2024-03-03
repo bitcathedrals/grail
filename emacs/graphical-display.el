@@ -138,7 +138,7 @@
      (diff-fg-color "grey60")
 
      (diff-fine-bg "SkyBlue4")
-     (diff-fine-fg "black"))
+     (diff-fine-fg "yellow"))
 
     (set-face-background 'ediff-current-diff-A diff-bg-selected-color)
     (set-face-foreground 'ediff-current-diff-A diff-fg-color)
