@@ -9,6 +9,7 @@
 (require 'profile/common-lisp)
 
 (defconst slime/mode-name "slime")
+(defconst slime/file-mode-name "lisp")
 (defconst slime/repl-name (borg-repl/repl-name slime/mode-name))
 
 (require 'slime)
@@ -26,20 +27,9 @@
                                   "These are your father's parentheses. Elegant weapons from a more civilized age."
                                   "We were on the edge of the desert when the Emacs took hold."
                                   "Mine says: Desert Eagle ... .50") )
-;;
-;; dwim setup
-;;
 
 (defun slime/slime-candidates ()
   (slime-simple-completions ""))
-
-(grail-require profile/dwim-complete
-  "slime"
-  "dwim complete source creation"
-
-  (dwim-complete/setup-for-buffer elisp/mode-name
-    (lambda ()
-      (dwim-complete-build-helm-from-generator "lisp" (slime/slime-candidates))) ) )
 
 ;;
 ;; repl buffer setup
@@ -49,7 +39,12 @@
   (turn-on-dwim-tab 'lisp-indent-line)
 
   (buffer-ring/add slime/repl-name)
-  (buffer-ring/local-keybindings))
+  (buffer-ring/local-keybindings)
+
+  (dwim-complete/setup-for-buffer slime/mode-name
+    (dwim-complete/make-source "slime: "
+      (lambda ()
+        (slime/slime-candidates)) )) )
 
 (add-hook 'slime-connected-hook 'slime/slime-repl-setup t)
 
@@ -57,51 +52,31 @@
 ;; integration into common lisp
 ;;
 
-(defun profile/slime-mode-setup ()
-  ;; turn on minor mode
-  (slime-mode t)
+(defun profile/slime-lisp-setup ()
+  (interactive)
 
-  (borg-repl/bind-repl slime/repl-name
-    'slime
-    'slime-eval-last-expression
-    'slime-eval-region
-    'slime-eval-buffer
-    'slime-eval-defun)
-
-  (borg-repl/bind-connect 'slime-connect)
-
-  (borg-repl/bind-macro-expand 'slime-macroexpand-1))
-
-(add-hook 'lisp-mode-hook 'profile/slime-mode-setup t)
-
-;;
-;; integration into common lisp
-;;
-
-(defun profile/slime-mode-setup ()
-  ;; turn on minor mode
-  (slime-mode t)
-
-  (dwim-tab-localize-context
-    (dwim-tab-make-expander
-      'dwim-tab-stem-trigger
-      'slime-complete-symbol))
-
-  (borg-repl/bind-repl slime/repl-name
-    'slime
-    'slime-eval-last-expression
-    'slime-eval-region
-    'slime-eval-buffer
-    'slime-eval-defun)
-
-  (borg-repl/bind-connect 'slime-connect)
-
-  (borg-repl/bind-macro-expand 'slime-macroexpand-1)
+  (dwim-complete/setup-for-buffer slime/mode-name
+    (dwim-complete/make-source "slime: "
+      (lambda ()
+        (slime/slime-candidates))) )
 
   (if (not (slime-connected-p))
-    (slime)) )
+    (slime))
 
-(add-hook 'lisp-mode-hook 'profile/slime-mode-setup t)
+  (slime-mode t)
 
-(provide 'grail/slime)
+  (borg-repl/bind-repl slime/repl-name
+    'slime
+    'slime-eval-last-expression
+    'slime-eval-region
+    'slime-eval-buffer
+    'slime-eval-defun)
+
+  (borg-repl/bind-connect 'slime-connect)
+
+  (borg-repl/bind-macro-expand 'slime-macroexpand-1) )
+
+(add-hook 'lisp-mode-hook 'profile/slime-lisp-setup)
+
+(provide 'profile/slime)
 
