@@ -34,7 +34,7 @@
                  :prompt prompt
                  :buffer (dwim-complete-buffer))))
 
-    (if complete
+    (if (stringp complete)
       (dwim-complete-replace-stem complete)
       (message "no completion.")) ))
 
