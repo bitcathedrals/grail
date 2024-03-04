@@ -26,7 +26,8 @@
 [submodule "pythonsh"]
 	path = pythonsh
 	url = git@github.com:coderofmattie/pythonsh.git
-  ignore = dirty
+        branch = develop
+        ignore = dirty
 
 [submodule "emacs/dist/git/mic-paren"]
 	path = emacs/dist/git/mic-paren
