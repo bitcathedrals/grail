@@ -1,6 +1,6 @@
 **/.DS_Store
 emacs/dist/elpa
-emacs/local/elisp/erc-credentials.el
+emacs/local/elisp/erc-sensitive.el
 **/*.elc
 
 
