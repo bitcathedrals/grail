@@ -1,10 +1,12 @@
 ;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; programming.el
 ;;
 ;; programming configuration including templates,merging, highlighting,
 ;; completion etc.
 ;;----------------------------------------------------------------------
+
 (require 'merging)
 (require 'ext-merging)
 

@@ -1,3 +1,5 @@
+;; -*-no-byte-compile: t; -*-
+
 (defun goto-scheme ()
   (interactive)
   (dired (concat (getenv "HOME") "/code/algorithms/src/scheme/sicp/")) )

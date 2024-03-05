@@ -4,10 +4,6 @@
 ;; lex-cache.el
 ;;
 
-;;
-;; consider using timers to update the data.
-;;
-
 (defun lex-cache-timestamp ()
   (truncate (time-to-seconds (current-time))))
 

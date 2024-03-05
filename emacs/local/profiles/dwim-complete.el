@@ -1,9 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;
-;; dwim-complete.el - An advanced global completion system
-;;
-
 (require 'thingatpt)
 (require 'subr-x)
 (require 'lex-cache)

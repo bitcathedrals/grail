@@ -1,8 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;
-;; common lisp profile
-;;
 (require 'buffer-ring)
 (require 'dwim-tab)
 (require 'programming-generic)
