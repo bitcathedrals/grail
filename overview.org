@@ -102,7 +102,8 @@ portable between MacOS, Linux, and FreeBSD.
 First you need to clone the git repository. The 'main' branch is kept in a stable state so you should clone that initially.
 
 #+BEGIN_SRC bash
-git clone https://github.com/bitcathedrals/grail.git grail
+test -d ~/code || mkdir ~/code
+git clone https://github.com/bitcathedrals/grail.git ~/code/grail
 #+END_SRC
 
 Second you need to cd into grail and you need to initialize the
@@ -119,14 +120,14 @@ scripts/install.sh
 Third you need to create the symlinks that point the Emacs load at grail:
 
 #+BEGIN_SRC bash
-ln -s <GRAIL DIR>/emacs/grail.el ~/.emacs
-ln -s <GRAIL_DIR>/emacs/ ~/.emacs.grail
+ln -s ~/code/emacs/grail.el ~/.emacs
+ln -s ~/code/emacs/ ~/.emacs.grail
 #+END_SRC
 
 Note: if you want to use slime you need to
 
 #+BEGIN_SRC bash
-cd <GRAIL_DIR>/emacs/dist/git/slime && make compile-swank
+cd ~/code/grail/emacs/dist/git/slime && make compile-swank
 #+END_SRC
 
 This should be enough to start grail on the console or in a GUI
@@ -166,5 +167,3 @@ define. These are in the help.
 
 For all of the key mappings defined with my custom-key system invoking
 C-c <group> h will bring up a description of the chord.
-
-
