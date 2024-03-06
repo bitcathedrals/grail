@@ -260,7 +260,7 @@
 (defun grail-reload-graphical ()
   "command to reload the graphical configuration"
   (interactive)
-  (grail-load-graphcial (selected-frame)) )
+  (grail-load-graphical (selected-frame)) )
 
 (defun grail-set-font (font-spec)
   (interactive "sFont Spec \"<family> <size>\": ")
