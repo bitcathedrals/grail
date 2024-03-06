@@ -1,8 +1,5 @@
-;; -*- lexical-binding: t -*-
-;; -*- no-byte-compile: t -*-
-;;----------------------------------------------------------------------
-;; custom-key
-;;----------------------------------------------------------------------
+;; -*- lexical-binding: t; no-byte-compile: t; -*-
+
 (require 'subr-x)
 
 (defun keybindings-help-first-line ( fn )

@@ -1,6 +1,6 @@
-;; -*-no-byte-compile: t; -*-
+; -*-no-byte-compile: t; -*-
 
-(defun test-me ()
+(defun insert-dos-newline ()
   (interactive)
   (insert-char #x0D))
 

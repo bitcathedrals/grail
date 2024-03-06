@@ -1,4 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
+
 ;;----------------------------------------------------------------------
 ;; user.el - user interface configuration
 ;;----------------------------------------------------------------------
@@ -121,13 +122,14 @@
 ;;----------------------------------------------------------------------
 (require 'erc)
 (require 'erc-truncate)
-(require 'erc-credentials)
+
+(grail-try-elisp "local/elisp/erc-sensitive.el")
+
+(require 'erc-sensitive)
 
 (setq
   erc-default-server "irc.libera.chat"
   erc-default-port "6667"
-  erc-nick "JohnGalt"
-  erc-ignore-list '("whateverdude")
   erc-prompt-for-nickserv-password nil
   erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")) )
 
@@ -182,8 +184,4 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 
-;;----------------------------------------------------------------------0
-;; kill ring
-;;----------------------------------------------------------------------
-(require 'browse-kill-ring)
 

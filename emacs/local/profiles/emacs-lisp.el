@@ -1,11 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;
-;; emacs-lisp.el - emacs lisp mode configuration
-;;
-;; configure emacs lisp with enhanced programming features
-;;
-
 (require 'custom-key)
 (require 'borg-repl)
 (require 'buffer-ring)

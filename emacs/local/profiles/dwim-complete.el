@@ -1,9 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;
-;; dwim-complete.el - An advanced global completion system
-;;
-
 (require 'thingatpt)
 (require 'subr-x)
 (require 'lex-cache)
@@ -34,7 +30,7 @@
                  :prompt prompt
                  :buffer (dwim-complete-buffer))))
 
-    (if complete
+    (if (stringp complete)
       (dwim-complete-replace-stem complete)
       (message "no completion.")) ))
 
