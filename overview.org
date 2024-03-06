@@ -131,10 +131,15 @@ This should be enough to start grail on the console or in a GUI
 environment.
 
 Within grail you should take note of emacs/systems/:
-- macos.el
-- freebsd.el
-- windows.el
-- linux.el
+- systems/
+  - macos.el
+  - freebsd.el
+  - windows.el
+  - linux.el
+- hosts/
+  - *hostname*.el
+- users/
+  - *user*.el
 
 These files will allow you to customize for different systems.
 

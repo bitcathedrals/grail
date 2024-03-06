@@ -93,3 +93,7 @@
 	url = https://gitlab.com/emacs-geiser/chicken.git
 	branch = master
 	ignore = dirty
+[submodule "emacs/dist/git/htmlize"]
+	path = emacs/dist/git/htmlize
+	url = https://github.com/hniksic/emacs-htmlize.git
+	branch = master
