@@ -32,6 +32,16 @@
       (when percentage
         (setq mattie-modeline-battery-level percentage)) )) )
 
+(defun mattie-modeline-battery-acpi ()
+  (call-process "acpi" nil (get-battery-buffer-for-output) nil)
+
+  (with-current-buffer (get-battery-buffer)
+    (let
+      ((percentage (extract-string-with-regex "[0-9]+%")))
+
+      (when percentage
+        (setq mattie-modeline-battery-level percentage)) )) )
+
 (defun mattie-modeline-battery-dummy ()
   nil)
 
@@ -40,16 +50,14 @@
 (defvar mattie-modeline-battery-level "")
 
 (defun mattie-modeline-find-battery-command ()
-  (let
-    ((apm (executable-find "apm")))
+  (mapcar
+    (lambda (prog)
+      (when (executable-find (car prog))
+        (setq mattie-modeline-battery-command (cdr prog))) )
 
-    (if apm
-      (setq mattie-modeline-battery-command 'mattie-modeline-battery-apm)
-      (let
-        ((pmset (executable-find "pmset")))
-
-        (when pmset
-          (setq mattie-modeline-battery-command 'mattie-modeline-battery-pmset)))) ))
+    '(("apm" . mattie-modeline-battery-apm)
+      ("pmset" . mattie-modeline-battery-pmset)
+      ("acpi" . mattie-modeline-battery-acpi)) ))
 
 (defun mattie-modeline-update-battery-level ()
   (funcall mattie-modeline-battery-command))
