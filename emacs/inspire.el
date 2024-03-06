@@ -22,8 +22,7 @@
                            "I\'m using Linux. A library Emacs uses to communicate with hardware."
                            "I was throwing straw-men at a troll to see the flames shoot out"))
 
-
-(defun get-inspire ()
+(defun get-inspiration ()
   (nth (random (length words-of-encouragement)) words-of-encouragement))
 
 (defun inspire ()
@@ -31,6 +30,12 @@
 
    I\'m the funny man! so fucking funny!"
   (interactive)
-  (message (get-inspire)) )
+  (message (get-inspiration)) )
 
-(add-hook 'find-file-hook 'inspire)
+(defun add-inspire-to-status ()
+  (buffer-status-add (get-inspiration)) )
+
+(add-hook 'after-change-major-mode-hook 'add-inspire-to-status)
+
+(provide 'profile/inspire)
+
