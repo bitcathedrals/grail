@@ -1,3 +1,12 @@
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (ruby . t)
+   (shell . t)
+   (scheme . t)
+   (lisp . t)
+   (java . t)) )
+
 (defun org/mk-markdown ()
   "org/mk-markdown
 
