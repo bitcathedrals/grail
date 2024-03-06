@@ -1,26 +1,8 @@
-
-# Table of Contents
-
-1.  [Grail for Emacs](#orgb7e1700)
-    1.  [Early History](#org92f482e)
-    2.  [Big re-design](#org3d1e39c)
-    3.  [Modern rewrite](#orgbbc01d1)
-    4.  [2023-2034 The return of the hack](#orga748a9b)
-    5.  [Status](#org0965787)
-    6.  [Installation](#org7eec010)
-    7.  [Basic Use](#org9c6be69)
-
-
-<a id="orgb7e1700"></a>
-
-# Grail for Emacs
+* Grail for Emacs
 
 An Emacs configuration, loader, and toolkit.
 
-
-<a id="org92f482e"></a>
-
-## Early History
+** Early History
 
 Grail began as a Emacs lisp cut and paste mess of snippets from
 Googling around 2000 or so. I swore that one day I would learn Elisp
@@ -34,9 +16,7 @@ After a lot of hacking on it I migrated it to git and used several
 third party modules to extend the basic functionality.
 
 
-<a id="org3d1e39c"></a>
-
-## Big re-design
+** Big re-design
 
 When I moved to the big city and started a job I required more power
 from the Emacs to compensate for the poor tools on the job site. I
@@ -60,10 +40,7 @@ supported svn, git, hg, tarballs, and others I can't remember.
 It stayed in this state up through 2014 when I stopped using Emacs as
 my primary development environment.
 
-
-<a id="orgbbc01d1"></a>
-
-## Modern rewrite
+** Modern rewrite
 
 In August of 2022 the original code was over-complicated, unreliable,
 and was unnecessary since everything is hosted on git. Being able to
@@ -79,11 +56,11 @@ code and fixing bugs.
 
 The current form of the loader is just concerned with the profile
 mechanism, setting up load-path, and setting up the display. I removed
-the &#x2013;daemon functionality and simplified the frame setup accordingly.
+the --daemon functionality and simplified the frame setup accordingly.
 
 This is the current evolution of the config.
 
-\## Fix self location
+## Fix self location
 
 There was still one glaring problem is that grail didn't really know
 how to find itself. grail.el is symlinked to ~/.emacs but the code
@@ -98,10 +75,7 @@ Finally I came up with a second symlink: $HOME/.emacs.grail that
 points to the repo. Grail loads from that symlink now. This neatly
 solves the problem in a platform independent way.
 
-
-<a id="orga748a9b"></a>
-
-## 2023-2034 The return of the hack
+** 2023-2034 The return of the hack
 
 In late 2023-2024 I re-wrote significant amounts of the config. Much
 of grail was extremely old code and I was getting a large number of
@@ -118,22 +92,18 @@ battery status.
 
 I also added numerous fonts, fixed faces, and fixed many, many bugs.
 
-
-<a id="org0965787"></a>
-
-## Status
+** Status
 
 It currently works on console, and graphical environments. It is
 portable between MacOS, Linux, and FreeBSD.
 
-
-<a id="org7eec010"></a>
-
-## Installation
+** Installation
 
 First you need to clone the git repository. The 'main' branch is kept in a stable state so you should clone that initially.
 
-    git clone https://github.com/bitcathedrals/grail.git grail
+#+BEGIN_SRC bash
+git clone https://github.com/bitcathedrals/grail.git grail
+#+END_SRC
 
 Second you need to cd into grail and you need to initialize the
 dependencies. One dependency will be my pythonsh toolbox for running
@@ -141,27 +111,32 @@ py.sh commands, the rest are Elisp packages.
 
 The install.sh script executes the submodule command for you:
 
-    cd grail
-    scripts/install.sh
+#+BEGIN_SRC bash
+cd grail
+scripts/install.sh
+#+END_SRC
 
 Third you need to create the symlinks that point the Emacs load at grail:
 
-    ln -s <GRAIL DIR>/emacs/grail.el ~/.emacs
-    ln -s <GRAIL_DIR>/emacs/ ~/.emacs.grail
+#+BEGIN_SRC bash
+ln -s <GRAIL DIR>/emacs/grail.el ~/.emacs
+ln -s <GRAIL_DIR>/emacs/ ~/.emacs.grail
+#+END_SRC
 
 Note: if you want to use slime you need to
 
-    cd <GRAIL_DIR>/emacs/dist/git/slime && make compile-swank
+#+BEGIN_SRC bash
+cd <GRAIL_DIR>/emacs/dist/git/slime && make compile-swank
+#+END_SRC
 
 This should be enough to start grail on the console or in a GUI
 environment.
 
 Within grail you should take note of emacs/systems/:
-
--   macos.el
--   freebsd.el
--   windows.el
--   linux.el
+- macos.el
+- freebsd.el
+- windows.el
+- linux.el
 
 These files will allow you to customize for different systems.
 
@@ -171,10 +146,7 @@ be loaded on that host.
 You can create d a directory "emacs/users/<username>.el" and that file
 will be loaded for that user.
 
-
-<a id="org9c6be69"></a>
-
-## Basic Use
+** Basic Use
 
 There are many key sequences already constructed. They are all on the
 prefix C-c, which is the user defined prefix. The best place to start
@@ -194,4 +166,5 @@ define. These are in the help.
 
 For all of the key mappings defined with my custom-key system invoking
 C-c <group> h will bring up a description of the chord.
+
 
