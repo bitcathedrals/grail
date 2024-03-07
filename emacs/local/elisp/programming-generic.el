@@ -45,16 +45,7 @@
   ;; better return key for programming
   (local-set-key (kbd "<return>") 'newline-and-indent)
 
-  (let
-    ((fn-search (or fn-search 'programming-search-missing)))
-
-    (custom-key-group "search" "s" nil
-      ("f" . fn-search)
-      ("g" . grep)
-      ("r" . rgrep)
-      ("o" . occur)) )
-
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
   (ruler-mode))
 
-(provide 'programming-generic)
+ (provide 'programming-generic)
