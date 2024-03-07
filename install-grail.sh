@@ -7,4 +7,4 @@ git clone https://github.com/bitcathedrals/grail.git ~/code/grail
 ln -s ~/code/emacs/grail.el ~/.emacs
 ln -s ~/code/emacs/ ~/.emacs.grail
 
-cd ~/code/grail/emacs/dist/git/slime && make compile-swank
+(cd ~/code/grail/emacs/dist/git/slime && make compile-swank)
