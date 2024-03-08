@@ -20,7 +20,24 @@
                            "In the beginning was the lambda, and the lambda was with Emacs, and Emacs was the lambda."
                            "Producing crap only takes a squeeze"
                            "I\'m using Linux. A library Emacs uses to communicate with hardware."
-                           "I was throwing straw-men at a troll to see the flames shoot out"))
+                           "I was throwing straw-men at a troll to see the flames shoot out"
+                           "Larry, your killing your father!")
+                           "Smokey, you\'re entering a world of pain... a world of pain."
+                           "AK-47, When you absolutely positively have to kill every motherfucker in the room, accept no substitutes."
+                           "Satan is in my house..."
+                           "Never go full retard!"
+                           "I don\'t remember asking you a GODDAMN thing."
+                           "Scout Master Kevin?"
+                           "Go home! You smell like someone shit in a civil war wound that had become gangrenous"
+                           "All you motherfuckers are going to pay! you are the one\'s who are the ball lickers"
+                           "I don\'t negotiate pumpkin fucker."
+                           "I can\'t wait to never speak of this. As soon as possible."
+                           "What am I going to do now? Probably something terrible, knowing you."
+                           "Prison wallet? I hope I don\'t know what your saying."
+                           "What\'s your super power? Cultural appropriation?"
+                           "You're so dark! Are you sure your not from the D.C Universe?"
+                           "It\s not who you are underneath, it\'s what you do."
+  )
 
 (defun get-inspiration ()
   (nth (random (length words-of-encouragement)) words-of-encouragement))
