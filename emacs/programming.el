@@ -1,4 +1,4 @@
-;; -*-no-byte-compile: t; -*-
+q;; -*-no-byte-compile: t; -*-
 
 ;;----------------------------------------------------------------------
 ;; programming.el
@@ -66,8 +66,6 @@
 
   ("r" . magit-ediff-resolve-all)
   ("p" . magit-push))
-
-(which-function-mode)
 
 ;;----------------------------------------------------------------------
 ;; C/C++ common
