@@ -5,6 +5,6 @@
 ;;----------------------------------------------------------------------
 (require 'buffer-status)
 
-(add-hook 'find-file-hook 'buffer-display-status t)
+(add-hook 'after-change-major-mode-hook 'buffer-display-status t)
 
 (provide 'profile/activate-buffer-status)
