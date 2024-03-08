@@ -21,7 +21,7 @@
                            "Producing crap only takes a squeeze"
                            "I\'m using Linux. A library Emacs uses to communicate with hardware."
                            "I was throwing straw-men at a troll to see the flames shoot out"
-                           "Larry, your killing your father!")
+                           "Larry, your killing your father!"
                            "Smokey, you\'re entering a world of pain... a world of pain."
                            "AK-47, When you absolutely positively have to kill every motherfucker in the room, accept no substitutes."
                            "Satan is in my house..."
@@ -36,8 +36,7 @@
                            "Prison wallet? I hope I don\'t know what your saying."
                            "What\'s your super power? Cultural appropriation?"
                            "You're so dark! Are you sure your not from the D.C Universe?"
-                           "It\s not who you are underneath, it\'s what you do."
-  )
+                           "It\s not who you are underneath, it\'s what you do."))
 
 (defun get-inspiration ()
   (nth (random (length words-of-encouragement)) words-of-encouragement))
