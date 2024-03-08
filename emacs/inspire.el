@@ -36,7 +36,8 @@
                            "Prison wallet? I hope I don\'t know what your saying."
                            "What\'s your super power? Cultural appropriation?"
                            "You're so dark! Are you sure your not from the D.C Universe?"
-                           "It\s not who you are underneath, it\'s what you do."))
+                           "It\s not who you are underneath, it\'s what you do."
+                           "I will splash the pot whenever I want to splash the pot!"))
 
 (defun get-inspiration ()
   (nth (random (length words-of-encouragement)) words-of-encouragement))
