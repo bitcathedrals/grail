@@ -10,7 +10,7 @@
                            "Fair! who\'s the Nihlist now?"
                            "This is like having a Pine Cone shoved up my ass"
                            "Is this your homework Larry?"
-                           "No Walter, I did not think he was about to crack"
+                           "No Walter, I did not think he was about to crack!"
                            "This is Flaming Dragon!"
                            "Would you give me a foot massage? Fuck You!"
                            "You will name is the Lord! When I lay my vengeance upon you!"
@@ -38,7 +38,8 @@
                            "You're so dark! Are you sure your not from the D.C Universe?"
                            "It\s not who you are underneath, it\'s what you do."
                            "I will splash the pot whenever I want to splash the pot!"
-                           "Give me some sugar baby!"))
+                           "Give me some sugar baby!"
+                           "Gentleman! No fighting in the war room!"))
 
 (defun get-inspiration ()
   (nth (random (length words-of-encouragement)) words-of-encouragement))
