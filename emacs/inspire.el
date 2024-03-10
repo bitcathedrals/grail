@@ -53,7 +53,7 @@
 (defun add-inspire-to-status ()
   (buffer-status-add (get-inspiration)) )
 
-(add-hook 'after-change-major-mode-hook 'add-inspire-to-status)
+(add-hook 'find-file-hook 'add-inspire-to-status)
 
 (provide 'profile/inspire)
 
