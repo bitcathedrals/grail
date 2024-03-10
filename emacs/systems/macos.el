@@ -3,6 +3,8 @@
 ;;----------------------------------------------------------------------
 ;; macos.el
 ;;----------------------------------------------------------------------
+(require 'woman)
+
 (setq
  user-brew (concat (getenv "HOME") "/homebrew/")
  user-local "/usr/local/"
@@ -22,6 +24,8 @@
   (when (file-directory-p user-local)
     (map-paths user-local bin-dirs 'exec-path)
     (map-paths user-local man-dirs 'woman-path)) )
+
+(setup-macos-paths)
 
 ;; emacs gets trashed if there is no font specified through
 ;; the grail system. Im on big displays so crank up the font size.
