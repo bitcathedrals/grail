@@ -2,9 +2,9 @@
 
 shopt -s lastpipe
 
-IN_FILE=$1
+IN_FILE="$PWD/$1"
 
-if [[ -n $IN_FILE -a -f $IN_FILE ]]
+if [[ -n $IN_FILE && -f $IN_FILE ]]
 then
   echo "compiling input file: ${IN_FILE}..."
 else
@@ -12,21 +12,4 @@ else
   exit 1
 fi
 
-OUT_FILE=$2
-
-cat <<ELISP | tr -s "\n" " " | read CODE
-(with-temp-buffer
- (insert-file \\"${IN_FILE}\\")
-
- (org-mode)
- (org-babel-tangle)
-
- (message \\"compiled: ${FILE} -> %s\\" (get-inspiration)) )
-ELISP
-
-if [[ $3 == "--show" ]]
-then
-  echo "code is: $CODE"
-fi
-
-exec emacsclient -e "$CODE"
+exec emacsclient -e "(tangle-non-interactive \"$IN_FILE\")"
