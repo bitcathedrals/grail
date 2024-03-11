@@ -24,4 +24,10 @@
   (interactive)
   (org-babel-tangle))
 
+(defun tangle-non-interactive (file)
+  (with-current-buffer (find-file-read-only file)
+    (org-babel-tangle)
+
+    (message "compiled: %s -> %s" file (get-inspiration)) ))
+
 
