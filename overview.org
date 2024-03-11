@@ -60,7 +60,7 @@ the --daemon functionality and simplified the frame setup accordingly.
 
 This is the current evolution of the config.
 
-## Fix self location
+** Fix self location
 
 There was still one glaring problem is that grail didn't really know
 how to find itself. grail.el is symlinked to ~/.emacs but the code
@@ -101,42 +101,45 @@ portable between MacOS, Linux, and FreeBSD.
 
 First you need to clone the git repository. The 'main' branch is kept in a stable state so you should clone that initially.
 
-#+BEGIN_SRC bash
-git clone https://github.com/bitcathedrals/grail.git grail
+#+BEGIN_SRC bash :shebang "#! /usr/bin/env bash" :tangle "install-grail.sh"
+test -d ~/code || mkdir ~/code
+git clone https://github.com/bitcathedrals/grail.git ~/code/grail
 #+END_SRC
 
 Second you need to cd into grail and you need to initialize the
 dependencies. One dependency will be my pythonsh toolbox for running
 py.sh commands, the rest are Elisp packages.
 
-The install.sh script executes the submodule command for you:
-
-#+BEGIN_SRC bash
-cd grail
-scripts/install.sh
+#+BEGIN_SRC bash :tangle "install-grail.sh"
+(cd ~/code/grail && git submodule update --init)
 #+END_SRC
 
 Third you need to create the symlinks that point the Emacs load at grail:
 
-#+BEGIN_SRC bash
-ln -s <GRAIL DIR>/emacs/grail.el ~/.emacs
-ln -s <GRAIL_DIR>/emacs/ ~/.emacs.grail
+#+BEGIN_SRC bash :tangle "install-grail.sh"
+ln -s ~/code/emacs/grail.el ~/.emacs
+ln -s ~/code/emacs/ ~/.emacs.grail
 #+END_SRC
 
 Note: if you want to use slime you need to
 
-#+BEGIN_SRC bash
-cd <GRAIL_DIR>/emacs/dist/git/slime && make compile-swank
+#+BEGIN_SRC bash :tangle "install-grail.sh"
+(cd ~/code/grail/emacs/dist/git/slime && make compile-swank)
 #+END_SRC
 
 This should be enough to start grail on the console or in a GUI
 environment.
 
 Within grail you should take note of emacs/systems/:
-- macos.el
-- freebsd.el
-- windows.el
-- linux.el
+- systems/
+  - macos.el
+  - freebsd.el
+  - windows.el
+  - linux.el
+- hosts/
+  - *hostname*.el
+- users/
+  - *user*.el
 
 These files will allow you to customize for different systems.
 
@@ -153,7 +156,7 @@ prefix C-c, which is the user defined prefix. The best place to start
 is C-c h g which will show global keybindings.  Press "q" to exit the
 help buffer.
 
-Note: the keybinding C-h is remapped to backspace as on the freeBSD
+Note: the keybinding C-h is remapped to backspace on the freeBSD
 console the backspace key generates a C-h. Please use C-c h f for
 describe-function, C-c h v for describe-variable, and C-c h k for
 describe-key.
@@ -164,7 +167,6 @@ enabled modes.
 For most languages C-c e e will eval the line, C-c e d will eval a
 define. These are in the help.
 
-For all of the key mappings defined with my custom-key system invoking
+For all of the key mappings defined within a custom-key group invoking
 C-c <group> h will bring up a description of the chord.
-
 

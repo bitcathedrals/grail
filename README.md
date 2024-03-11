@@ -1,24 +1,24 @@
 
 # Table of Contents
 
-1.  [Grail for Emacs](#orgb7e1700)
-    1.  [Early History](#org92f482e)
-    2.  [Big re-design](#org3d1e39c)
-    3.  [Modern rewrite](#orgbbc01d1)
-    4.  [2023-2034 The return of the hack](#orga748a9b)
-    5.  [Status](#org0965787)
-    6.  [Installation](#org7eec010)
-    7.  [Basic Use](#org9c6be69)
+1.  [Grail for Emacs](#orgef808ce)
+    1.  [Early History](#org65045dc)
+    2.  [Big re-design](#org340b956)
+    3.  [Modern rewrite](#org21b0638)
+    4.  [2023-2034 The return of the hack](#org37f9d08)
+    5.  [Status](#org1dfe836)
+    6.  [Installation](#orgb6d877e)
+    7.  [Basic Use](#org3c31fb2)
 
 
-<a id="orgb7e1700"></a>
+<a id="orgef808ce"></a>
 
 # Grail for Emacs
 
 An Emacs configuration, loader, and toolkit.
 
 
-<a id="org92f482e"></a>
+<a id="org65045dc"></a>
 
 ## Early History
 
@@ -34,7 +34,7 @@ After a lot of hacking on it I migrated it to git and used several
 third party modules to extend the basic functionality.
 
 
-<a id="org3d1e39c"></a>
+<a id="org340b956"></a>
 
 ## Big re-design
 
@@ -61,7 +61,7 @@ It stayed in this state up through 2014 when I stopped using Emacs as
 my primary development environment.
 
 
-<a id="orgbbc01d1"></a>
+<a id="org21b0638"></a>
 
 ## Modern rewrite
 
@@ -99,7 +99,7 @@ points to the repo. Grail loads from that symlink now. This neatly
 solves the problem in a platform independent way.
 
 
-<a id="orga748a9b"></a>
+<a id="org37f9d08"></a>
 
 ## 2023-2034 The return of the hack
 
@@ -119,7 +119,7 @@ battery status.
 I also added numerous fonts, fixed faces, and fixed many, many bugs.
 
 
-<a id="org0965787"></a>
+<a id="org1dfe836"></a>
 
 ## Status
 
@@ -127,41 +127,44 @@ It currently works on console, and graphical environments. It is
 portable between MacOS, Linux, and FreeBSD.
 
 
-<a id="org7eec010"></a>
+<a id="orgb6d877e"></a>
 
 ## Installation
 
 First you need to clone the git repository. The 'main' branch is kept in a stable state so you should clone that initially.
 
-    git clone https://github.com/bitcathedrals/grail.git grail
+    test -d ~/code || mkdir ~/code
+    git clone https://github.com/bitcathedrals/grail.git ~/code/grail
 
 Second you need to cd into grail and you need to initialize the
 dependencies. One dependency will be my pythonsh toolbox for running
 py.sh commands, the rest are Elisp packages.
 
-The install.sh script executes the submodule command for you:
-
-    cd grail
-    scripts/install.sh
+    (cd ~/code/grail && git submodule update --init)
 
 Third you need to create the symlinks that point the Emacs load at grail:
 
-    ln -s <GRAIL DIR>/emacs/grail.el ~/.emacs
-    ln -s <GRAIL_DIR>/emacs/ ~/.emacs.grail
+    ln -s ~/code/emacs/grail.el ~/.emacs
+    ln -s ~/code/emacs/ ~/.emacs.grail
 
 Note: if you want to use slime you need to
 
-    cd <GRAIL_DIR>/emacs/dist/git/slime && make compile-swank
+    cd ~/code/grail/emacs/dist/git/slime && make compile-swank
 
 This should be enough to start grail on the console or in a GUI
 environment.
 
 Within grail you should take note of emacs/systems/:
 
--   macos.el
--   freebsd.el
--   windows.el
--   linux.el
+-   systems/
+    -   macos.el
+    -   freebsd.el
+    -   windows.el
+    -   linux.el
+-   hosts/
+    -   **hostname**.el
+-   users/
+    -   **user**.el
 
 These files will allow you to customize for different systems.
 
@@ -172,7 +175,7 @@ You can create d a directory "emacs/users/<username>.el" and that file
 will be loaded for that user.
 
 
-<a id="org9c6be69"></a>
+<a id="org3c31fb2"></a>
 
 ## Basic Use
 

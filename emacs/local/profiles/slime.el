@@ -23,10 +23,7 @@
 
   inferior-lisp-program (executable-find "sbcl")
 
-  slime-words-of-encouragement '("The name is Bond. James Bond."
-                                  "These are your father's parentheses. Elegant weapons from a more civilized age."
-                                  "We were on the edge of the desert when the Emacs took hold."
-                                  "Mine says: Desert Eagle ... .50") )
+  slime-words-of-encouragement words-of-encouragement)
 
 (defun slime/slime-candidates ()
   (slime-simple-completions ""))

@@ -24,7 +24,7 @@
 
 ;; registers
 
-(use-grail-profiles 0 "dwim-complete" "net-paste")
+(use-grail-profiles 0 "dwim-complete" "net-paste" "search")
 
 (use-grail-profiles 10 "activate-buffer-status")
 
@@ -183,5 +183,3 @@
 ;;----------------------------------------------------------------------
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
-
-

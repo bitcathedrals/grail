@@ -93,3 +93,19 @@
 	url = https://gitlab.com/emacs-geiser/chicken.git
 	branch = master
 	ignore = dirty
+[submodule "emacs/dist/git/htmlize"]
+	path = emacs/dist/git/htmlize
+	url = https://github.com/hniksic/emacs-htmlize.git
+	branch = master
+        ignore = dirty
+[submodule "emacs/dist/git/visual-regex"]
+	path = emacs/dist/git/visual-regex
+	url = https://github.com/benma/visual-regexp.el.git
+	branch = master
+        ignore = dirty
+[submodule "emacs/dist/git/visual-regex-steroids"]
+	path = emacs/dist/git/visual-regex-steroids
+	url = https://github.com/benma/visual-regexp-steroids.el.git
+	branch = master
+	ignore = dirty
+

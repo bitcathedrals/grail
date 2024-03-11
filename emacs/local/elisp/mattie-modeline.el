@@ -1,5 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
 
+(which-function-mode)
+
 (defun get-battery-buffer ()
   (get-buffer-create "*battery output*"))
 

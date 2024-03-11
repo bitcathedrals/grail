@@ -131,41 +131,55 @@
   (set-face-foreground 'cperl-nonoverridable-face "DeepSkyBlue4") )
 
 (defun display-faces-for-ediff ()
+  "display-faces-for-ediff
+
+   set the ediff graphical colors
+  "
+  (interactive)
   (let
     ((diff-bg-color "black")
-     (diff-bg-selected-color "grey15")
 
-     (diff-fg-color "grey60")
+     (diff-selected-bg "steel blue")
+     (diff-selected-fg "gold")
 
-     (diff-fine-bg "SkyBlue4")
-     (diff-fine-fg "yellow"))
+     (diff-odd-bg "dark slate grey")
+     (diff-odd-fg "black")
 
-    (set-face-background 'ediff-current-diff-A diff-bg-selected-color)
-    (set-face-foreground 'ediff-current-diff-A diff-fg-color)
+     (diff-even-bg "dark slate grey")
+     (diff-even-fg "black")
 
-    (set-face-background 'ediff-current-diff-B diff-bg-selected-color)
-    (set-face-foreground 'ediff-current-diff-B diff-fg-color)
+     (diff-fine-bg "linkColor")
+     (diff-fine-fg "black")
 
-    (set-face-background 'ediff-current-diff-C diff-bg-selected-color)
-    (set-face-foreground 'ediff-current-diff-C diff-fg-color)
+     (diff-merge-bg "turquoise3")
+     (diff-merge-fg "black"))
 
-    (set-face-background 'ediff-even-diff-A diff-bg-color)
-    (set-face-foreground 'ediff-even-diff-A diff-fg-color)
+    (set-face-background 'ediff-current-diff-A diff-selected-bg)
+    (set-face-foreground 'ediff-current-diff-A diff-selected-fg)
 
-    (set-face-background 'ediff-even-diff-B diff-bg-color)
-    (set-face-foreground 'ediff-even-diff-B diff-fg-color)
+    (set-face-background 'ediff-current-diff-B diff-selected-bg)
+    (set-face-foreground 'ediff-current-diff-B diff-selected-fg)
 
-    (set-face-background 'ediff-even-diff-C diff-bg-color)
-    (set-face-foreground 'ediff-even-diff-C diff-fg-color)
+    (set-face-background 'ediff-current-diff-C diff-selected-bg)
+    (set-face-foreground 'ediff-current-diff-C diff-selected-fg)
 
-    (set-face-background 'ediff-odd-diff-A diff-bg-color)
-    (set-face-foreground 'ediff-odd-diff-A diff-fg-color)
+    (set-face-background 'ediff-even-diff-A diff-even-bg)
+    (set-face-foreground 'ediff-even-diff-A diff-even-fg)
 
-    (set-face-background 'ediff-odd-diff-B diff-bg-color)
-    (set-face-foreground 'ediff-odd-diff-B diff-fg-color)
+    (set-face-background 'ediff-even-diff-B diff-even-bg)
+    (set-face-foreground 'ediff-even-diff-B diff-even-fg)
 
-    (set-face-background 'ediff-odd-diff-C diff-bg-color)
-    (set-face-foreground 'ediff-odd-diff-C diff-fg-color)
+    (set-face-background 'ediff-even-diff-C diff-even-bg)
+    (set-face-foreground 'ediff-even-diff-C diff-even-fg)
+
+    (set-face-background 'ediff-odd-diff-A diff-odd-bg)
+    (set-face-foreground 'ediff-odd-diff-A diff-odd-fg)
+
+    (set-face-background 'ediff-odd-diff-B diff-odd-bg)
+    (set-face-foreground 'ediff-odd-diff-B diff-odd-fg)
+
+    (set-face-background 'ediff-odd-diff-C diff-odd-bg)
+    (set-face-foreground 'ediff-odd-diff-C diff-odd-fg)
 
     (set-face-background 'ediff-fine-diff-A diff-fine-bg)
     (set-face-foreground 'ediff-fine-diff-A diff-fine-fg)
@@ -173,8 +187,11 @@
     (set-face-background 'ediff-fine-diff-B diff-fine-bg)
     (set-face-foreground 'ediff-fine-diff-B diff-fine-fg)
 
-    (set-face-background 'ediff-fine-diff-C diff-fine-bg)
-    (set-face-foreground 'ediff-fine-diff-C diff-fine-fg) ))
+    (set-face-background 'ediff-fine-diff-C diff-merge-bg)
+    (set-face-foreground 'ediff-fine-diff-C diff-merge-fg)
+
+    (setq-default ediff-split-window-function 'split-window-horizontally)
+    (setq-default ediff-merge-split-window-function 'split-window-horizontally) ))
 
 (defun display-faces-for-whitespace-mode ()
   (set-face-background 'whitespace-tab "red")
