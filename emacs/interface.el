@@ -2,6 +2,7 @@
 ;;----------------------------------------------------------------------
 ;; interface.el
 ;;----------------------------------------------------------------------
+(require 'custom-key)
 
 ;; get rid of that horrible dinging
 (setq ring-bell-function 'ignore)          ;; not only is this annoying it
@@ -43,4 +44,21 @@
 (fset 'yes-or-no-p 'y-or-n-p)                 ;; y/n instead of yes/no
 
 (put 'erase-buffer 'disabled nil)             ;; enable erase-buffer, no hand-holding.
+
+;; modern register interface
+(setq register-use-preview t)
+
+(defun reg-insert-buffer ()
+  "insert the current buffer into a register"
+  (interactive)
+  `(buffer .  ,(current-buffer)) )
+
+(custom-key-group "registers" "r" t
+  ("v" . view-register)
+  ("c" . copy-to-register)
+  ("a" . append-to-register)
+  ("i" . insert-register)
+  ("s" . point-to-register)
+  ("j" . jump-to-register)
+  ("b" . reg-insert-buffer) )
 
