@@ -54,6 +54,7 @@
     ((doc-string (keybindings-local-display group-name keymap)))
 
     (lambda ()
+      "help"
       (interactive)
 
       (switch-to-buffer
