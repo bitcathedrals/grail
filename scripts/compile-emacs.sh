@@ -4,6 +4,8 @@ GIT=$HOME/code/emacs
 
 case $1 in
   "linux")
+    TOOLS=$HOME/tools/local/
+
     doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
     test -d $GIT || mkdir -p $GIT
@@ -56,7 +58,6 @@ case $1 in
       exit 1
     fi
 
-    TOOLS=$HOME/tools/local/
     test -d $TOOLS || mkdir -p $TOOLS
 
     (cd $GIT && make install)
