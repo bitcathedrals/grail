@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 case $1 in
-  "compile")
+  "linux")
     doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
     GIT=$HOME/code/emacs
@@ -48,7 +48,7 @@ case $1 in
     cp desktop/emacs.desktop $LOCAL_DESKTOP/
     cp desktop/emacs-icon.png $HOME/tools/
   ;;
-  case "macos")
+  "macos")
     brew tap d12frosted/emacs-plus
     brew install emacs-plus --with-native-comp || exit 1
 
