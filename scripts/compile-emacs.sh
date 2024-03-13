@@ -37,10 +37,27 @@ case $1 in
       exit 1
     fi
 
+    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-xpm=no --with-gif=no && make && make install)
+    then
+      echo "compile ok."
+    else
+      echo "COMPILE FAILED!"
+      exit 1
+    fi
+
+    read -p "Proceed with emacs install? [y/n]: " proceed
+
+    if [[ $proceed = "y" ]]
+    then
+      echo ">>> proceeding with install!"
+    else
+      echo ">>> ABORT! exiting now!"
+      exit 1
+    fi
+
     TOOLS=$HOME/tools/local/
     test -d $TOOLS || mkdir -p $TOOLS
 
-    (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-xpm=no --with-gif=no && make && make install)
 
     LOCAL_DESKTOP=$HOME/.local/share/applications/
     test -d $LOCAL_DESKTOP || mkdir -p $LOCAL_DESKTOP
