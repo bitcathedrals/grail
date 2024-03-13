@@ -1,10 +1,11 @@
 #! /usr/bin/env bash
 
+GIT=$HOME/code/emacs
+
 case $1 in
   "linux")
     doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-    GIT=$HOME/code/emacs
     test -d $GIT || mkdir -p $GIT
     test -d $GIT/.git || git clone https://github.com/emacs-mirror/emacs.git $GIT
 
@@ -37,7 +38,7 @@ case $1 in
       exit 1
     fi
 
-    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-xpm=no --with-gif=no && make && make install)
+    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-xpm=no --with-gif=no && make bootstrap)
     then
       echo "compile ok."
     else
@@ -58,6 +59,7 @@ case $1 in
     TOOLS=$HOME/tools/local/
     test -d $TOOLS || mkdir -p $TOOLS
 
+    (cd $GIT && make install)
 
     LOCAL_DESKTOP=$HOME/.local/share/applications/
     test -d $LOCAL_DESKTOP || mkdir -p $LOCAL_DESKTOP
