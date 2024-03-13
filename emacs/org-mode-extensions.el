@@ -24,6 +24,15 @@
   (interactive)
   (org-babel-tangle))
 
+
+(defun org/mk-pdf ()
+  "org/mk-code
+
+   export to pdf
+  "
+  (interactive)
+  (org-latex-export-to-pdf))
+
 (defun tangle-non-interactive (file)
   (with-current-buffer (find-file-read-only file)
     (org-babel-tangle)
