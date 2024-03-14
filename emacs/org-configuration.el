@@ -13,7 +13,7 @@
 (setq org-latex-compiler "xelatex")
 (setq org-latex-pdf-process
       (list (concat "latexmk -"
-                    org-latex-compiler 
+                    org-latex-compiler
                     " -recorder -synctex=1 -bibtex-cond %b")))
 
 (setq org-latex-listings t)
@@ -25,13 +25,20 @@
         ("" "wrapfig" nil)
         ("" "rotating" nil)
         ("normalem" "ulem" t)
-        ("" "amsmath" t)
+;;        ("" "amsmath" t)
         ("" "textcomp" t)
         ("" "amssymb" t)
         ("" "capt-of" nil)
         ("" "hyperref" nil)))
 
 ;; I don't know how this works, pray.
+;; \\setmainfont{ETBembo RomanOSF}
+;; \\setsansfont[Scale=MatchLowercase]{Raleway}
+;; \\setmonofont[Scale=MatchLowercase]{Operator Mono SSm}
+;; \\allsectionsfont{\\sffamily}
+;; \\lstset{frame=single,aboveskip=1em,
+;; framesep=.5em,backgroundcolor=\\color{AliceBlue},
+;; rulecolor=\\color{LightSteelBlue},framerule=1pt}
 
 (setq org-latex-classes
 '(("article"
@@ -39,17 +46,10 @@
 \\PassOptionsToPackage{svgnames}{xcolor}
 \\documentclass[11pt]{article}
 \\usepackage{fontspec}
-\\setmainfont{ETBembo RomanOSF}
-\\setsansfont[Scale=MatchLowercase]{Raleway}
-\\setmonofont[Scale=MatchLowercase]{Operator Mono SSm}
 \\usepackage{sectsty}
-\\allsectionsfont{\\sffamily}
 \\usepackage{enumitem}
 \\setlist[description]{style=unboxed,font=\\sffamily\\bfseries}
 \\usepackage{listings}
-\\lstset{frame=single,aboveskip=1em,
-framesep=.5em,backgroundcolor=\\color{AliceBlue},
-rulecolor=\\color{LightSteelBlue},framerule=1pt}
 \\usepackage{xcolor}
 \\newcommand\\basicdefault[1]{\\scriptsize\\color{Black}\\ttfamily#1}
 \\lstset{basicstyle=\\basicdefault{\\spaceskip1em}}
