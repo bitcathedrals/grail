@@ -1,8 +1,17 @@
+(require 'custom-key)
+
+(defconst latex-output "Latex Output" t)
+(defconst latex-errors "Latex Errors" t)
+
 (require 'oc)
+
 (require 'oc-bibtex)
 (require 'org-ref)
+(require 'org-ref-helm)
 
-(require 'helm-bibtex)
+(setq
+  org-ref-completion-library 'org-ref-helm-cite
+  org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -14,35 +23,50 @@
    (java . t)) )
 
 (setq org-latex-compiler "xelatex")
+
 (setq org-latex-pdf-process
       (list
-        (concat "latexmk -"
+        (concat "latexmk -pdf %f"
           org-latex-compiler
-          " -recorder -synctex=1 -bibtex-cond %b")) )
+          " -recorder -synctex=1 -bibtex-cond %b")
+          "bibtext %b"
+          "xlatex -output-directory %o %f"
+          "bibtex %b"
+          "xlatex -output-directory %o %f"
+          "bibtext %b"
+          "xlatex -output-directory %o %f") )
 
-(setq org-latex-listings t)
+(setq org-cite-export-processors
+  '((latex biblatex) ))
+
+(setq
+  org-latex-listings t
+  org-use-sub-superscripts nil
+  org-export-with-sub-superscripts nil
+  org-cite-global-bibliography
+  `("bibliography.bib" ,(concat (getenv "HOME") "/code/compsci/bibliography.bib")) )
 
 (setq org-latex-default-packages-alist
-      '(("" "graphicx" t)
+      '(("" "inputenc" nil)
+        ("" "graphicx" t)
         ("" "grffile" t)
         ("" "longtable" nil)
         ("" "wrapfig" nil)
         ("" "rotating" nil)
         ("normalem" "ulem" t)
-;;        ("" "amsmath" t)
+        ("" "amsmath" t)
         ("" "textcomp" t)
         ("" "amssymb" t)
         ("" "capt-of" nil)
-        ("" "hyperref" nil)))
+        ("" "hyperref" nil)
+        ("biblatex" nil)
+        ("" "ulem" nil)) )
 
 ;; I don't know how this works, pray.
 ;; \\setmainfont{ETBembo RomanOSF}
 ;; \\setsansfont[Scale=MatchLowercase]{Raleway}
 ;; \\setmonofont[Scale=MatchLowercase]{Operator Mono SSm}
 ;; \\allsectionsfont{\\sffamily}
-;; \\lstset{frame=single,aboveskip=1em,
-;; framesep=.5em,backgroundcolor=\\color{AliceBlue},
-;; rulecolor=\\color{LightSteelBlue},framerule=1pt}
 
 (setq org-latex-classes
 '(("article"
@@ -57,6 +81,7 @@
 \\usepackage{xcolor}
 \\newcommand\\basicdefault[1]{\\scriptsize\\color{Black}\\ttfamily#1}
 \\lstset{basicstyle=\\basicdefault{\\spaceskip1em}}
+\\lstset{frame=single,aboveskip=1em, framesep=.5em,backgroundcolor=\\color{AliceBlue}, rulecolor=\\color{LightSteelBlue},framerule=1pt}
 \\lstset{literate=
     {§}{{\\S}}1
     {©}{{\\raisebox{.125ex}{\\copyright}\\enspace}}1
@@ -164,10 +189,25 @@
   (interactive)
   (org-latex-export-to-pdf))
 
+(defun org/mk-clean ()
+  (interactive)
+  (shell-command "latexmk -c"
+    (get-buffer-create latex-output t)
+    (get-buffer-create latex-errors t)) )
+
 (defun tangle-non-interactive (file)
   (with-current-buffer (find-file-read-only file)
     (org-babel-tangle)
 
     (message "compiled: %s -> %s" file (get-inspiration)) ))
 
+(defun org-mode-customize ()
+  (interactive)
 
+  (custom-key-group "org" "o" nil
+    ("c"  . org/mk-code)
+    ("p" . org/mk-pdf)
+    ("m" . org/mk-markdown)
+    ("i" . org/cite)) )
+
+(add-hook 'org-mode-hook 'org-mode-customize)
