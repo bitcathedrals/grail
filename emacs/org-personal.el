@@ -24,17 +24,30 @@
 
 (setq org-latex-compiler "xelatex")
 
+(defconst latex-directory "latex/")
+
+
+(defconst org-latex-bibtex "bibtext %b")
+
+          ;; org-latex-compiler
+          ;; " -recorder -synctex=1 -bibtex-cond %b")
+          ;; "bibtext %b"
+          ;;
+          ;; "bibtex %b"
+          ;; "xlatex -output-directory %o %f"
+          ;; "bibtext %b"
+          ;; "xlatex -output-directory %o %f")
+
 (setq org-latex-pdf-process
-      (list
-        (concat "latexmk -pdf %f"
-          org-latex-compiler
-          " -recorder -synctex=1 -bibtex-cond %b")
-          "bibtext %b"
-          "xlatex -output-directory %o %f"
-          "bibtex %b"
-          "xlatex -output-directory %o %f"
-          "bibtext %b"
-          "xlatex -output-directory %o %f") )
+  (list
+    (concat
+      "latexmk -pdf -pdfxe"
+      " -jobname=" latex-directory
+      " -xelatex"
+      " -bibtex -bibfudge"
+      " -gg"
+      " -recorder"
+      " %f")))
 
 (setq org-cite-export-processors
   '((latex biblatex) ))
@@ -187,11 +200,21 @@
    export to pdf
   "
   (interactive)
+
+  (unless (file-directory-p latex-directory)
+    (make-directory latex-directory t))
+
   (org-latex-export-to-pdf))
 
 (defun org/mk-clean ()
   (interactive)
   (shell-command "latexmk -c"
+    (get-buffer-create latex-output t)
+    (get-buffer-create latex-errors t)) )
+
+(defun org/pristine ()
+  (interactive)
+  (shell-command "latexmk -C"
     (get-buffer-create latex-output t)
     (get-buffer-create latex-errors t)) )
 
