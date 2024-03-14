@@ -2,6 +2,8 @@
 (require 'oc-bibtex)
 (require 'org-ref)
 
+(require 'helm-bibtex)
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)
