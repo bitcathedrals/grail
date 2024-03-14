@@ -22,35 +22,14 @@
    (lisp . t)
    (java . t)) )
 
-(setq org-latex-compiler "xelatex")
-
+(defconst org-latex-compiler "xelatex")
 (defconst latex-directory "latex/")
-
-
 (defconst org-latex-bibtex "bibtext %b")
 
-          ;; org-latex-compiler
-          ;; " -recorder -synctex=1 -bibtex-cond %b")
-          ;; "bibtext %b"
-          ;;
-          ;; "bibtex %b"
-          ;; "xlatex -output-directory %o %f"
-          ;; "bibtext %b"
-          ;; "xlatex -output-directory %o %f")
+;; -xelatex
+(setq org-latex-pdf-process (list "latexmk -pdfxe -bibtex-cond -g -gg -recorder %f"))
 
-(setq org-latex-pdf-process
-  (list
-    (concat
-      "latexmk -pdf -pdfxe"
-      " -jobname=" latex-directory
-      " -xelatex"
-      " -bibtex -bibfudge"
-      " -gg"
-      " -recorder"
-      " %f")))
-
-(setq org-cite-export-processors
-  '((latex biblatex) ))
+(setq org-cite-export-processors '((latex biblatex) ))
 
 (setq
   org-latex-listings t
@@ -59,27 +38,19 @@
   org-cite-global-bibliography
   `("bibliography.bib" ,(concat (getenv "HOME") "/code/compsci/bibliography.bib")) )
 
-(setq org-latex-default-packages-alist
-      '(("" "inputenc" nil)
-        ("" "graphicx" t)
-        ("" "grffile" t)
-        ("" "longtable" nil)
-        ("" "wrapfig" nil)
-        ("" "rotating" nil)
-        ("normalem" "ulem" t)
-        ("" "amsmath" t)
-        ("" "textcomp" t)
-        ("" "amssymb" t)
-        ("" "capt-of" nil)
-        ("" "hyperref" nil)
-        ("biblatex" nil)
-        ("" "ulem" nil)) )
-
-;; I don't know how this works, pray.
-;; \\setmainfont{ETBembo RomanOSF}
-;; \\setsansfont[Scale=MatchLowercase]{Raleway}
-;; \\setmonofont[Scale=MatchLowercase]{Operator Mono SSm}
-;; \\allsectionsfont{\\sffamily}
+(defconst org-latex-default-packages-alist
+  '(("" "inputenc" nil)
+    ("" "graphicx" t)
+    ("" "grffile" t)
+    ("" "longtable" nil)
+    ("" "wrapfig" nil)
+    ("" "rotating" nil)
+    ("normalem" "ulem" t)
+    ("" "amsmath" t)
+    ("" "amssymb" t)
+    ("" "capt-of" nil)
+    ("" "hyperref" nil)
+    ("" "biblatex" nil)))
 
 (setq org-latex-classes
 '(("article"
@@ -173,6 +144,9 @@
 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
 (defun org/cite ()
+  "org/cite
+
+  insert a citation"
   (interactive)
   (org-cite-insert))
 
@@ -184,7 +158,6 @@
   (interactive)
   (org-md-export-to-markdown))
 
-
 (defun org/mk-code ()
   "org/mk-code
 
@@ -192,7 +165,6 @@
   "
   (interactive)
   (org-babel-tangle))
-
 
 (defun org/mk-pdf ()
   "org/mk-code
@@ -207,18 +179,28 @@
   (org-latex-export-to-pdf))
 
 (defun org/mk-clean ()
+  "org/mk-clean
+
+  clean the intermediary files"
   (interactive)
   (shell-command "latexmk -c"
     (get-buffer-create latex-output t)
     (get-buffer-create latex-errors t)) )
 
 (defun org/pristine ()
+  "org/pristine
+
+   clean all temp files and all output files."
   (interactive)
   (shell-command "latexmk -C"
     (get-buffer-create latex-output t)
     (get-buffer-create latex-errors t)) )
 
 (defun tangle-non-interactive (file)
+  "tangle-non-interactive
+   command to generate code designed for emacsclient eval.
+   "
+
   (with-current-buffer (find-file-read-only file)
     (org-babel-tangle)
 
@@ -231,6 +213,8 @@
     ("c"  . org/mk-code)
     ("p" . org/mk-pdf)
     ("m" . org/mk-markdown)
-    ("i" . org/cite)) )
+    ("i" . org/cite)
+    ("d" . org/mk-clean)
+    ("D" . org/pristine)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
