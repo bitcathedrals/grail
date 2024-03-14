@@ -12,8 +12,23 @@
 (require 'org-ref-helm)
 
 (setq
-  org-ref-completion-library 'org-ref-helm-cite
-  org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex)
+  org-ref-completion-library 'org-ref-insert-cite-link)
+
+(require 'bibtex)
+
+(setq bibtex-autokey-year-length 4
+      bibtex-autokey-name-year-separator "-"
+      bibtex-autokey-year-title-separator "-"
+      bibtex-autokey-titleword-separator "-"
+      bibtex-autokey-titlewords 2
+      bibtex-autokey-titlewords-stretch 1
+      bibtex-autokey-titleword-length 5)
+
+(define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)
+
+;; (setq
+;;   org-ref-completion-library 'org-ref-helm-cite
+;;   org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -206,7 +221,6 @@
   "tangle-non-interactive
    command to generate code designed for emacsclient eval.
    "
-
   (with-current-buffer (find-file-read-only file)
     (org-babel-tangle)
 
@@ -219,7 +233,7 @@
     ("c"  . org/mk-code)
     ("p" . org/mk-pdf)
     ("m" . org/mk-markdown)
-    ("i" . org/cite)
+    ("i" . org-ref-insert-cite-link)
     ("d" . org/mk-clean)
     ("D" . org/pristine)
     ("b" . helm-bibtex)) )
