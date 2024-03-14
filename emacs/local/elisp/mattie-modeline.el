@@ -131,7 +131,10 @@
 
        mattie-modeline-battery-level
 
-       ">"))
+       " /"
+
+       (:eval (car (vc-git-branches)))
+       ))
 
   (mattie-modeline-find-battery-command)
   (mattie-modeline-battery-set-timer)
