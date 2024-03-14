@@ -169,3 +169,7 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/git/helm-frame"]
+	path = emacs/dist/git/helm-frame
+	url = https://github.com/chee/helm-frame.git
+	branch = master
