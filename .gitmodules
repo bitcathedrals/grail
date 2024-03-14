@@ -109,3 +109,63 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/git/org-ref"]
+	path = emacs/dist/git/org-ref
+	url = https://github.com/jkitchin/org-ref.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/f"]
+	path = emacs/dist/git/f
+	url = https://github.com/rejeep/f.el.git
+	branch = master
+        ignore = dirty
+
+[submodule "emacs/dist/git/parsebib"]
+	path = emacs/dist/git/parsebib
+	url = https://github.com/joostkremers/parsebib.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/helm-bibtex"]
+	path = emacs/dist/git/helm-bibtex
+	url = https://github.com/tmalsburg/helm-bibtex.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/biblio"]
+	path = emacs/dist/git/biblio
+	url = https://github.com/cpitclaudel/biblio.el.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/hydra"]
+	path = emacs/dist/git/hydra
+	url = https://github.com/abo-abo/hydra.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/citeproc"]
+	path = emacs/dist/git/citeproc
+	url = https://github.com/andras-simonyi/citeproc-el.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/queue"]
+	path = emacs/dist/git/queue
+	url = https://github.com/emacs-straight/queue.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/avy"]
+	path = emacs/dist/git/avy
+	url = https://github.com/abo-abo/avy.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/request"]
+	path = emacs/dist/git/request
+	url = https://github.com/tkf/emacs-request.git
+	branch = master
+	ignore = dirty
+

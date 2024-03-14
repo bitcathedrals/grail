@@ -1,5 +1,6 @@
 (require 'oc)
 (require 'oc-bibtex)
+(require 'org-ref)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
