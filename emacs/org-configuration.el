@@ -12,9 +12,10 @@
 
 (setq org-latex-compiler "xelatex")
 (setq org-latex-pdf-process
-      (list (concat "latexmk -"
-                    org-latex-compiler
-                    " -recorder -synctex=1 -bibtex-cond %b")))
+      (list
+        (concat "latexmk -"
+          org-latex-compiler
+          " -recorder -synctex=1 -bibtex-cond %b")) )
 
 (setq org-latex-listings t)
 
