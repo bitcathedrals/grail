@@ -7,6 +7,8 @@
 
 (require 'oc-bibtex)
 (require 'org-ref)
+
+(require 'helm-bibtex)
 (require 'org-ref-helm)
 
 (setq
@@ -37,6 +39,10 @@
   org-export-with-sub-superscripts nil
   org-cite-global-bibliography
   `("bibliography.bib" ,(concat (getenv "HOME") "/code/compsci/bibliography.bib")) )
+
+(setq
+  bibtex-completion-bibliography org-cite-global-bibliography
+  org-cite-follow-processor 'helm-bibtex-org-cite-follow)
 
 (defconst org-latex-default-packages-alist
   '(("" "inputenc" nil)
@@ -215,6 +221,7 @@
     ("m" . org/mk-markdown)
     ("i" . org/cite)
     ("d" . org/mk-clean)
-    ("D" . org/pristine)) )
+    ("D" . org/pristine)
+    ("b" . helm-bibtex)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
