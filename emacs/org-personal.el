@@ -205,11 +205,11 @@
 
   clean the intermediary files"
   (interactive)
-  (shell-command "latexmk -c"
+  (shell-command "latexmk -c && rm *.tex *.bbl *.log"
     (get-buffer-create latex-output t)
     (get-buffer-create latex-errors t)) )
 
-(defun org/pristine ()
+(defun org/mk-pristine ()
   "org/pristine
 
    clean all temp files and all output files."
