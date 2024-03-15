@@ -48,4 +48,56 @@
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
   (ruler-mode))
 
- (provide 'programming-generic)
+(defun get-clean-report-buffer ()
+  (let
+    ((report-buffer (get-buffer-create "*report output*")))
+
+    (with-current-buffer report-buffer
+      (erase-buffer)
+      report-buffer) ))
+
+(defun get-report-buffer ()
+  (get-buffer-create "*report output*"))
+
+(defconst conventional-list '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta"))
+
+(defun insert-report (type)
+  (interactive (list (completing-read
+                       "commit type|fix: " ;; prompt
+                       conventional-list ;; completions
+                       nil ;; predicate
+                       t ;; require match
+                       nil ;; initial input
+                       nil ;; history
+                       "fix" ;; default value
+                       nil))) ;; inherit input method
+  (let*
+    ((initial (if (string-equal type "sync")
+                (concat "(sync) [" (iso8601-string) "] ")
+                (concat "(" type ")")))
+     (message (read-from-minibuffer
+                "message: " ;; prompt
+                (concat initial ": ")  ;; initial value
+                nil ;; keymap
+                nil  ;; read - dont eval as lisp
+                nil  ;; history
+                "(fix)" ;; default value
+                nil)) ;; inherit input method ? nope don't care.
+      (default-directory (vc-root-dir)) )
+
+    (call-process
+      (concat (vc-root-dir) "/py.sh") ;; program
+      nil ;; infile
+      (get-clean-report-buffer) ;; output buffer
+      nil ;; don't display
+      "report" ;; report command
+      message) ;; message arg
+
+    (if (yes-or-no-p "view? yes = view|no = insert")
+      (pop-to-buffer (get-report-buffer))
+      (let
+        ((report-contents (with-current-buffer (get-report-buffer)
+                            (buffer-substring (point-min) (point-max))) ))
+        (insert report-contents) )) ))
+
+(provide 'programming-generic)

@@ -23,3 +23,12 @@
           (maybe-add-path path path-list)))
     sub-dirs))
 
+(defun iso8601-string ()
+  "iso8601-string
+
+   return a iso8601-string"
+  (concat
+    (format-time-string "%Y-%m-%dT%T")
+    ((lambda (x)
+       (concat (substring x 0 3) ":" (substring x 3 5)))
+      (format-time-string "%z"))) )
