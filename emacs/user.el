@@ -166,17 +166,17 @@
   ("m" . helm-man-woman)
   ("k" . helm-show-kill-ring) )
 
-(add-hook 'helm-after-action-hook 'helm-frame-delete)
-(add-hook 'helm-cleanup-hook 'helm-frame-delete)
+;; (add-hook 'helm-after-action-hook 'helm-frame-delete)
+;; (add-hook 'helm-cleanup-hook 'helm-frame-delete)
 
-(defun switch-to-helm-frame()
-  "switch-to-helm-frame
+;; (defun switch-to-helm-frame()
+;;   "switch-to-helm-frame
 
-   automatically switch to the frame created by helm
-  "
-  (select-frame (helm-frame-window) t))
+;;    automatically switch to the frame created by helm
+;;   "
+;;   (select-frame (helm-frame-window) t))
 
-(setq helm-split-window-preferred-function 'switch-to-helm-frame)
+;; (setq helm-split-window-preferred-function 'switch-to-helm-frame)
 
 ;;----------------------------------------------------------------------
 ;; read/write perm handling
