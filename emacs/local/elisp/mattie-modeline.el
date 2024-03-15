@@ -131,7 +131,7 @@
 
        mattie-modeline-battery-level
 
-       " /"
+       "> /"
 
        (:eval (car (vc-git-branches)))
        ))
