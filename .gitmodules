@@ -173,3 +173,4 @@
 	path = emacs/dist/git/helm-frame
 	url = https://github.com/chee/helm-frame.git
 	branch = master
+  ignore = dirty
