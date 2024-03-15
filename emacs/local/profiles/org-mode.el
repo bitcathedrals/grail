@@ -1,20 +1,16 @@
-(require 'custom-key)
+;;
+;; org-mode configuration
+;;
+
+(bibtex-set-dialect 'biblatex)
 
 (defconst latex-output "Latex Output" t)
 (defconst latex-errors "Latex Errors" t)
 
-(require 'oc)
-
-(require 'oc-bibtex)
-(require 'org-ref)
-
-(require 'helm-bibtex)
-(require 'org-ref-helm)
+(require 'custom-key)
 
 (setq
   org-ref-completion-library 'org-ref-insert-cite-link)
-
-(require 'bibtex)
 
 (setq bibtex-autokey-year-length 4
       bibtex-autokey-name-year-separator "-"
@@ -23,8 +19,6 @@
       bibtex-autokey-titlewords 2
       bibtex-autokey-titlewords-stretch 1
       bibtex-autokey-titleword-length 5)
-
-(define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)
 
 ;; (setq
 ;;   org-ref-completion-library 'org-ref-helm-cite
@@ -40,10 +34,7 @@
    (java . t)) )
 
 (defconst org-latex-compiler "xelatex")
-(defconst latex-directory "latex/")
-(defconst org-latex-bibtex "bibtext %b")
 
-;; -xelatex
 (setq org-latex-pdf-process (list "latexmk -pdfxe -bibtex-cond -g -gg -recorder %f"))
 
 (setq org-cite-export-processors '((latex biblatex) ))
@@ -72,7 +63,7 @@
     ("" "amssymb" t)
     ("" "capt-of" nil)
     ("" "hyperref" nil)
-    ("" "biblatex" t)))
+    ("backend=biber" "biblatex" t)))
 
 (setq org-latex-classes
 '(("article"
@@ -183,7 +174,7 @@
 (defun org/mk-code ()
   "org/mk-code
 
-   generate the source code from the org file
+   tangle: generate the source code from the org file
   "
   (interactive)
   (org-babel-tangle))
@@ -196,9 +187,6 @@
   (interactive)
 
   (org/mk-clean)
-
-  (unless (file-directory-p latex-directory)
-    (make-directory latex-directory t))
 
   (org-latex-export-to-pdf))
 
@@ -216,6 +204,9 @@
 
    clean all temp files and all output files."
   (interactive)
+
+  (org-mk-clean)
+
   (shell-command "latexmk -C"
     (get-buffer-create latex-output t)
     (get-buffer-create latex-errors t)) )
@@ -233,12 +224,15 @@
   (interactive)
 
   (custom-key-group "org" "o" nil
-    ("c"  . org/mk-code)
+    ("t"  . org/mk-code)
     ("p" . org/mk-pdf)
     ("m" . org/mk-markdown)
     ("i" . org-ref-insert-cite-link)
-    ("d" . org/mk-clean)
-    ("D" . org/pristine)
+    ("c" . org/mk-clean)
+    ("C" . org/mk-pristine)
+    ("a" . org-ref-bibtex-hydra/body)
     ("b" . helm-bibtex)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
+
+(provide 'profile/org-mode)
