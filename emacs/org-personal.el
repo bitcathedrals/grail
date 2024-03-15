@@ -195,6 +195,8 @@
   "
   (interactive)
 
+  (org/mk-clean)
+
   (unless (file-directory-p latex-directory)
     (make-directory latex-directory t))
 
