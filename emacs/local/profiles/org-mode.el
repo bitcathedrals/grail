@@ -226,11 +226,10 @@
   (custom-key-group "org" "o" nil
     ("t"  . org/mk-code)
     ("p" . org/mk-pdf)
-    ("m" . org/mk-markdown)
     ("i" . org-ref-insert-cite-link)
     ("c" . org/mk-clean)
     ("C" . org/mk-pristine)
-    ("a" . org-ref-bibtex-hydra/body)
+    ("m" . org-ref-bibtex-hydra/body) ;; main menu
     ("b" . helm-bibtex)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
