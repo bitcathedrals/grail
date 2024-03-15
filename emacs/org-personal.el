@@ -72,7 +72,7 @@
     ("" "amssymb" t)
     ("" "capt-of" nil)
     ("" "hyperref" nil)
-    ("" "biblatex" nil)))
+    ("" "biblatex" t)))
 
 (setq org-latex-classes
 '(("article"
