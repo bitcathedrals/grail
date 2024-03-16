@@ -131,41 +131,55 @@
   (set-face-foreground 'cperl-nonoverridable-face "DeepSkyBlue4") )
 
 (defun display-faces-for-ediff ()
+  "display-faces-for-ediff
+
+   set the ediff graphical colors
+  "
+  (interactive)
   (let
     ((diff-bg-color "black")
-     (diff-bg-selected-color "grey15")
 
-     (diff-fg-color "grey60")
+     (diff-selected-bg "steel blue")
+     (diff-selected-fg "gold")
 
-     (diff-fine-bg "SkyBlue4")
-     (diff-fine-fg "black"))
+     (diff-odd-bg "dark slate grey")
+     (diff-odd-fg "black")
 
-    (set-face-background 'ediff-current-diff-A diff-bg-selected-color)
-    (set-face-foreground 'ediff-current-diff-A diff-fg-color)
+     (diff-even-bg "dark slate grey")
+     (diff-even-fg "black")
 
-    (set-face-background 'ediff-current-diff-B diff-bg-selected-color)
-    (set-face-foreground 'ediff-current-diff-B diff-fg-color)
+     (diff-fine-bg "linkColor")
+     (diff-fine-fg "black")
 
-    (set-face-background 'ediff-current-diff-C diff-bg-selected-color)
-    (set-face-foreground 'ediff-current-diff-C diff-fg-color)
+     (diff-merge-bg "turquoise3")
+     (diff-merge-fg "black"))
 
-    (set-face-background 'ediff-even-diff-A diff-bg-color)
-    (set-face-foreground 'ediff-even-diff-A diff-fg-color)
+    (set-face-background 'ediff-current-diff-A diff-selected-bg)
+    (set-face-foreground 'ediff-current-diff-A diff-selected-fg)
 
-    (set-face-background 'ediff-even-diff-B diff-bg-color)
-    (set-face-foreground 'ediff-even-diff-B diff-fg-color)
+    (set-face-background 'ediff-current-diff-B diff-selected-bg)
+    (set-face-foreground 'ediff-current-diff-B diff-selected-fg)
 
-    (set-face-background 'ediff-even-diff-C diff-bg-color)
-    (set-face-foreground 'ediff-even-diff-C diff-fg-color)
+    (set-face-background 'ediff-current-diff-C diff-selected-bg)
+    (set-face-foreground 'ediff-current-diff-C diff-selected-fg)
 
-    (set-face-background 'ediff-odd-diff-A diff-bg-color)
-    (set-face-foreground 'ediff-odd-diff-A diff-fg-color)
+    (set-face-background 'ediff-even-diff-A diff-even-bg)
+    (set-face-foreground 'ediff-even-diff-A diff-even-fg)
 
-    (set-face-background 'ediff-odd-diff-B diff-bg-color)
-    (set-face-foreground 'ediff-odd-diff-B diff-fg-color)
+    (set-face-background 'ediff-even-diff-B diff-even-bg)
+    (set-face-foreground 'ediff-even-diff-B diff-even-fg)
 
-    (set-face-background 'ediff-odd-diff-C diff-bg-color)
-    (set-face-foreground 'ediff-odd-diff-C diff-fg-color)
+    (set-face-background 'ediff-even-diff-C diff-even-bg)
+    (set-face-foreground 'ediff-even-diff-C diff-even-fg)
+
+    (set-face-background 'ediff-odd-diff-A diff-odd-bg)
+    (set-face-foreground 'ediff-odd-diff-A diff-odd-fg)
+
+    (set-face-background 'ediff-odd-diff-B diff-odd-bg)
+    (set-face-foreground 'ediff-odd-diff-B diff-odd-fg)
+
+    (set-face-background 'ediff-odd-diff-C diff-odd-bg)
+    (set-face-foreground 'ediff-odd-diff-C diff-odd-fg)
 
     (set-face-background 'ediff-fine-diff-A diff-fine-bg)
     (set-face-foreground 'ediff-fine-diff-A diff-fine-fg)
@@ -173,8 +187,11 @@
     (set-face-background 'ediff-fine-diff-B diff-fine-bg)
     (set-face-foreground 'ediff-fine-diff-B diff-fine-fg)
 
-    (set-face-background 'ediff-fine-diff-C diff-fine-bg)
-    (set-face-foreground 'ediff-fine-diff-C diff-fine-fg) ))
+    (set-face-background 'ediff-fine-diff-C diff-merge-bg)
+    (set-face-foreground 'ediff-fine-diff-C diff-merge-fg)
+
+    (setq-default ediff-split-window-function 'split-window-vertically)
+    (setq-default ediff-merge-split-window-function 'split-window-vertically) ))
 
 (defun display-faces-for-whitespace-mode ()
   (set-face-background 'whitespace-tab "red")
@@ -188,15 +205,6 @@
 
   (set-face-attribute 'whitespace-trailing nil :underline t)
   (set-face-attribute 'whitespace-trailing nil :inverse-video nil))
-
-(defun display-faces-for-web-mode ()
-  (set-face-background 'web-mode-current-element-highlight-face "grey20")
-
-  ;; language syntax is the darkest shade of blue
-  (set-face-foreground 'web-mode-doctype-face         "DeepSkyBlue4")
-  (set-face-foreground 'web-mode-html-tag-face        "SkyBlue3")
-  (set-face-foreground 'web-mode-html-attr-name-face  "aquamarine3")
-  (set-face-foreground 'web-mode-html-attr-value-face "grey50") )
 
 (defun display-faces-for-helm ()
   (set-face-background 'helm-source-header "black")
@@ -225,14 +233,26 @@
   (set-face-foreground 'term "DarkOrange2") )
 
 (defun display-faces-graphical ()
-  (eval-after-load 'cperl-mode '(display-faces-for-cperl))
-  (eval-after-load 'ediff-mode '(display-faces-for-ediff))
-  (eval-after-load 'whitespace-mode '(display-faces-for-whitespace-mode))
-  (eval-after-load 'web-mode '(display-faces-for-web-mode))
-  (eval-after-load 'helm '(display-faces-for-helm))
-  (eval-after-load 'mic-paren '(display-faces-for-paren))
-  (eval-after-load 'flyspell '(display-faces-for-flyspell))
-  (eval-after-load 'term '(display-faces-for-term)) )
+  (require 'cperl-mode)
+  (display-faces-for-cperl)
+
+  (require 'ediff)
+  (display-faces-for-ediff)
+
+  (require 'whitespace)
+  (display-faces-for-whitespace-mode)
+
+  (require 'helm)
+  (display-faces-for-helm)
+
+  (require 'mic-paren)
+  (display-faces-for-paren)
+
+  (require 'flyspell)
+  (display-faces-for-flyspell)
+
+  (require 'term)
+  (display-faces-for-term) )
 
 (defun grail-load-graphical (frame)
   "grail-load-display
@@ -255,27 +275,29 @@
 
     (grail-set-font (grail-build-font frame))
     (grail-set-transparency grail-transparency)
-    (grail-default-transparency grail-transparency) ))
+    (grail-default-transparency grail-transparency)
+
+    (display-faces-graphical)
+
+    (add-hook 'after-make-frame-functions
+      (lambda (frame)
+        (grail-set-font (grail-build-font frame))) )
+
+    (set-face-background 'default codermattie-bg-color)
+    (set-face-foreground 'default "grey55")
+
+    (display-faces-general)
+    (display-mic-paren) ))
 
 (defun grail-reload-graphical ()
   "command to reload the graphical configuration"
   (interactive)
-  (grail-load-graphcial (selected-frame)) )
+  (grail-load-graphical (selected-frame)) )
 
 (defun grail-set-font (font-spec)
   (interactive "sFont Spec \"<family> <size>\": ")
 
   (set-frame-font font-spec nil t t))
-
-(add-hook 'after-make-frame-functions
-  (lambda (frame)
-    (grail-set-font (grail-build-font frame))) )
-
-(set-face-background 'default codermattie-bg-color)
-(set-face-foreground 'default "grey55")
-
-(display-faces-general)
-(display-mic-paren)
 
 (defun grail-set-transparency (percent)
   (interactive "nEnter Percent: ")

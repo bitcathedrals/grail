@@ -305,18 +305,6 @@
 (defun grail-try-user-elisp ( path )
   (grail-try-elisp (grail-user-path path)) )
 
-;; homebrew is now in the user dir
-
-(defun add-homebrew ()
-  (let
-    ((brew-dir (concat (getenv "HOME") "/homebrew/")))
-
-    (mapcar
-      (lambda ( bin-dir )
-        (if (file-directory-p (concat brew-dir bin-dir))
-          (setq exec-path (cons (concat brew-dir bin-dir) exec-path)) ))
-      '("bin" "sbin")) ))
-
 ;;
 ;; Loading Entry Point
 ;;
@@ -324,8 +312,6 @@
 (grail-ignore
   "Grail Core"
   "Grail Loading...."
-
-  (add-homebrew)
 
   (grail-fail
     "grail elisp-root"
@@ -420,6 +406,9 @@
   (defvar grail-font-family nil
     "a list of preferred font families")
 
+  (defvar grail-config-load-ordered nil
+    "a list of user-elisp files to load in order")
+
   ;;----------------------------------------------------------------------
   ;; load grail-load
   ;;
@@ -476,6 +465,16 @@
     (grail-report-info "grail" "profile loaded" "grail-profile"))
 
   ;;
+  ;; make elisp available early
+  ;;
+
+  (grail-ignore
+    "Load Terminal Display"
+    "Configure the display for Terminals"
+
+    (grail-try-user-elisp "elisp"))
+
+  ;;
   ;; Host specific adaptation
   ;;
 
@@ -503,12 +502,6 @@
     (grail-try-user-elisp
       (concat "users/" (user-login-name))) )
 
-  ;;
-  ;; load the user configuration elisp
-  ;;
-
-  (defconst grail-config-load-ordered '("elisp.el"))
-
   (defconst grail-config-load-masked '("grail.el"
                                        "grail-load.el"
                                        "grail-profile.el"
@@ -519,7 +512,7 @@
 
   (grail-ignore
     "user-elisp loading"
-    "pre-defined user elisp files"
+
 
     (mapc
       (lambda ( ordered-config )

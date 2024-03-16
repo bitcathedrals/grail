@@ -1,10 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;
-;; rest client
-;;
-(require 'cl)
-
 (defun rest-buffer ( url )
   (interactive "sURL:")
 

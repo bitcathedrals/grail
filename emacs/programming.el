@@ -1,10 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
+
 ;; programming.el
-;;
-;; programming configuration including templates,merging, highlighting,
-;; completion etc.
-;;----------------------------------------------------------------------
+
 (require 'merging)
 (require 'ext-merging)
 
@@ -14,22 +11,21 @@
 
 (require 'borg-repl)
 
-;;----------------------------------------------------------------------
+(setq vc-follow-symlinks t)
+
+
 ;; indentation
-;;----------------------------------------------------------------------
 
 ;; disable electric stuff to avoid problems with my more sophisticated
 ;; modes
 
 (electric-indent-mode 0)
 
-;;----------------------------------------------------------------------
 ;; programming packages not dependent on third party support
-;;----------------------------------------------------------------------
-
-;; higher level functionality
 
 (use-grail-profiles 0 "code-highlighting")
+
+;; higher level functionality
 
 (use-grail-profiles 1 "emacs-lisp" "common-lisp" "scheme" "shell-scripting")
 
@@ -37,9 +33,9 @@
 
 (use-grail-profiles 3 "slime")
 
-;;----------------------------------------------------------------------
+
 ;;                          version control
-;;----------------------------------------------------------------------
+
 (require 'magit)
 
 ;; refresh after edit
@@ -64,8 +60,6 @@
 
   ("r" . magit-ediff-resolve-all)
   ("p" . magit-push))
-
-(which-function-mode)
 
 ;;----------------------------------------------------------------------
 ;; C/C++ common

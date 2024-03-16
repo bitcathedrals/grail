@@ -1,8 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; code-documentation
-;;----------------------------------------------------------------------
 (require 'user-browser)
 
 (defvar-local documentation-buffer-name nil)

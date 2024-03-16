@@ -1,9 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;
-;; tool-wrapper.el
-;;
-
 (defun tool-wrapper/invoke-binding ( binding )
   (if (commandp binding)
     (let
