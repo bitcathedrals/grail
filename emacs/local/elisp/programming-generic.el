@@ -61,6 +61,10 @@
 
 (defconst conventional-list '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta"))
 
+(defun insert-sync (module)
+  (interactive "senter syncd module: ")
+  (insert (concat "(sync) [" (iso8601-string) "] syncd: " module)) )
+
 (defun insert-report (type)
   (interactive (list (completing-read
                        "commit type|fix: " ;; prompt
