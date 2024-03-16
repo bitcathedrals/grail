@@ -102,6 +102,6 @@
       (let
         ((report-contents (with-current-buffer (get-report-buffer)
                             (buffer-substring (point-min) (point-max))) ))
-        (insert report-contents) )) ))
+        (insert (concat message "\n" report-contents)) )) ))
 
 (provide 'programming-generic)
