@@ -89,19 +89,24 @@
                 nil)) ;; inherit input method ? nope don't care.
       (default-directory (vc-root-dir)) )
 
-    (call-process
-      (concat (vc-root-dir) "/py.sh") ;; program
-      nil ;; infile
-      (get-clean-report-buffer) ;; output buffer
-      nil ;; don't display
-      "report" ;; report command
-      message) ;; message arg
+    (let
+      ((report-type (if (yes-or-no-p "release? yes = release|no = status ")
+                      "release-report"
+                      "status-report")))
+      (call-process
+        (concat (vc-root-dir) "/py.sh") ;; program
+        nil ;; infile
+        (get-clean-report-buffer) ;; output buffer
+        nil ;; don't display
+        report-type)) ;; report command
 
     (if (yes-or-no-p "view? yes = view|no = insert")
       (pop-to-buffer (get-report-buffer))
       (let
         ((report-contents (with-current-buffer (get-report-buffer)
                             (buffer-substring (point-min) (point-max))) ))
-        (insert (concat type " " message "\n" report-contents)) )) ))
+        (if (string-empty-p report-contents)
+          (message "insert-report: no report output")
+          (insert (concat type " " message "\n" report-contents))) )) ))
 
 (provide 'programming-generic)
