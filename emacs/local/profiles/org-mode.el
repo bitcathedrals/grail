@@ -84,6 +84,14 @@
 \\usepackage{lastpage}
 \\usepackage{parskip}
 \\usepackage[nodayofweek]{datetime}
+\\usepackage{titling}
+
+\\pretitle{\\begin{center}\\Large\\bfseries}
+\\posttitle{\\par\\end{center}}
+\\preauthor{\\begin{center}\\Large}
+\\postauthor{\\end{center}}
+\\predate{\\begin{center}}
+\\postdate{\\end{center}}
 
 \\newdateformat{mydate}{\\twodigit{\\THEDAY}{ }\\shortmonthname[\\THEMONTH], \\THEYEAR}
 
