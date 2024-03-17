@@ -63,7 +63,7 @@
 
 (defun insert-sync (module)
   (interactive "senter syncd module: ")
-  (insert (concat "(sync) [" (iso8601-string) "] syncd: " module)) )
+  (insert (concat "(sync) [" (iso8601-string) "] sync: " module)) )
 
 (defun insert-report (type)
   (interactive (list (completing-read
