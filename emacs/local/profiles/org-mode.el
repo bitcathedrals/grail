@@ -77,7 +77,7 @@
 '(("article"
 "\\RequirePackage{fix-cm}
 \\PassOptionsToPackage{svgnames}{xcolor}
-\\documentclass[11pt]{article}
+\\documentclass[12pt]{article}
 \\usepackage{fontspec}
 \\usepackage{sectsty}
 \\usepackage{enumitem}
