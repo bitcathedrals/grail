@@ -65,6 +65,14 @@
     ("" "hyperref" nil)
     ("backend=biber" "biblatex" t)))
 
+;; \\pagenumbering{arabic}
+
+;; \\fancyhead[RO,LE]{\textbf{{PythonSh}}
+;; \\fancyfoot{} % clear all footer fields
+;; \\fancyfoot[LE,RO]{\thepage}
+; \\fancyfoot[LO,CE]{GaugeSecurity LLC}
+
+
 (setq org-latex-classes
 '(("article"
 "\\RequirePackage{fix-cm}
@@ -76,7 +84,21 @@
 \\setlist[description]{style=unboxed,font=\\sffamily\\bfseries}
 \\usepackage{listings}
 \\usepackage{xcolor}
-\\pagenumbering{arabic}
+
+\\usepackage{fancyhdr}
+\\usepackage{lastpage}
+\\usepackage[nodayofweek]{datetime}
+
+\\newdateformat{mydate}{\\twodigit{\\THEDAY}{ }\\shortmonthname[\\THEMONTH], \\THEYEAR}
+
+\\fancyhf{}
+\\pagestyle{fancy}
+\\renewcommand{\\headrulewidth}{0pt}
+
+\\lfoot{\\today}
+\\cfoot{\\thepage \\hspace{1pt}/\\pageref{LastPage}}
+\\rfoot{GaugeSecurity LLC}
+
 \\newcommand\\basicdefault[1]{\\scriptsize\\color{Black}\\ttfamily#1}
 \\lstset{basicstyle=\\basicdefault{\\spaceskip1em}}
 \\lstset{frame=single,aboveskip=1em, framesep=.5em,backgroundcolor=\\color{AliceBlue}, rulecolor=\\color{LightSteelBlue},framerule=1pt}
