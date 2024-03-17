@@ -76,6 +76,7 @@
 \\setlist[description]{style=unboxed,font=\\sffamily\\bfseries}
 \\usepackage{listings}
 \\usepackage{xcolor}
+\\pagenumbering{arabic}
 \\newcommand\\basicdefault[1]{\\scriptsize\\color{Black}\\ttfamily#1}
 \\lstset{basicstyle=\\basicdefault{\\spaceskip1em}}
 \\lstset{frame=single,aboveskip=1em, framesep=.5em,backgroundcolor=\\color{AliceBlue}, rulecolor=\\color{LightSteelBlue},framerule=1pt}
