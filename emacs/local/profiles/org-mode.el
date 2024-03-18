@@ -305,5 +305,6 @@
     ("b" . helm-bibtex)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
+(add-hook 'org-mode-hook 'flyspell-mode-on)
 
 (provide 'profile/org-mode)
