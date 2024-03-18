@@ -44,10 +44,15 @@
   org-use-sub-superscripts nil
   org-export-with-sub-superscripts nil
   org-cite-global-bibliography
-  (list (concat (getenv "HOME") "/code/compsci/bibliography.bib")
-        (concat (getenv "HOME") "/code/personal/philosophy.bib")) )
+  (list
+    (concat (getenv "HOME") "/code/compsci/bibliography.bib")
+    (concat (getenv "HOME") "/code/personal/philosophy.bib")
+    (concat (getenv "HOME") "/code/personal/economics.bib")
+    (concat (getenv "HOME") "/code/personal/reference.bib")
+    (concat (getenv "HOME") "/code/personal/fiction.bib")
+    (concat (getenv "HOME") "/code/personal/scifi.bib")
+    (concat (getenv "HOME") "/code/personal/biography.bib"))
 
-(setq
   bibtex-completion-bibliography org-cite-global-bibliography
   org-cite-follow-processor 'helm-bibtex-org-cite-follow)
 
