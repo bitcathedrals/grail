@@ -176,20 +176,20 @@
 
   (setq org-latex-classes
     (list
-      (latex-core "book" "GaugeSecurity LLC"
+      (latex-core "book" "Gauge Security LLC"
         '("\\part{%s}" . "\\part*{%s}")
         '("\\chapter{%s}" . "\\chapter*{%s}")
         '("\\section{%s}" . "\\section*{%s}")
         '("\\subsection{%s}" . "\\subsection*{%s}")
         '("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
 
-      (latex-core "report" "GaugeSecurity LLC"
+      (latex-core "report" "Gauge Security LLC"
         '("\\chapter{%s}" . "\\chapter*{%s}")
         '("\\section{%s}" . "\\section*{%s}")
         '("\\subsection{%s}" . "\\subsection*{%s}")
         '("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
 
-      (latex-core "article" "GaugeSecurity LLC"
+      (latex-core "article" "Gauge Security LLC"
         '("\\section{%s}" . "\\section*{%s}")
         '("\\subsection{%s}" . "\\subsection*{%s}")
         '("\\subsubsection{%s}" . "\\subsubsection*{%s}")) )) )
