@@ -109,4 +109,9 @@
           (message "insert-report: no report output")
           (insert (concat type " " message "\n" report-contents))) )) ))
 
+(custom-key-group "code insert" "i"  t
+  ("c" . comment-region)
+  ("s" . insert-sync)
+  ("r" . insert-report))
+
 (provide 'programming-generic)
