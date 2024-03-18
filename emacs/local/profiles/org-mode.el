@@ -45,7 +45,7 @@
   org-export-with-sub-superscripts nil
   org-cite-global-bibliography
   (list (concat (getenv "HOME") "/code/compsci/bibliography.bib")
-        (concat (getenv "HOME") "/code/compsci/philosophy.bib")) )
+        (concat (getenv "HOME") "/code/personal/philosophy.bib")) )
 
 (setq
   bibtex-completion-bibliography org-cite-global-bibliography
