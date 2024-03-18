@@ -58,15 +58,18 @@
   "
   (interactive)
 
+  (setq
+    exec-path '()
+    woman-path '())
+
   (exec-path-from-shell-initialize)
 
   (let*
     ((helper-paths (macos-path-helper))
      (mac-exec-paths (car helper-paths))
-     (mac-man-paths (cadr helper-paths)))
+     (mac-man-paths  (cadr helper-paths)))
 
-    ;; (message "helper-paths: %s" (pp helper-paths))
-
+;;    (message "helper-paths: %s" (pp helper-paths))
 ;;    (message "exec paths: %s" (pp mac-exec-paths))
 ;;    (message "man paths: %s" (pp mac-man-paths))
 
@@ -97,6 +100,19 @@
     (map-paths opt-brew man-dirs 'woman-path)) )
 
 (setup-macos-paths)
+
+(defun print-macos-paths ()
+  (interactive)
+  (mapc
+    (lambda (path)
+      (message "exec: %s" path))
+    exec-path)
+
+  (mapc
+    (lambda (path)
+      (message "woman: %s" path))
+    woman-path))
+
 
 ;; emacs gets trashed if there is no font specified through
 ;; the grail system. Im on big displays so crank up the font size.
