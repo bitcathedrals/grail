@@ -143,7 +143,7 @@
 
                   (if (string-equal type "release")
                     (concat "(release): " message "\n" (delta-status))
-                    (concat "(" type ") : " message "\n[" (delta-staged-files) "]") ) ))))
+                    (concat "(" type "): " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
 
 (custom-key-group "code insert" "i"  t
