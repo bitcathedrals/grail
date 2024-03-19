@@ -130,7 +130,7 @@
                        nil)))  ;; inherit input method
   (let
     ((content (if (string-equal type "sync")
-                (delta-sync-string)
+                (call-interactively 'delta-sync-string)
                 (let
                   ((message (read-from-minibuffer
                               "message: " ;; prompt
