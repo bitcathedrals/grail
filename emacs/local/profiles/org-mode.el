@@ -104,6 +104,7 @@
 
 \\fancyhf{}
 \\pagenumbering{arabic}
+\\rhead{\\rightmark}
 
 \\setlength{\\marginparwidth}{1pt}
 
