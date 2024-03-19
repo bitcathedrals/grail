@@ -124,7 +124,7 @@
                               (buffer-substring (point-min) (point-max))) )
 
                           (concat "(release): " message "\n" report)) ))
-                    (concat "(" type ") [" (delta-staged-files) "] : " message) ) ))))
+                    (concat "(" type ") : " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
 
 (custom-key-group "code insert" "i"  t
