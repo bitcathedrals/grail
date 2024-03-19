@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; no-byte-compile: t; -*-
+
 (defun get-clean-pysh-buffer ()
   (let
     ((py-buffer (get-buffer-create "*py.sh output*")))
@@ -23,92 +25,93 @@
 
 ;; start      = initiate an EDITOR session to update VERSION in python.sh, reload config,
 
-(defconst py-commands '("tools-unix"
-                        "tools-zshrc"
-                        "tools-custom"
-                        "tools-prompt"
+(defconst pysh-commands (sort
+                          '("tools-unix"
+                             "tools-zshrc"
+                             "tools-custom"
+                             "tools-prompt"
 
-                        "python-versions"
-                        "project-virtual"
-                        "global-virtual"
-                        "virtual-destroy"
-                        "project-destroy"
-                        "global-destroy"
-                        "virtual-list"
-                        "virtual-current"
+                             "python-versions"
+                             "project-virtual"
+                             "global-virtual"
+                             "virtual-destroy"
+                             "project-destroy"
+                             "global-destroy"
+                             "virtual-list"
+                             "virtual-current"
 
-                        "minimal"
-                        "bootstrap"
-                        "pipfile"
-                        "project"
-                        "show-paths"
-                        "add-paths"
-                        "rm-paths"
-                        "site"
-                        "test"
-                        "python"
-                        "run"
+                             "minimal"
+                             "bootstrap"
+                             "pipfile"
+                             "project"
+                             "show-paths"
+                             "add-paths"
+                             "rm-paths"
+                             "site"
+                             "test"
+                             "python"
+                             "run"
 
-                        "versions"
-                        "locked"
-                        "all"
-                        "update"
-                        "remove"
-                        "list"
+                             "versions"
+                             "locked"
+                             "all"
+                             "update"
+                             "remove"
+                             "list"
 
-                        "build"
-                        "buildset"
-                        "mkrelease"
-                        "runner"
+                             "build"
+                             "buildset"
+                             "mkrelease"
+                             "runner"
 
-                        "modinit"
-                        "modall"
+                             "modinit"
+                             "modall"
 
-                        "info"
-                        "verify"
-                        "status"
-                        "fetch"
-                        "pull"
-                        "staged"
-                        "merges"
-                        "releases"
-                        "history"
-                        "summary"
-                        "delta"
-                        "ahead"
-                        "behind"
-                        "release-report"
-                        "status-report"
+                             "info"
+                             "verify"
+                             "status"
+                             "fetch"
+                             "pull"
+                             "staged"
+                             "merges"
+                             "releases"
+                             "history"
+                             "summary"
+                             "delta"
+                             "ahead"
+                             "behind"
+                             "release-report"
+                             "status-report"
 
-                        "graph"
-                        "upstream"
-                        "sync"
-                        "check"
+                             "graph"
+                             "upstream"
+                             "sync"
+                             "check"
 
-                        "release"
-                        "upload"
+                             "release"
+                             "upload")
+                          'string-lessp))
 
-                        "purge"))
+(defun pysh ()
+  (interactive)
+  (let
+    ((command (helm
+                :sources (helm-build-sync-source
+                           "commands"
+                           :candidates pysh-commands
+                           :fuzzy-match t)
+                :preselect "info"
+                :buffer "py.sh commands")))
 
-(defun pysh (command)
-  (interactive (list (completing-read
-                       "py.sh: "           ;; prompt
-                       delta-conventional  ;; completions
-                       nil                 ;; predicate
-                       t                   ;; require match
-                       nil                 ;; initial input
-                       nil                 ;; history
-                       "info"              ;; default value
-                       nil)))              ;; inherit input method
-  (let*
-    ((default-directory (vc-root-dir))
-     (status (call-process
-               (concat default-directory "py.sh") ;; program
-               nil                                ;; infile
-               (get-clean-pysh-buffer)            ;; output buffer
-               nil                                ;; don't display
-               command)))                         ;; pysh command
+    (let*
+      ((default-directory (vc-root-dir))
+        (status (call-process
+                  (concat default-directory "py.sh") ;; program
+                  nil                                ;; infile
+                  (get-clean-pysh-buffer)            ;; output buffer
+                  nil                                ;; don't display
+                  command)))                         ;; pysh command
 
-    (if (equal status 0)
-      (pop-to-buffer (get-pysh-buffer))
-      (message "py.sh failed with: %d" status)) ))
+      (if (equal status 0)
+        (pop-to-buffer (get-pysh-buffer))
+        (message "py.sh failed with: %d" status)) ) ))
