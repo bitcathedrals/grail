@@ -44,10 +44,15 @@
   org-use-sub-superscripts nil
   org-export-with-sub-superscripts nil
   org-cite-global-bibliography
-  (list (concat (getenv "HOME") "/code/compsci/bibliography.bib")
-        (concat (getenv "HOME") "/code/compsci/philosophy.bib")) )
+  (list
+    (concat (getenv "HOME") "/code/compsci/bibliography.bib")
+    (concat (getenv "HOME") "/code/personal/philosophy.bib")
+    (concat (getenv "HOME") "/code/personal/economics.bib")
+    (concat (getenv "HOME") "/code/personal/reference.bib")
+    (concat (getenv "HOME") "/code/personal/fiction.bib")
+    (concat (getenv "HOME") "/code/personal/scifi.bib")
+    (concat (getenv "HOME") "/code/personal/biography.bib"))
 
-(setq
   bibtex-completion-bibliography org-cite-global-bibliography
   org-cite-follow-processor 'helm-bibtex-org-cite-follow)
 
@@ -65,17 +70,50 @@
     ("" "hyperref" nil)
     ("backend=biber" "biblatex" t)))
 
-(setq org-latex-classes
-'(("article"
-"\\RequirePackage{fix-cm}
+(defun latex-core (type org &rest latex-cells)
+  (append
+    (list
+      type
+      (concat "
+\\documentclass[12pt]{" type "}
+\\usepackage[a4paper,margin=.5in,left=.5in]{geometry}
+\\RequirePackage{fix-cm}
 \\PassOptionsToPackage{svgnames}{xcolor}
-\\documentclass[11pt]{article}
 \\usepackage{fontspec}
 \\usepackage{sectsty}
 \\usepackage{enumitem}
 \\setlist[description]{style=unboxed,font=\\sffamily\\bfseries}
 \\usepackage{listings}
 \\usepackage{xcolor}
+\\usepackage{fancyhdr}
+\\usepackage{lastpage}
+\\usepackage{parskip}
+\\usepackage[nodayofweek]{datetime}
+\\usepackage{titling}
+
+\\pretitle{\\begin{center}\\Large\\bfseries}
+\\posttitle{\\par\\end{center}}
+\\preauthor{\\begin{center}\\Large}
+\\postauthor{\\end{center}}
+\\predate{\\begin{center}}
+\\postdate{\\end{center}}
+
+\\newdateformat{mydate}{\\twodigit{\\THEDAY}{ }\\shortmonthname[\\THEMONTH], \\THEYEAR}
+
+\\pagestyle{fancy}
+
+\\fancyhf{}
+\\pagenumbering{arabic}
+
+\\setlength{\\marginparwidth}{1pt}
+
+\\renewcommand{\\headrulewidth}{0pt}
+\\renewcommand{\\footrulewidth}{1pt}
+
+\\lfoot{\\today}
+\\cfoot{\\thepage \\hspace{1pt}/\\pageref{LastPage}}
+\\rfoot{" org "}
+
 \\newcommand\\basicdefault[1]{\\scriptsize\\color{Black}\\ttfamily#1}
 \\lstset{basicstyle=\\basicdefault{\\spaceskip1em}}
 \\lstset{frame=single,aboveskip=1em, framesep=.5em,backgroundcolor=\\color{AliceBlue}, rulecolor=\\color{LightSteelBlue},framerule=1pt}
@@ -119,10 +157,8 @@
     showstringspaces=false,
     columns=fullflexible,
     keepspaces=true}
-\\usepackage[a4paper,margin=1in,left=1.5in]{geometry}
-\\usepackage{parskip}
 \\makeatletter
-\\renewcommand{\\maketitle}{%
+\\renewcommand{\\maketitle}{
   \\begingroup\\parindent0pt
   \\sffamily
   \\Huge{\\bfseries\\@title}\\par\\bigskip
@@ -133,28 +169,57 @@
 [DEFAULT-PACKAGES]
 \\hypersetup{linkcolor=Blue,urlcolor=DarkBlue,
   citecolor=DarkRed,colorlinks=true}
-\\AtBeginDocument{\\renewcommand{\\UrlFont}{\\ttfamily}}
-[PACKAGES]
-[EXTRA]"
-("\\section{%s}" . "\\section*{%s}")
-("\\subsection{%s}" . "\\subsection*{%s}")
-("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-("\\paragraph{%s}" . "\\paragraph*{%s}")
-("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+\\AtBeginDocument{\\renewcommand{\\UrlFont}{\\ttfamily}}"))
 
-("report" "\\documentclass[11pt]{report}"
-("\\part{%s}" . "\\part*{%s}")
-("\\chapter{%s}" . "\\chapter*{%s}")
-("\\section{%s}" . "\\section*{%s}")
-("\\subsection{%s}" . "\\subsection*{%s}")
-("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+    latex-cells))
 
-("book" "\\documentclass[11pt]{book}"
-("\\part{%s}" . "\\part*{%s}")
-("\\chapter{%s}" . "\\chapter*{%s}")
-("\\section{%s}" . "\\section*{%s}")
-("\\subsection{%s}" . "\\subsection*{%s}")
-("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+(defun latex-for-work ()
+  "latex-for-gauge-security
+
+  configure latex for company use"
+  (interactive)
+
+  (setq org-latex-classes
+    (list
+      (latex-core "book" "Gauge Security LLC"
+        '("\\part{%s}" . "\\part*{%s}")
+        '("\\chapter{%s}" . "\\chapter*{%s}")
+        '("\\section{%s}" . "\\section*{%s}")
+        '("\\subsection{%s}" . "\\subsection*{%s}")
+        '("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+
+      (latex-core "report" "Gauge Security LLC"
+        '("\\chapter{%s}" . "\\chapter*{%s}")
+        '("\\section{%s}" . "\\section*{%s}")
+        '("\\subsection{%s}" . "\\subsection*{%s}")
+        '("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+
+      (latex-core "article" "Gauge Security LLC"
+        '("\\section{%s}" . "\\section*{%s}")
+        '("\\subsection{%s}" . "\\subsection*{%s}")
+        '("\\subsubsection{%s}" . "\\subsubsection*{%s}")) )) )
+
+(defun latex-for-personal ()
+  (interactive)
+  "latex-for-gauge-security
+
+   configure latex for personal use
+  "
+  (setq org-latex-classes
+    (list
+      (latex-core "book" "Michael Mattie"
+        ("\\part{%s}" . "\\part*{%s}")
+        ("\\chapter{%s}" . "\\chapter*{%s}")
+        ("\\section{%s}" . "\\section*{%s}")
+        ("\\subsection{%s}" . "\\subsection*{%s}")
+        ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+
+      (latex-core "article" "Michael Mattie"
+        ("\\part{%s}" . "\\part*{%s}")
+        ("\\chapter{%s}" . "\\chapter*{%s}")
+        ("\\section{%s}" . "\\section*{%s}")
+        ("\\subsection{%s}" . "\\subsection*{%s}")
+        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")) )) )
 
 (defun org/cite ()
   "org/cite
@@ -179,25 +244,32 @@
   (interactive)
   (org-babel-tangle))
 
-(defun org/mk-pdf ()
+(defun org/mk-pdf (use)
   "org/mk-code
 
    export to pdf
   "
-  (interactive)
+  (interactive (list (completing-read "use for? " '("work" "personal"))))
 
-  (org/mk-clean)
+  (when (string-equal use "work")
+    (latex-for-work))
 
-  (org-latex-export-to-pdf))
+  (when (string-equal use "personal")
+    (latex-for-personal))
+
+  (message "compiling document for: %s" use)
+;;  (org/mk-clean)
+  (org-latex-export-to-pdf) )
 
 (defun org/mk-clean ()
   "org/mk-clean
 
   clean the intermediary files"
   (interactive)
-  (shell-command "latexmk -c && rm *.tex *.bbl *.log"
-    (get-buffer-create latex-output t)
-    (get-buffer-create latex-errors t)) )
+
+  (let
+    ((default-directory (file-name-directory buffer-file-name)))
+    (shell-command "latexmk -c && rm *.tex *.bbl *.log")) )
 
 (defun org/mk-pristine ()
   "org/pristine
@@ -233,5 +305,6 @@
     ("b" . helm-bibtex)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
+(add-hook 'org-mode-hook 'flyspell-mode-on)
 
 (provide 'profile/org-mode)

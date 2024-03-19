@@ -174,3 +174,7 @@
 	url = https://github.com/chee/helm-frame.git
 	branch = master
   ignore = dirty
+[submodule "emacs/dist/git/exec-path-from-shell"]
+	path = emacs/dist/git/exec-path-from-shell
+	url = https://github.com/purcell/exec-path-from-shell.git
+	branch = master
