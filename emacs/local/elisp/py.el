@@ -92,6 +92,14 @@
                              "upload")
                           'string-lessp))
 
+(defun pysh-quit ()
+  (interactive)
+
+  (other-window 1)
+  (delete-other-windows)
+
+  (kill-buffer (get-pysh-buffer)) )
+
 (defun pysh ()
   (interactive)
   (let
@@ -113,5 +121,9 @@
                   command)))                         ;; pysh command
 
       (if (equal status 0)
-        (pop-to-buffer (get-pysh-buffer))
+        (progn
+          (with-current-buffer (get-pysh-buffer)
+            (local-set-key (kbd "q") 'pysh-quit))
+
+          (pop-to-buffer (get-pysh-buffer)))
         (message "py.sh failed with: %d" status)) ) ))
