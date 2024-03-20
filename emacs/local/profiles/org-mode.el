@@ -2,6 +2,8 @@
 ;; org-mode configuration
 ;;
 
+(require 'ebib)
+
 (bibtex-set-dialect 'biblatex)
 
 (defconst latex-output "Latex Output" t)
@@ -108,8 +110,8 @@
 
 \\setlength{\\marginparwidth}{1pt}
 
-\\renewcommand{\\headrulewidth}{0pt}
-\\renewcommand{\\footrulewidth}{1pt}
+\\renewcommand{\\headrulewidth}{2pt}
+\\renewcommand{\\footrulewidth}{2pt}
 
 \\lfoot{\\today}
 \\cfoot{\\thepage \\hspace{1pt}/\\pageref{LastPage}}

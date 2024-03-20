@@ -178,3 +178,7 @@
 	path = emacs/dist/git/exec-path-from-shell
 	url = https://github.com/purcell/exec-path-from-shell.git
 	branch = master
+[submodule "emacs/dist/git/ebib"]
+	path = emacs/dist/git/ebib
+	url = https://github.com/joostkremers/ebib.git
+	branch = master
