@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(setq-default lexical-binding t)
+
 (defun extract-string-with-regex (regexp)
   (save-excursion
     (goto-char (point-min))
