@@ -127,3 +127,5 @@
 
           (pop-to-buffer (get-pysh-buffer)))
         (message "py.sh failed with: %d" status)) ) ))
+
+(provide 'pysh)

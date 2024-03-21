@@ -4,6 +4,8 @@
 (require 'utilities)
 (require 'subr-x)
 
+(require 'pysh)
+
 ;;
 ;; some generic code editing stuff
 ;;
