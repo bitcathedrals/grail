@@ -144,9 +144,13 @@
       (let
         ((found (call-interactively 'helm-find-files)))
 
+        (message "found is %s" (pp found))
+
         (if found
           (with-current-buffer found
-            buffer-file-name)
+            (if (equal major-mode 'dired-mode)
+              (dired-current-directory)
+              buffer-file-name))
           (message "pysh: could not find a VC directory. exiting.")) )) ))
 
 
