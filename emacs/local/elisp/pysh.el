@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(require 'subr-x)
+
 (defun get-clean-pysh-buffer ()
   (let
     ((py-buffer (get-buffer-create "*py.sh output*")))
@@ -89,8 +91,74 @@
                              "check"
 
                              "release"
-                             "upload")
+                             "upload"
+
+                             ;; interactive commands
+
+                             "global-virtual"
+                             "simple"
+                             "modadd"
+                             "modupdate"
+
+                             "track"
+                             "alpha"
+                             "beta"
+
+                             "start")
                           'string-lessp))
+
+(defconst pysh-with-arguments
+  '("global-virtual"
+    "simple"
+    "modadd"
+    "modupdate"
+    "track"
+    "alpha"
+    "beta"
+    "start"))
+
+(defconst pysh-argument-prompts
+  '(("global-virtual" . "NAME,PYTHON_VERSION")
+    ("simple"    . "PKG")
+    ("modadd"    . "REPO,BRANCH,LOCALDIR")
+    ("modupdate" . "MODULE")
+    ("track"     . "REMOTE,BRANCH")
+    ("alpha"      . "FEAT,MSG")
+    ("beta"      . "FEAT,MSG")
+    ("start"     . "VERSION") ))
+
+(defun pysh-args-for (command)
+  (let
+    ((prompt (assoc command pysh-argument-prompts)))
+
+    (if prompt
+      (cdr prompt)
+      nil) ))
+
+(defun pysh-repo-dir ()
+  (let
+    ((directory (vc-root-dir)))
+
+    (if directory
+      directory
+      (let
+        ((found (call-interactively 'helm-find-files)))
+
+        (if found
+          (with-current-buffer found
+            buffer-file-name)
+          (message "pysh: could not find a VC directory. exiting.")) )) ))
+
+
+(defun pysh-args (command-name)
+  (if (member command-name pysh-with-arguments)
+    (let
+      ((args (read-from-minibuffer (concat "pysh args [" (pysh-args-for command-name) "]: "))))
+
+      (if args
+        (cons command-name (split-string args))
+        (error (concat "pysh: no args given for command with args: " command-name))) )
+    (list command-name)) )
 
 (defun pysh-quit ()
   (interactive)
@@ -112,20 +180,20 @@
                 :buffer "py.sh commands")))
 
     (let*
-      ((default-directory (vc-root-dir))
-        (status (call-process
+      ((default-directory (pysh-repo-dir))
+        (status (apply 'call-process
                   (concat default-directory "py.sh") ;; program
                   nil                                ;; infile
                   (get-clean-pysh-buffer)            ;; output buffer
                   nil                                ;; don't display
-                  command)))                         ;; pysh command
+                  (pysh-args command)) ))            ;; pysh command and sometimes args
 
       (if (equal status 0)
         (progn
           (with-current-buffer (get-pysh-buffer)
             (local-set-key (kbd "q") 'pysh-quit))
 
-          (pop-to-buffer (get-pysh-buffer)))
+          (pop-to-buffer (get-pysh-buffer)) )
         (message "py.sh failed with: %d" status)) ) ))
 
 (provide 'pysh)
