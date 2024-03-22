@@ -162,7 +162,7 @@
   (org-babel-tangle))
 
 (defun org/mk-pdf (use)
-  "org/mk-code
+  "org/mk-odf
 
    export to pdf
   "
@@ -187,7 +187,7 @@
 (defun org/mk-clean ()
   "org/mk-clean
 
-  clean the intermediary files"
+  clean all tmp files"
   (interactive)
 
   (let
