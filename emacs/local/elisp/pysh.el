@@ -144,8 +144,6 @@
       (let
         ((found (call-interactively 'helm-find-files)))
 
-        (message "found is %s" (pp found))
-
         (if found
           (with-current-buffer found
             (if (equal major-mode 'dired-mode)
