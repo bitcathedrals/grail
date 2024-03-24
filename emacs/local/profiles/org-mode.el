@@ -210,7 +210,7 @@
   "tangle-non-interactive
    command to generate code designed for emacsclient eval.
    "
-  (with-current-buffer (find-file-read-only file)
+  (with-current-buffer (find-file file)
     (org-babel-tangle)
 
     (message "compiled: %s -> %s" file (get-inspiration)) ))
