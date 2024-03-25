@@ -1,0 +1,92 @@
+\documentclass[12pt]{@TYPE@}
+\usepackage[a4paper,margin=.5in,left=.5in]{geometry}
+\RequirePackage{fix-cm}
+\PassOptionsToPackage{svgnames}{xcolor}
+\usepackage{fontspec}
+\usepackage{sectsty}
+\usepackage{enumitem}
+\setlist[description]{style=unboxed,font=\sffamily\bfseries}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{parskip}
+\usepackage[nodayofweek]{datetime}
+\usepackage{titling}
+
+\pretitle{\begin{center}\Large\bfseries}
+\posttitle{\par\end{center}}
+\preauthor{\begin{center}\Large}
+\postauthor{\end{center}}
+\predate{\begin{center}}
+\postdate{\end{center}}
+
+\newdateformat{mydate}{\twodigit{\THEDAY}{ }\shortmonthname[\THEMONTH], \THEYEAR}
+
+\newcommand\basicdefault[1]{\scriptsize\color{Black}\ttfamily#1}
+\lstset{basicstyle=\basicdefault{\spaceskip1em}}
+\lstset{frame=single,aboveskip=1em, framesep=.5em,backgroundcolor=\color{AliceBlue}, rulecolor=\color{LightSteelBlue},framerule=1pt}
+\lstset{literate=
+    {§}{{\S}}1
+    {©}{{\raisebox{.125ex}{\copyright}\enspace}}1
+    {«}{{\guillemotleft}}1
+    {»}{{\guillemotright}}1
+    {Á}{{\'A}}1
+    {Ä}{{\"A}}1
+    {É}{{\'E}}1
+    {Í}{{\'I}}1
+    {Ó}{{\'O}}1
+    {Ö}{{\"O}}1
+    {Ú}{{\'U}}1
+    {Ü}{{\"U}}1
+    {ß}{{\ss}}2
+    {à}{{\`a}}1
+    {á}{{\'a}}1
+    {ä}{{\"a}}1
+    {é}{{\'e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1
+    {ö}{{\"o}}1
+    {ú}{{\'u}}1
+    {ü}{{\"u}}1
+    {¹}{{\textsuperscript1}}1
+            {²}{{\textsuperscript2}}1
+            {³}{{\textsuperscript3}}1
+    {ı}{{\i}}1
+    {—}{{---}}1
+    {’}{{'}}1
+    {…}{{\dots}}1
+            {⮠}{{$\hookleftarrow$}}1
+    {␣}{{\textvisiblespace}}1,
+    keywordstyle=\color{DarkGreen}\bfseries,
+    identifierstyle=\color{DarkRed},
+    commentstyle=\color{Gray}\upshape,
+    stringstyle=\color{DarkBlue}\upshape,
+    emphstyle=\color{Chocolate}\upshape,
+    showstringspaces=false,
+    columns=fullflexible,
+    keepspaces=true}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\fancyhead[C]{\rightmark}
+
+\fancyfoot[L]{\today}
+\fancyfoot[C]{\thepage \hspace{1pt}/\pageref{LastPage}}
+\fancyfoot[R]{@ORG@}
+\makeatletter
+\renewcommand{\maketitle}{
+  \begingroup\parindent0pt
+  \sffamily
+  \Huge{\bfseries\@title}\par\bigskip
+  \LARGE{\bfseries\@author}\par\medskip
+  \normalsize\@date\par\bigskip
+  \endgroup\@afterindentfalse\@afterheading}
+\makeatother
+
+\setlength{\marginparwidth}{1pt}

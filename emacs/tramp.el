@@ -23,8 +23,20 @@
   (message "attempting to connect to host %s" host)
   (find-file (format "/ssh:%s:~/" host)) )
 
-(defconst ssh-host-list '("gatekeeper-wifi" "git-wifi" "pypi-wifi" "hades-wifi" "redbox-wifi" "spartan-wifi" "work-wifi"
-                           "gatekeeper-eth" "hades-eth" "redbox-eth" "spartan-eth" "work-eth" "gatekeeper-remote"))
+(defconst ssh-host-list '("gatekeeper-wifi"
+                           "git-wifi"
+                           "pypi-wifi"
+                           "hades-wifi"
+                           "redbox-wifi"
+                           "spartan-wifi"
+                           "work-wifi"
+
+                           "gatekeeper-eth"
+                           "hades-eth"
+                           "redbox-eth"
+                           "spartan-eth"
+                           "work-eth"
+                           "gatekeeper-remote"))
 
 (defun ssh-host (host)
   (interactive (list (completing-read "ssh: " ssh-host-list)))

@@ -1,10 +1,13 @@
 #! /usr/bin/env bash
 
+GIT=$HOME/code/emacs
+
 case $1 in
-  "compile")
+  "linux")
+    TOOLS=$HOME/tools/local/
+
     doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-    GIT=$HOME/code/emacs
     test -d $GIT || mkdir -p $GIT
     test -d $GIT/.git || git clone https://github.com/emacs-mirror/emacs.git $GIT
 
@@ -37,10 +40,27 @@ case $1 in
       exit 1
     fi
 
-    TOOLS=$HOME/tools/local/
+    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-xpm=no --with-gif=no && make bootstrap)
+    then
+      echo "compile ok."
+    else
+      echo "COMPILE FAILED!"
+      exit 1
+    fi
+
+    read -p "Proceed with emacs install? [y/n]: " proceed
+
+    if [[ $proceed = "y" ]]
+    then
+      echo ">>> proceeding with install!"
+    else
+      echo ">>> ABORT! exiting now!"
+      exit 1
+    fi
+
     test -d $TOOLS || mkdir -p $TOOLS
 
-    (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-xpm=no --with-gif=no && make && make install)
+    (cd $GIT && make install)
 
     LOCAL_DESKTOP=$HOME/.local/share/applications/
     test -d $LOCAL_DESKTOP || mkdir -p $LOCAL_DESKTOP
@@ -48,7 +68,7 @@ case $1 in
     cp desktop/emacs.desktop $LOCAL_DESKTOP/
     cp desktop/emacs-icon.png $HOME/tools/
   ;;
-  case "macos")
+  "macos")
     brew tap d12frosted/emacs-plus
     brew install emacs-plus --with-native-comp || exit 1
 

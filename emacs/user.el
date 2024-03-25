@@ -147,6 +147,8 @@
 ;;----------------------------------------------------------------------
 ;; helm completion
 ;;----------------------------------------------------------------------
+(require 'helm-mode)
+
 (require 'helm-files)
 (require 'helm-buffers)
 (require 'helm-grep)
@@ -154,15 +156,32 @@
 (require 'helm-regexp)
 (require 'helm-man)
 (require 'helm-ring)
+(require 'helm-frame)
 
-(custom-key-group "magit git" "c" t
+(custom-key-group "helm complete" "c" t
   ("f" . helm-find-files)
   ("b" . helm-buffers-list)
   ("g" . helm-grep-do-git-grep)
   ("o" . helm-occur)
-  ("r" . helm-regexp)
+  ("r" . helm-register)
+  ("s" . helm-regexp)
   ("m" . helm-man-woman)
-  ("k" . helm-show-kill-ring))
+  ("k" . helm-show-kill-ring) )
+
+(defun helm-on-frames ()
+  (interacive)
+
+  (add-hook 'helm-after-action-hook 'helm-frame-delete)
+  (add-hook 'helm-cleanup-hook 'helm-frame-delete)
+
+  (setq helm-split-window-preferred-function 'switch-to-helm-frame))
+
+(defun switch-to-helm-frame()
+  "switch-to-helm-frame
+
+    automatically switch to the frame created by helm
+   "
+  (select-frame (helm-frame-window) t))
 
 ;;----------------------------------------------------------------------
 ;; read/write perm handling
