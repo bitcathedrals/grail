@@ -76,11 +76,11 @@ case $1 in
     brew_emacs="emacs-plus@29"
 
     brew unlink $brew_emacs
-    brew link $brew_emacs 
+    brew link $brew_emacs
 
     if [[ $? -ne 0 ]]
     then
-      echo /dev/stderr "install-emacs.sh: could not link emacs-plus@29"
+      echo /dev/stderr "install-emacs.sh: could not link $brew_emacs"
       exit 1
     fi
 
