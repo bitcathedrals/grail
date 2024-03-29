@@ -13,14 +13,6 @@
 (unless (executable-find ispell-program-name)
   (grail-signal-fail "grail/spell" "aspell executable not found"))
 
-(add-hook 'emacs-lisp-mode-hook 'flyspell-prog-mode)
-
-(eval-after-load 'cperl-mode
-  '(add-hook 'cperl-mode-hook   'flyspell-prog-mode))
-
-(eval-after-load 'cc-mode
-  (add-hook 'c-mode-common-hook 'flyspell-prog-mode))
-
 (defun correct-over-flyspell ()
   "auto-correct the word if over a flyspell region, return t only
    if over a fly-spell region"
@@ -29,7 +21,7 @@
   (if (mode-overlay-at-point-p 'flyspell-overlay)
     (progn
       (flyspell-correct-word-before-point)
-      t)))
+      t)) )
 
 ;; create a tab context where tab will invoke flyspell-auto-correct-word
 ;; at the point.

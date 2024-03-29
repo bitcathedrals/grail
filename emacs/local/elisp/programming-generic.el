@@ -49,6 +49,10 @@
   (local-set-key (kbd "<return>") 'newline-and-indent)
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
+
+  ;; turn on flyspell
+  (flyspell-prog-mode)
+
   (ruler-mode))
 
 (defun get-clean-report-buffer ()
