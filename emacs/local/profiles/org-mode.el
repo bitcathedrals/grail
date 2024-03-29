@@ -161,6 +161,14 @@
   (interactive)
   (org-babel-tangle))
 
+(defun org/mk-html ()
+  "org/mk-html
+
+   export to html
+  "
+  (interactive)
+  (org-html-export-to-html))
+
 (defun org/mk-pdf (use)
   "org/mk-odf
 
@@ -225,6 +233,7 @@
     ("c" . org/mk-clean)
     ("C" . org/mk-pristine)
     ("m" . org-ref-bibtex-hydra/body) ;; main menu
+    ("h" . org/mk-html)
     ("b" . helm-bibtex)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
