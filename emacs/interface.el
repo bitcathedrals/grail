@@ -62,5 +62,20 @@
   ("j" . jump-to-register)
   ("b" . reg-insert-buffer) )
 
+(defun neofetch ()
+  "neofetch
+
+  insert neofetch into a buffer"
+  (interactive)
+
+  (let
+    ((buffer "*neofetch*"))
+
+    (ansi-term "neofetch" buffer)
+
+    (pop-to-buffer buffer) ))
+
 (custom-key-group "system" "p" t
-  ("p" . proced) )
+  ("p" . proced)
+  ("n" . neofetch) )
+
