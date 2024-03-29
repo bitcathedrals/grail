@@ -62,7 +62,7 @@
 (defun get-report-buffer ()
   (get-buffer-create "*report output*"))
 
-(defconst delta-conventional '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta" "release" "refactor"))
+(defconst delta-conventional '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta" "release" "refactor" "doc"))
 
 (defun delta-sync-string (module)
   (interactive "senter syncd module: ")
