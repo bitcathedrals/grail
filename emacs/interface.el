@@ -62,3 +62,5 @@
   ("j" . jump-to-register)
   ("b" . reg-insert-buffer) )
 
+(custom-key-group "system" "p" t
+  ("p" . proced) )
