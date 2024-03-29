@@ -68,12 +68,9 @@
   insert neofetch into a buffer"
   (interactive)
 
-  (let
-    ((buffer "*neofetch*"))
+  (ansi-term "neofetch" "neofetch")
 
-    (ansi-term "neofetch" buffer)
-
-    (pop-to-buffer buffer) ))
+  (pop-to-buffer buffer))
 
 (custom-key-group "system" "p" t
   ("p" . proced)
