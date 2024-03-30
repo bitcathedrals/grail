@@ -173,8 +173,22 @@
 	path = emacs/dist/git/helm-frame
 	url = https://github.com/chee/helm-frame.git
 	branch = master
-  ignore = dirty
+	ignore = dirty
+
 [submodule "emacs/dist/git/exec-path-from-shell"]
 	path = emacs/dist/git/exec-path-from-shell
 	url = https://github.com/purcell/exec-path-from-shell.git
 	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/ebib"]
+	path = emacs/dist/git/ebib
+	url = https://github.com/joostkremers/ebib.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/org/org-themes"]
+	path = emacs/dist/org/org-themes
+	url = https://gitlab.com/OlMon/org-themes.git
+	branch = master
+	ignore = dirty

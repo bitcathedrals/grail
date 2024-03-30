@@ -42,6 +42,9 @@
 (with-eval-after-load 'magit-mode
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
 
+(setq git-commit-style-convention-checks
+      (remove 'non-empty-second-line git-commit-style-convention-checks))
+
 (custom-key-group "magit git" "v" t
   ("v" . magit-status)
   ("l" . magit-log)

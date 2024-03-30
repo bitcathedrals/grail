@@ -1,7 +1,5 @@
 #! /usr/bin/env bash
 
-shopt -s lastpipe
-
 IN_FILE="$PWD/$1"
 
 if [[ -n $IN_FILE && -f $IN_FILE ]]

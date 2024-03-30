@@ -68,48 +68,39 @@ case $1 in
     cp desktop/emacs.desktop $LOCAL_DESKTOP/
     cp desktop/emacs-icon.png $HOME/tools/
   ;;
-  "macos")
+  "macos-compile")
     brew tap d12frosted/emacs-plus
     brew install emacs-plus --with-native-comp || exit 1
+  ;;
+  "macos-link")
+    brew_emacs="emacs-plus@29"
 
-    brew unlink emacs && brew link emacs-plus@29 || exit 1
+    brew unlink $brew_emacs
+    brew link $brew_emacs
 
-    app=""
-
-    home_brew=$(find /Users/mattie/homebrew -name 'Emacs.app' -print)
-    user_brew=$(find /usr/local/opt/ -name 'Emacs.app' -print)
-    opt_brew=$(find /opt/homebrew/ -name 'Emacs.app' -print)
-
-    if [[ -e $home_brew ]]
+    if [[ $? -ne 0 ]]
     then
-      app=$home_brew
+      echo /dev/stderr "install-emacs.sh: could not link $brew_emacs"
+      exit 1
     fi
 
-    if [[ -e $user_brew ]]
-    then
-      app=$user_brew
-    fi
-
-    if [[ -e $opt_brew ]]
-    then
-      app=$opt_brew
-    fi
+    app=$(brew list $brew_emacs | grep Emacs.app | sed -e 's,/Contents/.*$,,g' | sort -u)
 
     if [[ -z $app ]]
     then
-      echo "brew app could not be found in $home_brew or $user_brew or $opt_brew"
+      echo "brew app could not be found in $brew_emacs listing!"
       exit 1
     fi
 
     osascript -e "tell application \"Finder\" to make alias file to posix file \"$app\" at POSIX file \"/Applications\""
   ;;
-
   *|"help")
     cat <<HELP
 comile-emacs.sh
 
-macos  = compile emacs from homebrew source and install into /Applications
-linux  = compile emacs for linux and install into ~/tools/local
+macos-compile  = compile emacs from homebrew source and install into /Applications
+macos-link     = link the app into /Applications
+linux          = compile emacs for linux and install into ~/tools/local
 HELP
   ;;
 esac

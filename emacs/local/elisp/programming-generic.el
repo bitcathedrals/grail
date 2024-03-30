@@ -4,6 +4,8 @@
 (require 'utilities)
 (require 'subr-x)
 
+(require 'pysh)
+
 ;;
 ;; some generic code editing stuff
 ;;
@@ -47,6 +49,10 @@
   (local-set-key (kbd "<return>") 'newline-and-indent)
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
+
+  ;; turn on flyspell
+  (flyspell-prog-mode)
+
   (ruler-mode))
 
 (defun get-clean-report-buffer ()
@@ -60,7 +66,7 @@
 (defun get-report-buffer ()
   (get-buffer-create "*report output*"))
 
-(defconst delta-conventional '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta" "release"))
+(defconst delta-conventional '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta" "release" "refactor" "doc"))
 
 (defun delta-sync-string (module)
   (interactive "senter syncd module: ")
@@ -130,7 +136,7 @@
                        nil)))  ;; inherit input method
   (let
     ((content (if (string-equal type "sync")
-                (delta-sync-string)
+                (call-interactively 'delta-sync-string)
                 (let
                   ((message (read-from-minibuffer
                               "message: " ;; prompt

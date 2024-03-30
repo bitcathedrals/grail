@@ -2,6 +2,8 @@
 ;; org-mode configuration
 ;;
 
+(require 'ebib)
+
 (bibtex-set-dialect 'biblatex)
 
 (defconst latex-output "Latex Output" t)
@@ -67,111 +69,26 @@
     ("" "amsmath" t)
     ("" "amssymb" t)
     ("" "capt-of" nil)
-    ("" "hyperref" nil)
+    ("hidelinks" "hyperref" nil)
     ("backend=biber" "biblatex" t)))
 
-(defun latex-core (type org &rest latex-cells)
+(defconst profile/org-latex-dir (concat grail-local-dir "/latex/") "the grail latex directory")
+
+(defun profile/org-load-common (type org)
+  (with-temp-buffer
+    (insert-file-contents (concat profile/org-latex-dir "common.tex"))
+
+    (replace-string "@TYPE@" type)
+    (replace-string "@ORG@" org)
+
+    (buffer-substring (point-min) (point-max))))
+
+(defun latex-core (type org &rest sections)
   (append
     (list
       type
-      (concat "
-\\documentclass[12pt]{" type "}
-\\usepackage[a4paper,margin=.5in,left=.5in]{geometry}
-\\RequirePackage{fix-cm}
-\\PassOptionsToPackage{svgnames}{xcolor}
-\\usepackage{fontspec}
-\\usepackage{sectsty}
-\\usepackage{enumitem}
-\\setlist[description]{style=unboxed,font=\\sffamily\\bfseries}
-\\usepackage{listings}
-\\usepackage{xcolor}
-\\usepackage{fancyhdr}
-\\usepackage{lastpage}
-\\usepackage{parskip}
-\\usepackage[nodayofweek]{datetime}
-\\usepackage{titling}
-
-\\pretitle{\\begin{center}\\Large\\bfseries}
-\\posttitle{\\par\\end{center}}
-\\preauthor{\\begin{center}\\Large}
-\\postauthor{\\end{center}}
-\\predate{\\begin{center}}
-\\postdate{\\end{center}}
-
-\\newdateformat{mydate}{\\twodigit{\\THEDAY}{ }\\shortmonthname[\\THEMONTH], \\THEYEAR}
-
-\\pagestyle{fancy}
-
-\\fancyhf{}
-\\pagenumbering{arabic}
-
-\\setlength{\\marginparwidth}{1pt}
-
-\\renewcommand{\\headrulewidth}{0pt}
-\\renewcommand{\\footrulewidth}{1pt}
-
-\\lfoot{\\today}
-\\cfoot{\\thepage \\hspace{1pt}/\\pageref{LastPage}}
-\\rfoot{" org "}
-
-\\newcommand\\basicdefault[1]{\\scriptsize\\color{Black}\\ttfamily#1}
-\\lstset{basicstyle=\\basicdefault{\\spaceskip1em}}
-\\lstset{frame=single,aboveskip=1em, framesep=.5em,backgroundcolor=\\color{AliceBlue}, rulecolor=\\color{LightSteelBlue},framerule=1pt}
-\\lstset{literate=
-    {§}{{\\S}}1
-    {©}{{\\raisebox{.125ex}{\\copyright}\\enspace}}1
-    {«}{{\\guillemotleft}}1
-    {»}{{\\guillemotright}}1
-    {Á}{{\\'A}}1
-    {Ä}{{\\\"A}}1
-    {É}{{\\'E}}1
-    {Í}{{\\'I}}1
-    {Ó}{{\\'O}}1
-    {Ö}{{\\\"O}}1
-    {Ú}{{\\'U}}1
-    {Ü}{{\\\"U}}1
-    {ß}{{\\ss}}2
-    {à}{{\\`a}}1
-    {á}{{\\'a}}1
-    {ä}{{\\\"a}}1
-    {é}{{\\'e}}1
-    {í}{{\\'i}}1
-    {ó}{{\\'o}}1
-    {ö}{{\\\"o}}1
-    {ú}{{\\'u}}1
-    {ü}{{\\\"u}}1
-    {¹}{{\\textsuperscript1}}1
-            {²}{{\\textsuperscript2}}1
-            {³}{{\\textsuperscript3}}1
-    {ı}{{\\i}}1
-    {—}{{---}}1
-    {’}{{'}}1
-    {…}{{\\dots}}1
-            {⮠}{{$\\hookleftarrow$}}1
-    {␣}{{\\textvisiblespace}}1,
-    keywordstyle=\\color{DarkGreen}\\bfseries,
-    identifierstyle=\\color{DarkRed},
-    commentstyle=\\color{Gray}\\upshape,
-    stringstyle=\\color{DarkBlue}\\upshape,
-    emphstyle=\\color{Chocolate}\\upshape,
-    showstringspaces=false,
-    columns=fullflexible,
-    keepspaces=true}
-\\makeatletter
-\\renewcommand{\\maketitle}{
-  \\begingroup\\parindent0pt
-  \\sffamily
-  \\Huge{\\bfseries\\@title}\\par\\bigskip
-  \\LARGE{\\bfseries\\@author}\\par\\medskip
-  \\normalsize\\@date\\par\\bigskip
-  \\endgroup\\@afterindentfalse\\@afterheading}
-\\makeatother
-[DEFAULT-PACKAGES]
-\\hypersetup{linkcolor=Blue,urlcolor=DarkBlue,
-  citecolor=DarkRed,colorlinks=true}
-\\AtBeginDocument{\\renewcommand{\\UrlFont}{\\ttfamily}}"))
-
-    latex-cells))
+      (profile/org-load-common type org))
+    sections))
 
 (defun latex-for-work ()
   "latex-for-gauge-security
@@ -244,27 +161,41 @@
   (interactive)
   (org-babel-tangle))
 
+(defun org/mk-html ()
+  "org/mk-html
+
+   export to html
+  "
+  (interactive)
+  (org-html-export-to-html))
+
 (defun org/mk-pdf (use)
-  "org/mk-code
+  "org/mk-odf
 
    export to pdf
   "
-  (interactive (list (completing-read "use for? " '("work" "personal"))))
+  (interactive (list (completing-read
+                       "org?: " ;; prompt
+                       '("work" "personal") ;; completions
+                       nil     ;; predicate
+                       t       ;; require match
+                       nil     ;; initial input
+                       nil     ;; history
+                       "work"  ;; default value
+                       nil)))  ;; inherit input method
 
-  (when (string-equal use "work")
-    (latex-for-work))
-
-  (when (string-equal use "personal")
-    (latex-for-personal))
+  (cond
+    ((string-equal use "work") (latex-for-work))
+    ((string-equal use "personal") (latex-for-personal)) )
 
   (message "compiling document for: %s" use)
 ;;  (org/mk-clean)
-  (org-latex-export-to-pdf) )
+  (org-latex-export-to-pdf))
 
 (defun org/mk-clean ()
   "org/mk-clean
 
-  clean the intermediary files"
+  clean all tmp files"
   (interactive)
 
   (let
@@ -287,7 +218,7 @@
   "tangle-non-interactive
    command to generate code designed for emacsclient eval.
    "
-  (with-current-buffer (find-file-read-only file)
+  (with-current-buffer (find-file file)
     (org-babel-tangle)
 
     (message "compiled: %s -> %s" file (get-inspiration)) ))
@@ -302,6 +233,7 @@
     ("c" . org/mk-clean)
     ("C" . org/mk-pristine)
     ("m" . org-ref-bibtex-hydra/body) ;; main menu
+    ("H" . org/mk-html)
     ("b" . helm-bibtex)) )
 
 (add-hook 'org-mode-hook 'org-mode-customize)
