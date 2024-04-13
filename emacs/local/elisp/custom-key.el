@@ -176,6 +176,7 @@
          body) ))
 
 (custom-key-group "help" "h" t
+  ("a" . apropos)
   ("v" . describe-variable)
   ("f" . describe-function)
   ("k" . describe-key)
