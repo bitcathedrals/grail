@@ -11,9 +11,13 @@
 ; tramp-chunksize is defensive to reduce problems with hangs from sending
 ; to large of chunks
 
+(setq-default
+  tramp-default-remote-shell "/bin/bash"
+  tramp-shell-prompt-pattern  ".*$")
+
 (setq
   tramp-default-method "ssh"
-  tramp-chunksize 500 )
+  tramp-chunksize 500)
 
 ;;----------------------------------------------------------------------
 ;; tramping around
