@@ -53,7 +53,9 @@
   ;; turn on flyspell
   (flyspell-prog-mode)
 
-  (ruler-mode))
+  (ruler-mode)
+
+  (display-line-numbers-mode))
 
 (defun get-clean-report-buffer ()
   (let
