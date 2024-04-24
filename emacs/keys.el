@@ -35,9 +35,6 @@
 
 (global-set-key (kbd "<M-tab>") 'other-window-forward)
 
-;; line number mode
-(global-set-key (kbd "C-c C-l")  'linum-mode)
-
 (defvar user-keys/tree-browser nil)
 
 (defun user-keys/start-tree-browser ()
