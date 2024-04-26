@@ -15,26 +15,19 @@
   (scroll-bar-mode -1)
   (menu-bar-mode -1) )
 
-;; mode-line customization
+(toggle-uniquify-buffer-names)
 
-(display-time)                            ;; display the time on the modeline
-
-(column-number-mode 1)                    ;; handy guides when following
-(line-number-mode 1)                      ;; errors
-
-(toggle-uniquify-buffer-names)                ;; more intelligent unique buffer names, will automatically
-                                              ;; simplify buffer names when collisions are reduced.
-
-(require 'mattie-modeline)                 ;; my own modeline setup
+(require 'mattie-modeline)
 (setup-mattie-modeline)
 
-(setq initial-scratch-message nil)            ;; nix the scratch message, and the splash screen.
-(setq inhibit-splash-screen t)
-(setq inhibit-startup-echo-area-message t)
+(setq
+  initial-scratch-message nil
+  inhibit-splash-screen t
+  inhibit-startup-echo-area-message t
 
-(setq global-font-lock-mode t)                ;; turn on font lock mode globally
+  global-font-lock-mode t)
 
-(transient-mark-mode -1)                        ;; not a big fan of transient mark mode.
+(transient-mark-mode -1)
 
 (setq-default set-mark-command-repeat-pop t)  ;; C-u C-<spc> pops the mark, with this on
                                               ;; simply repeating C-<spc> continues backwards
@@ -44,9 +37,6 @@
 (fset 'yes-or-no-p 'y-or-n-p)                 ;; y/n instead of yes/no
 
 (put 'erase-buffer 'disabled nil)             ;; enable erase-buffer, no hand-holding.
-
-;; modern register interface
-(setq register-use-preview t)
 
 (defun reg-insert-buffer ()
   "insert the current buffer into a register"
@@ -76,3 +66,41 @@
   ("p" . proced)
   ("n" . neofetch) )
 
+(setq-default auto-revert-verbose nil)
+
+(defun log-mode-enable-p (path)
+  (let
+    ((extension (file-name-extension path)))
+
+    (and (stringp extension) (string-equal "log" extension)) ))
+
+(defun log-mode-auto ()
+  "log-mode-auto
+
+   automatically turn on log-mode from find-file
+  "
+  (interactive)
+  (when (log-mode-enable-p buffer-file-name)
+    (call-interactively 'log-mode-on)
+    (buffer-status-add "log-mode-on for log file") ))
+
+(defun log-mode-on ()
+  "log-mode-on
+
+   turn on view-mode and auto-revert-tail-mode"
+  (interactive)
+
+  (view-mode-enter)
+  (auto-revert-tail-mode))
+
+(defun log-mode-off ()
+  "log-mode-off
+
+   turn off log mode
+  "
+  (interactive)
+
+  (view-mode-exit)
+  (auto-revert-tail-mode))
+
+(add-hook 'find-file-hook 'log-mode-auto)
