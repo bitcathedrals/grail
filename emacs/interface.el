@@ -91,7 +91,9 @@
   (interactive)
 
   (view-mode-enter)
-  (auto-revert-tail-mode))
+  (auto-revert-tail-mode)
+
+  (local-set-key (kbd "j") 'pop-to-json) )
 
 (defun log-mode-off ()
   "log-mode-off
