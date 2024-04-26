@@ -104,3 +104,23 @@
   (auto-revert-tail-mode))
 
 (add-hook 'find-file-hook 'log-mode-auto)
+
+(defun pop-to-json (beginning end)
+  "pop-to-json
+
+   given a region pop to a pretty-printed json buffer
+  "
+  (interactive "r")
+
+  (let
+    ((json-region (buffer-substring beginning end)))
+
+    (with-current-buffer (get-buffer-create "*json*")
+      (erase-buffer)
+      (insert json-region)
+      (json-pretty-print (point-min) (point-max))
+
+      (local-set-key (kbd "q") 'keybindings-help-quit)
+
+      (pop-to-buffer (current-buffer)) )) )
+
