@@ -94,29 +94,6 @@
 ;;----------------------------------------------------------------------
 (setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist))
 
-;----------------------------------------------------------------------
-;;                    EShell
-;;----------------------------------------------------------------------
-
-(require 'eshell)
-
-(setq
-  eshell-windowed t                ;; enable windowing
-  eshell-save-history-on-exit nil) ;; kill the prompt to save history
-
-(add-hook 'eshell-mode-hook
-  (lambda ()
-    ;; add a list of commands that will pop a term buffer for out-of-eshell
-    ;; handling. Note: the variable eshell-visual-commands is buffer-local.
-    (setq eshell-visual-commands
-      (append eshell-visual-commands (list "ssh" "su" "telnet"
-                                           "ftp" "lftp" "links")))
-
-    ;; I rarely want to quit eshell. when I do I can use quit. map
-    ;; the usual kill-buffer keybinding to rid-window.
-    (local-set-key (kbd "C-x k") 'rid-window))
-  t)
-
 ;;----------------------------------------------------------------------
 ;;                    ERC
 ;;----------------------------------------------------------------------
@@ -182,11 +159,6 @@
     automatically switch to the frame created by helm
    "
   (select-frame (helm-frame-window) t))
-
-;;----------------------------------------------------------------------
-;; read/write perm handling
-;;----------------------------------------------------------------------
-(require 'rw-utilities)
 
 (setq auto-mode-alist
   (cons '("\\.firewall$" . conf-mode) auto-mode-alist))
