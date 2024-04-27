@@ -1,9 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; keys.el
-;;
-;; keybinding tools and configuration.
-;;----------------------------------------------------------------------
+
 (require 'custom-key)
 (require 'user-commands)
 (require 'ucase-word)
@@ -34,6 +30,8 @@
 (global-set-key (kbd "M-g")  'goto-line)
 
 (global-set-key (kbd "<M-tab>") 'other-window-forward)
+
+(global-set-key (kbd "C-c u") 'toggle-ucase-word)
 
 (defvar user-keys/tree-browser nil)
 
