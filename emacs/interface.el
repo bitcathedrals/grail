@@ -17,8 +17,8 @@
 
 (toggle-uniquify-buffer-names)
 
-(require 'mattie-modeline)
-(setup-mattie-modeline)
+(require 'mega-modeline)
+(setup-mega-modeline)
 
 (setq
   initial-scratch-message nil
