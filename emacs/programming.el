@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;; programming.el
-
 (require 'merging)
 (require 'ext-merging)
 
