@@ -14,11 +14,6 @@
 (require 'buffer-ring)
 
 ;;----------------------------------------------------------------------
-;; utilities
-;;----------------------------------------------------------------------
-(require 'ext-logging)
-
-;;----------------------------------------------------------------------
 ;; general grail profiles
 ;;----------------------------------------------------------------------
 
@@ -102,7 +97,7 @@
 
 (grail-try-elisp "local/elisp/erc-sensitive.el")
 
-(require 'erc-sensitive)
+(require 'sensitive)
 
 (setq
   erc-default-server "irc.libera.chat"

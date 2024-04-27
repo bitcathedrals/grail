@@ -17,10 +17,6 @@
 ;;   (interactive "Ssymbol? ")
 ;;   (pp (auto-overlay-local-binding symbol)))
 
-;; a interactive command I still use. Just a quick way to pull up the
-;; source in a read-only buffer. Once the completion is fixed to search
-;; the load-path and use icicles for completion it can go into mattie.el.
-
 (defun examine-library (library-name)
   ;; switch over to find-library and figure out how to make the buffer
   ;; automatically read-only.
