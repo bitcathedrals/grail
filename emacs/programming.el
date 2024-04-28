@@ -102,3 +102,22 @@
   (buffer-ring/local-keybindings) )
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
+
+(defun shell-mode-functions ()
+  "shell-mode-functions
+
+   occur all the functions in a shell mode buffer
+  "
+  (interactive)
+  (occur "function.*"))
+
+(defun shell-mode-setup ()
+  "shell-mode-setup
+
+   setup shell mode with enhanced features
+  "
+  (interactive)
+  (programming-mode-generic 'shell-mode-functions) )
+
+(add-hook 'shell-mode-hook 'shell-mode-setup)
+
