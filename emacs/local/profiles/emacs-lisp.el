@@ -19,7 +19,11 @@
 ;; search functions
 ;;
 
-(defun elisp-list-fn-signatures ()
+(defun emacs-lisp/buffer-functions ()
+  "emacs-lisp/buffer-functions
+
+   use occur to find all function definitions
+  "
   (interactive)
   (occur "(defun"))
 
@@ -67,7 +71,7 @@
           nil) )) ))
 
 (defun emacs-lisp/profile ()
-  (programming-mode-generic 'elisp-list-fn-signatures)
+  (programming-mode-generic 'emacs-lisp/buffer-functions)
 
   (buffer-ring/add elisp/mode-name)
   (buffer-ring/local-keybindings)

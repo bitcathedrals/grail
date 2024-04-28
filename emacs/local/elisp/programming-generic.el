@@ -35,6 +35,18 @@
 (defvar configure-programming-hook nil
   "hook so other programming tools can run after programming-mode-generic")
 
+(defun search-buffer-functions ()
+  "search-buffer-functions
+
+   search the buffer for functions
+  "
+  (interactive)
+
+  (if (boundp 'programming-generic/buffer-functions)
+    (funcall programming-generic/buffer-functions)
+    (message "no programming-generic/buffer-functions defined in buffer.")) )
+
+
 (defun programming-mode-generic ( &optional fn-search )
   "Enable my programming customizations for the buffer"
 
@@ -61,7 +73,10 @@
   (local-set-key (kbd "C-c <left>")  'backward-sexp)
   (local-set-key (kbd "C-c m") 'mark-sexp)
   (local-set-key (kbd "C-c <up>") 'backward-up-list)
-  (local-set-key (kbd "C-c <down>") 'down-list) )
+  (local-set-key (kbd "C-c <down>") 'down-list)
+
+  (when fn-search
+    (set (make-local-variable 'programming-generic/buffer-functions) fn-search)) )
 
 (defun get-clean-report-buffer ()
   (let
@@ -160,9 +175,10 @@
                     (concat "(" type "): " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
 
-(custom-key-group "coding" "i"  t
+(custom-key-group "coding" "x"  t
   ("c" . comment-region)
   ("d" . delta-insert)
+  (
   )
 
 (provide 'programming-generic)
