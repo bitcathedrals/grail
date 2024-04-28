@@ -177,8 +177,6 @@
 
 (custom-key-group "coding" "x"  t
   ("c" . comment-region)
-  ("d" . delta-insert)
-  (
-  )
+  ("d" . delta-insert))
 
 (provide 'programming-generic)
