@@ -55,7 +55,13 @@
 
   (ruler-mode)
 
-  (display-line-numbers-mode))
+  (display-line-numbers-mode)
+
+  (local-set-key (kbd "C-c <right>") 'foward-sexp)
+  (local-set-key (kbd "C-c <left>")  'backward-sexp)
+  (local-set-key (kbd "C-c m") 'mark-sexp)
+  (local-set-key (kbd "C-c <up>") 'backward-up-list)
+  (local-set-key (kbd "C-c <down>") 'down-list) )
 
 (defun get-clean-report-buffer ()
   (let
@@ -154,8 +160,9 @@
                     (concat "(" type "): " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
 
-(custom-key-group "code insert" "i"  t
+(custom-key-group "coding" "i"  t
   ("c" . comment-region)
-  ("d" . delta-insert))
+  ("d" . delta-insert)
+  )
 
 (provide 'programming-generic)
