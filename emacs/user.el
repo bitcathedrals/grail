@@ -1,8 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; user.el - user interface configuration
-;;----------------------------------------------------------------------
 (require 'buffer-ring)
 
 (setq warning-minimum-level :emergency)
