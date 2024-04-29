@@ -6,6 +6,8 @@
 
 (require 'pysh)
 
+(require 'eglot)
+
 ;;
 ;; some generic code editing stuff
 ;;
@@ -176,7 +178,12 @@
     (insert content)) )
 
 (custom-key-group "coding" "x"  t
-  ("c" . comment-region)
-  ("d" . delta-insert))
+  ("c" . toggle-comment-region)
+  ("d" . delta-insert)
+  ("f" . xref-find-definitions)
+  ("a" . xref-find-apropos)
+  ("w" . xref-find-definitions-other-window)
+  ("p" . xref-go-back)
+  ("n" . xref-go-forward) )
 
 (provide 'programming-generic)
