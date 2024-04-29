@@ -121,3 +121,26 @@
 
 (add-hook 'shell-mode-hook 'shell-mode-setup)
 
+(defun python-mode-functions ()
+  "python-mode-functions
+
+   occur all the functions in a python mode buffer
+  "
+  (interactive)
+
+  (occur "def.*") )
+
+(add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+
+(defun python-mode-setup ()
+  "python-mode-setup
+
+   setup python-mode enhanced features.
+  "
+  (interactive)
+
+  (eglot-ensure)
+
+  (programming-mode-generic 'python-mode-functions) )
+
+(add-hook 'python-mode-hook 'python-mode-setup)
