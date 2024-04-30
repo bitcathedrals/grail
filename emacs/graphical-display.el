@@ -252,7 +252,10 @@
   (display-faces-for-flyspell)
 
   (require 'term)
-  (display-faces-for-term) )
+  (display-faces-for-term)
+
+  (set-face-background 'region "RoyalBlue")
+  (set-face-foreground 'region "grey65") )
 
 (defun grail-load-graphical (frame)
   "grail-load-display

@@ -73,7 +73,7 @@
 
   (display-line-numbers-mode)
 
-  (local-set-key (kbd "C-c <right>") 'puni-foward-sexp)
+  (local-set-key (kbd "C-c <right>") 'puni-forward-sexp)
   (local-set-key (kbd "C-c <left>")  'puni-backward-sexp)
   (local-set-key (kbd "C-c m")       'puni-expand-region)
   (local-set-key (kbd "C-c <up>")    'puni-up-list)
