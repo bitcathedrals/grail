@@ -214,3 +214,4 @@
 	path = emacs/dist/git/puni
 	url = https://github.com/AmaiKinono/puni.git
 	branch = master
+  ignore = dirty
