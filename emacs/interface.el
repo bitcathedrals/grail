@@ -60,10 +60,6 @@
 
   (pop-to-buffer buffer))
 
-(custom-key-group "system" "p" t
-  ("p" . proced)
-  ("n" . neofetch) )
-
 (setq-default auto-revert-verbose nil)
 
 (defun log-mode-enable-p (path)

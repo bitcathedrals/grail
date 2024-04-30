@@ -210,3 +210,7 @@
 	url = https://github.com/politza/tablist.git
 	branch = master
   ignore = dirty
+[submodule "emacs/dist/git/puni"]
+	path = emacs/dist/git/puni
+	url = https://github.com/AmaiKinono/puni.git
+	branch = master

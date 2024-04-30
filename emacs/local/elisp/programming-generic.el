@@ -8,6 +8,8 @@
 
 (require 'eglot)
 
+(require 'puni)
+
 ;;
 ;; some generic code editing stuff
 ;;
@@ -71,14 +73,32 @@
 
   (display-line-numbers-mode)
 
-  (local-set-key (kbd "C-c <right>") 'foward-sexp)
-  (local-set-key (kbd "C-c <left>")  'backward-sexp)
-  (local-set-key (kbd "C-c m") 'mark-sexp)
-  (local-set-key (kbd "C-c <up>") 'backward-up-list)
-  (local-set-key (kbd "C-c <down>") 'down-list)
+  (local-set-key (kbd "C-c <right>") 'puni-foward-sexp)
+  (local-set-key (kbd "C-c <left>")  'puni-backward-sexp)
+  (local-set-key (kbd "C-c m")       'puni-expand-region)
+  (local-set-key (kbd "C-c <up>")    'puni-up-list)
+  (local-set-key (kbd "C-c <down>")  'down-list)
 
   (when fn-search
-    (set (make-local-variable 'programming-generic/buffer-functions) fn-search)) )
+    (set (make-local-variable 'programming-generic/buffer-functions) fn-search))
+
+  (custom-key-group "puni" "p"  nil
+    ((kbd "<right>") . puni-forward-kill-word)
+    ((kbd "<left>")  . puni-backward-kill-word)
+    ((kbd "<up>")    . puni-kill-line)
+    ((kbd "<down>")  . puni-backward-kill-line)
+    ("b"             . puni-beginning-of-sexp)
+    ("e"             . puni-end-of-sexp)
+    ((kbd "<deletechar>") . puni-squeeze))
+
+  (custom-key-group "coding" "x"  nil
+    ("c" . toggle-comment-region)
+    ("d" . delta-insert)
+    ("f" . xref-find-definitions)
+    ("a" . xref-find-apropos)
+    ("w" . xref-find-definitions-other-window)
+    ("p" . xref-go-back)
+    ("n" . xref-go-forward)) )
 
 (defun get-clean-report-buffer ()
   (let
@@ -176,14 +196,5 @@
                     (concat "(release): " message "\n" (delta-status))
                     (concat "(" type "): " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
-
-(custom-key-group "coding" "x"  t
-  ("c" . toggle-comment-region)
-  ("d" . delta-insert)
-  ("f" . xref-find-definitions)
-  ("a" . xref-find-apropos)
-  ("w" . xref-find-definitions-other-window)
-  ("p" . xref-go-back)
-  ("n" . xref-go-forward) )
 
 (provide 'programming-generic)
