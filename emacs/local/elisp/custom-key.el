@@ -71,7 +71,7 @@
 
           (insert doc-string)
 
-          (local-set-key (kbd "q") 'keybindings-help-quit)
+          (keymap-local-set (kbd "q") 'keybindings-help-quit)
           (message "press \"q\" to quit help.")
 
           (current-buffer))) )) )
@@ -97,7 +97,7 @@
                     (keybindings-global-display (elt x 2)) )) )
         custom-keys-table)
 
-      (local-set-key (kbd "q") 'keybindings-help-quit)
+      (keymap-local-set (kbd "q") 'keybindings-help-quit)
       (message "press \"q\" to quit help.")
 
       (current-buffer) )) )

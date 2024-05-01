@@ -1,10 +1,4 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; buffer-ring.el
-;;
-;; A torus for buffer navigation. A ring of buffers, and a ring of buffer
-;; rings.
-;;----------------------------------------------------------------------
 
 (defconst buffer-ring-version "0.1.1" "buffer-ring version")
 
@@ -464,11 +458,11 @@
 
    set the global keybindings"
 
-  (global-set-key (kbd "<M-up>")   'buffer-torus/next)
-  (global-set-key (kbd "<M-down>") 'buffer-torus/prev)
+  (keymap-global-set "M-<up>"   'buffer-torus/next)
+  (keymap-global-set "M-<down>" 'buffer-torus/prev)
 
-  (global-set-key (kbd "<M-right>")  'buffer-ring/next)
-  (global-set-key (kbd "<M-left>")   'buffer-ring/prev)
+  (keymap-global-set "M-<right>"  'buffer-ring/next)
+  (keymap-global-set "M-<left>"   'buffer-ring/prev)
 
   (custom-key-group "buffer ring" "b" t
     ("b" . buffer-ring/list-buffers)
@@ -479,11 +473,11 @@
     ("k" . buffer-torus/delete) ) )
 
 (defun buffer-ring/local-keybindings ()
-  (local-unset-key (kbd "<M-right>"))
-  (local-unset-key (kbd "<M-left>"))
+  (keymap-local-unset "M-<right>")
+  (keymap-local-unset "M-<left>")
 
-  (local-unset-key (kbd "<M-up>"))
-  (local-unset-key (kbd "<M-down>")) )
+  (keymap-local-unset "M-<up>")
+  (keymap-local-unset "M-<down>") )
 
 (buffer-ring/global-keybindings)
 

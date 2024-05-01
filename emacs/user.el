@@ -109,7 +109,7 @@
   (buffer-ring/add "erc")
   (buffer-ring/local-keybindings)
 
-  (local-set-key (kbd "<up>") 'erc-previous-command) )
+  (keymap-local-set "<up>" 'erc-previous-command) )
 
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
 

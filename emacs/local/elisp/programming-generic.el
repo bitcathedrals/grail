@@ -62,7 +62,7 @@
   (run-custom-hooks configure-programming-hook)
 
   ;; better return key for programming
-  (local-set-key (kbd "<return>") 'newline-and-indent)
+  (keymap-local-set (kbd "<return>") 'newline-and-indent)
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
 
@@ -73,11 +73,11 @@
 
   (display-line-numbers-mode)
 
-  (local-set-key (kbd "C-c <right>") 'puni-forward-sexp)
-  (local-set-key (kbd "C-c <left>")  'puni-backward-sexp)
-  (local-set-key (kbd "C-c m")       'puni-expand-region)
-  (local-set-key (kbd "C-c <up>")    'puni-backward-sexp-or-up-list)
-  (local-set-key (kbd "C-c <down>")  'down-list)
+  (keymap-local-set (kbd "C-c <right>") 'puni-forward-sexp)
+  (keymap-local-set (kbd "C-c <left>")  'puni-backward-sexp)
+  (keymap-local-set (kbd "C-c m")       'puni-expand-region)
+  (keymap-local-set (kbd "C-c <up>")    'puni-backward-sexp-or-up-list)
+  (keymap-local-set (kbd "C-c <down>")  'down-list)
 
   (when fn-search
     (set (make-local-variable 'programming-generic/buffer-functions) fn-search))
@@ -203,7 +203,7 @@
   "
   (interactive)
 
-  (local-set-key (kbd "C-c i") 'delta-insert) )
+  (keymap-local-set "C-c i" 'delta-insert))
 
 (add-hook 'magit-mode-hook 'setup-magit-for-delta)
 
