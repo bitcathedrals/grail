@@ -2,6 +2,9 @@
 
 (require 'subr-x)
 
+(defvar custom-key-prefix "C-c"
+  "default key chord for custom keys")
+
 (defun keybindings-help-first-line ( fn )
   (if (functionp fn)
     (let
@@ -14,32 +17,36 @@
         "?"))
     "?"))
 
-(defun keybindings-local-display ( group-name keymap )
+(defun keybindings-local-display ( group-name table )
   (format "key set: %s
 %s"
     group-name
     (string-join
       (mapcar
-        (lambda ( keymap-pair )
+        (lambda ( table-pair )
           (format "(%s) %s"
-            (char-to-string (car keymap-pair))
-            (keybindings-help-first-line (cdr keymap-pair))) )
-        (cdr keymap))
+            (car table-pair)
+            (keybindings-help-first-line (cdr table-pair))) )
+        (cdr table))
       "
 ") ))
 
-(defun keybindings-global-display ( keymap )
+(defun keybindings-global-display ( table )
   (string-join
     (mapcar
-      (lambda ( keymap-pair )
+      (lambda ( table-pair )
         (format "(%s) %s"
-          (char-to-string (car keymap-pair))
-          (keybindings-help-first-line (cdr keymap-pair))) )
-      (cdr keymap))
+          (car table-pair)
+          (keybindings-help-first-line (cdr table-pair))) )
+      (cdr table))
     "
-") )
+"))
 
 (defconst keybindings-help-buffer-name "*keybindings help*")
+
+(defvar custom-keys-table (make-hash-table :test 'equal)
+  "descriptions of custom key groups")
+
 
 (defun keybindings-help-quit ()
   (interactive)
@@ -49,9 +56,9 @@
 
   (kill-buffer (get-buffer keybindings-help-buffer-name)) )
 
-(defun keybindings-help-local ( group-name keymap )
+(defun keybindings-help-local ( group-name table )
   (let
-    ((doc-string (keybindings-local-display group-name keymap)))
+    ((doc-string (keybindings-local-display group-name table)))
 
     (lambda ()
       "help"
@@ -69,9 +76,6 @@
 
           (current-buffer))) )) )
 
-(defvar custom-keys-descriptions (make-hash-table :test 'equal)
-  "descriptions of custom key groups")
-
 (defun keybindings-help-global ()
   "display keybinding help"
   (interactive)
@@ -87,93 +91,56 @@
       (maphash
         (lambda ( key x )
 
-          (insert (format "keys: C-c <%s> %s\n%s\n\n"
+          (insert (format (concat "keys: " custom-key-prefix " <%s> %s\n%s\n\n")
                     (elt x 0)
                     (elt x 1)
                     (keybindings-global-display (elt x 2)) )) )
-        custom-keys-descriptions )
+        custom-keys-table)
 
       (local-set-key (kbd "q") 'keybindings-help-quit)
       (message "press \"q\" to quit help.")
 
       (current-buffer) )) )
 
-(defun custom-key-group-new (chord description keymap)
-  (vector chord description keymap) )
+(defun custom-key-group-new (chord description table)
+  (vector chord description table))
 
-(defun custom-key-group-register ( chord description key-map)
-  (unless (gethash chord custom-keys-descriptions)
-    (puthash chord (custom-key-group-new chord description key-map) custom-keys-descriptions)) )
-
-(defvar custom-key-group-prefix "C-c"
-  "default key chord for custom keys")
+(defun custom-key-group-register (chord description table)
+  (unless (gethash chord custom-keys-table)
+    (puthash chord (custom-key-group-new chord description table) custom-keys-table)) )
 
 (defmacro custom-key-group ( description chord global &rest body )
-  `(let
-     ((key-map  (make-sparse-keymap)))
-
-     ,@(mapcar
-         (lambda ( key-fn-pair )
-           `(define-key key-map
-              ,(eval (car key-fn-pair))
-
-              ,(if (symbol-function (cdr key-fn-pair))
-                 `',(cdr key-fn-pair)
-                 (cdr key-fn-pair)) ) )
-         body)
-
-     (define-key key-map "h" (keybindings-help-local ,description key-map))
-
-     (,(if global
-         'global-set-key
-         'local-set-key)
-       (kbd (concat custom-key-group-prefix " " ,chord)) key-map)
-
-     (custom-key-group-register ,chord ,description key-map) ))
-
-(defmacro custom-key-set ( description chord global &rest body )
-  `(let
-     ((key-map  (make-sparse-keymap)))
-
-     ;; do this part just so we can create help
-     ,@(mapcar
-         (lambda ( key-fn-pair )
-           `(keymap-set key-map
-              ,(kbd (car key-fn-pair))
-
-              ,(if (symbol-function (cdr key-fn-pair))
-                 `',(cdr key-fn-pair)
-                 (cdr key-fn-pair)) ) )
-         body)
-
-     (custom-key-group-register ,chord ,description key-map)
-
+  `(progn
      ;;
      ;; unbind everything
      ;;
 
      ,@(mapcar
          (lambda ( key-fn-pair )
-           `(global-unset-key (kbd ,(concat chord "-" (car key-fn-pair)) ) ) )
+           `(keymap-local-unset ,(concat custom-key-prefix " " chord " " (car key-fn-pair)) ))
          body)
 
-     ,@(mapcar
-         (lambda ( key-fn-pair )
-           `(local-unset-key (kbd ,(concat chord "-" (car key-fn-pair)) ) ) )
-         body)
+     ;; bind the keys
 
      ,@(mapcar
          (lambda ( key-fn-pair )
            `(,(if global
-                'global-set-key
-                'local-set-key)
+                 'keymap-global-set
+                 'keymap-local-set)
 
-              (kbd ,(concat chord "-" (car key-fn-pair)) )
+              ,(concat custom-key-prefix " " chord " " (car key-fn-pair))
 
               ,(if (symbol-function (cdr key-fn-pair))
                  `',(cdr key-fn-pair)
-                 (cdr key-fn-pair)) ) )
-         body) ))
+                 (cdr key-fn-pair)) ))
+         body)
+
+     ;; register for global help
+     (custom-key-group-register ,chord ,description ',body)
+
+     ;; set a help key for this group
+     (keymap-local-set (concat custom-key-prefix " " ,chord " h") (keybindings-help-local ,description ',body))
+     ))
 
 (custom-key-group "help" "h" t
   ("a" . apropos)

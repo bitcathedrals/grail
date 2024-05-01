@@ -116,7 +116,7 @@
 (defun syntax-move/local-keybindings ()
   (interactive)
 
-  (custom-key-set "syntax move" "M-C" nil
+  (custom-key-group "syntax move" "m" nil
     ("b" . syntax-move/prev)
     ("f" . syntax-move/next)
     ("o" . syntax-move/opening)
