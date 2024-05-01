@@ -115,7 +115,7 @@
      ,@(mapcar
          (lambda ( key-fn-pair )
            `(define-key key-map
-              ,(car key-fn-pair)
+              ,(eval (car key-fn-pair))
 
               ,(if (symbol-function (cdr key-fn-pair))
                  `',(cdr key-fn-pair)
@@ -138,8 +138,8 @@
      ;; do this part just so we can create help
      ,@(mapcar
          (lambda ( key-fn-pair )
-           `(define-key key-map
-              ,(car key-fn-pair)
+           `(keymap-set key-map
+              ,(kbd (car key-fn-pair))
 
               ,(if (symbol-function (cdr key-fn-pair))
                  `',(cdr key-fn-pair)

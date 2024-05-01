@@ -76,24 +76,22 @@
   (local-set-key (kbd "C-c <right>") 'puni-forward-sexp)
   (local-set-key (kbd "C-c <left>")  'puni-backward-sexp)
   (local-set-key (kbd "C-c m")       'puni-expand-region)
-  (local-set-key (kbd "C-c <up>")    'puni-up-list)
+  (local-set-key (kbd "C-c <up>")    'puni-backward-sexp-or-up-list)
   (local-set-key (kbd "C-c <down>")  'down-list)
 
   (when fn-search
     (set (make-local-variable 'programming-generic/buffer-functions) fn-search))
 
   (custom-key-group "puni" "p"  nil
-    ((kbd "<right>") . puni-forward-kill-word)
-    ((kbd "<left>")  . puni-backward-kill-word)
-    ((kbd "<up>")    . puni-kill-line)
-    ((kbd "<down>")  . puni-backward-kill-line)
-    ("b"             . puni-beginning-of-sexp)
-    ("e"             . puni-end-of-sexp)
-    ((kbd "<deletechar>") . puni-squeeze))
+    ("<right>" . puni-forward-kill-word)
+    ("<left>"  . puni-backward-kill-word)
+    ("<up>"    . puni-kill-line)
+    ("<down>"  . puni-backward-kill-line)
+    ("b"       . puni-beginning-of-sexp)
+    ("e"       . puni-end-of-sexp) )
 
   (custom-key-group "coding" "x"  nil
     ("c" . toggle-comment-region)
-    ("d" . delta-insert)
     ("f" . xref-find-definitions)
     ("a" . xref-find-apropos)
     ("w" . xref-find-definitions-other-window)
@@ -169,6 +167,7 @@
 (defun delta-insert (type)
   "delta-insert
 
+   insert a conventional commit.
   "
   (interactive (list (completing-read
                        "commit type|fix: " ;; prompt
@@ -196,5 +195,16 @@
                     (concat "(release): " message "\n" (delta-status))
                     (concat "(" type "): " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
+
+(defun setup-magit-for-delta ()
+  "setup-magit-for-delta
+
+   setup delta-insert keybindings for magit mode
+  "
+  (interactive)
+
+  (local-set-key (kbd "C-c i") 'delta-insert) )
+
+(add-hook 'magit-mode-hook 'setup-magit-for-delta)
 
 (provide 'programming-generic)
