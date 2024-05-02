@@ -167,6 +167,6 @@
   (when indent-function
       (setq dwim-tab-indent indent-function))
 
-  (keymap-local-set (kbd "TAB") 'dwim-tab-do-magic))
+  (keymap-local-set "<tab>" 'dwim-tab-do-magic))
 
 (provide 'dwim-tab)

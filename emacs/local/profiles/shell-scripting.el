@@ -22,7 +22,7 @@
     sh-indentation 2
     sh-basic-offset 2)
 
-  (keymap-local-set (kbd "<return>") 'hard-electric-newline)
+  (keymap-local-set "<return>" 'hard-electric-newline)
 
   (turn-on-dwim-tab) )
 

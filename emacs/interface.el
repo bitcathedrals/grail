@@ -87,7 +87,7 @@
   (view-mode-enter)
   (auto-revert-tail-mode)
 
-  (keymap-local-set (kbd "j") 'pop-to-json) )
+  (keymap-local-set "j" 'pop-to-json) )
 
 (defun log-mode-off ()
   "log-mode-off
@@ -116,7 +116,7 @@
       (insert json-region)
       (json-pretty-print (point-min) (point-max))
 
-      (keymap-local-set (kbd "q") 'keybindings-help-quit)
+      (keymap-local-set "q" 'keybindings-help-quit)
 
       (pop-to-buffer (current-buffer)) )) )
 
