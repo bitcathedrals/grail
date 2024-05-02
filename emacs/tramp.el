@@ -47,4 +47,5 @@
   (let
     ((name (concat "ssh " host)))
 
-    (eat name t)) )
+    (with-current-buffer (eat name t)
+      (rename-buffer host)) ))
