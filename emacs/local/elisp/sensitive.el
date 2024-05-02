@@ -2,22 +2,27 @@
 
 (require 'erc)
 
-(setq
-  erc-nick "JohnGalt"
-  erc-ignore-list '("whateverdude" "quiliro" "grym"))
+(setq erc-nickserv-passwords
+  `((irc.libera.chat
+      (("JohnGalt" . "Chavez#Code#Monkey")
+       ("TechBroLifer" . "Chavez#Code#Monkey"))) ))
 
 ;;
 ;; erc setup
 ;;
 
-(defun nickserv-identify ()
-  (erc-send-input "/msg NickServ IDENTIFY JohnGalt Chavez#Code#Monkey"))
+;; (defun nickserv-identify ()
+;;   (erc-send-input "/msg NickServ IDENTIFY JohnGalt Chavez#Code#Monkey"))
 
-(setq erc-after-connect
-  (cons
-    (lambda (server nick)
-      (nickserv-identify))
-    erc-after-connect))
+;; (setq erc-after-connect
+;;   (cons
+;;     (lambda (server nick)
+;;       (nickserv-identify))
+;;     erc-after-connect))
+
+(setq erc-after-connect nil)
+
+
 
 (setq
   epg-user-id "codermattie@runbox.com")

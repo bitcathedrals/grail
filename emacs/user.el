@@ -97,7 +97,6 @@
 (require 'sensitive)
 
 (setq
-  erc-default-server "irc.libera.chat"
   erc-default-port "6667"
   erc-prompt-for-nickserv-password nil
   erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")) )
@@ -112,6 +111,28 @@
   (keymap-local-set "<up>" 'erc-previous-command) )
 
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
+
+(require 'erc-services)
+(erc-services-mode 1)
+
+(defun johngalt ()
+  (interactive)
+
+  (erc
+    :server "irc.libera.chat"
+    :port "6667"
+    :nick "JohnGalt"
+
+    ))
+
+(defun techbro ()
+  (interactive)
+
+  (erc
+    :server "irc.libera.chat"
+    :port "6667"
+    :nick "TechBroLifer"))
+
 
 ;;----------------------------------------------------------------------
 ;; helm completion
