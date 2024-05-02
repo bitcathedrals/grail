@@ -1,9 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; enhanced terminal
-;;----------------------------------------------------------------------
-
 (require 'term)
 (require 'buffer-ring)
 (require 'custom-key)
@@ -60,3 +56,7 @@
 ;; setup shell-mode in case I use it
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+;; eat
+
+(require 'eat)

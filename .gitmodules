@@ -214,4 +214,10 @@
 	path = emacs/dist/git/puni
 	url = https://github.com/AmaiKinono/puni.git
 	branch = master
-  ignore = dirty
+	ignore = dirty
+
+[submodule "emacs/dist/git/eat"]
+	path = emacs/dist/git/eat
+	url = https://codeberg.org/akib/emacs-eat.git
+	branch = master
+	ignore = dirty
