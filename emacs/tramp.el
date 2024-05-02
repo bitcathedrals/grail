@@ -47,4 +47,4 @@
   (let
     ((name (concat "ssh " host)))
 
-    (ansi-term name name)) )
+    (eat name t)) )
