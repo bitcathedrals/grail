@@ -130,6 +130,12 @@
 
   (occur "def.*") )
 
+(require 'eglot)
+
+(setq
+  eldoc-documentation-strategy 'ignore
+  global-eldoc-mode nil)
+
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
 
 (defun python-mode-setup ()
