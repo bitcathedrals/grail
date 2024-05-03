@@ -221,3 +221,9 @@
 	url = https://codeberg.org/akib/emacs-eat.git
 	branch = master
 	ignore = dirty
+[submodule "emacs/dist/git/restclient"]
+	path = emacs/dist/git/restclient
+	url = https://github.com/pashky/restclient.el.git
+	branch = master
+	ignore = dirty
+
