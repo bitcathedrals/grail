@@ -60,3 +60,13 @@
 ;; eat
 
 (require 'eat)
+
+(defun setup-eat-general ()
+  (interactive)
+
+  (setq-local process-adaptive-read-buffering nil) )
+
+(add-hook 'eat-mode-hook 'setup-eat-general)
+
+
+

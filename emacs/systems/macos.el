@@ -121,3 +121,18 @@
   grail-font-family '("Cousine" "Hack" "Spleen" "DejaVu Sans Mono" "Courier New")
   grail-font-size 22
   grail-transparency 90)
+
+
+(require 'eat)
+
+(keymap-global-set "\C-h" 'delete-backward-char)
+
+(defun setup-eat-macos ()
+  (interactive)
+
+  (keymap-local-set "<backspace>" 'delete-backward-char)
+  (keymap-local-set "<deletechar>" 'delete-char) )
+
+(add-hook 'eat-mode-hook 'setup-eat-macos)
+
+
