@@ -134,7 +134,8 @@
 
 (setq
   eldoc-documentation-strategy 'ignore
-  global-eldoc-mode nil)
+  global-eldoc-mode nil
+  eldoc-documentation-functions nil)
 
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
 
