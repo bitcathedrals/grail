@@ -111,7 +111,7 @@ dependencies. One dependency will be my pythonsh toolbox for running
 py.sh commands, the rest are Elisp packages.
 
 #+BEGIN_SRC bash :tangle "install-grail.sh"
-(cd ~/code/grail && git submodule update --init)
+(cd ~/code/grail && git submodule init && git submodule update --init)
 #+END_SRC
 
 Third you need to create the symlinks that point the Emacs load at grail:
