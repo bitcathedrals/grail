@@ -125,8 +125,6 @@
 
 (require 'eat)
 
-(keymap-global-set "\C-h" 'delete-backward-char)
-
 (defun setup-eat-macos ()
   (interactive)
 
