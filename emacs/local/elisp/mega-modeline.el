@@ -1,5 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
 
+(require 'vc-git)
+
 (which-function-mode)
 
 (defun get-battery-buffer ()
