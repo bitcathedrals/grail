@@ -284,7 +284,8 @@
 
     (add-hook 'after-make-frame-functions
       (lambda (frame)
-        (grail-set-font (grail-build-font frame))) )
+        (grail-set-font (grail-build-font frame))
+        (set-frame-parameter frame 'alpha `(,grail-transparency . ,grail-transparency)) ))
 
     (set-face-background 'default personal-bg-color)
     (set-face-foreground 'default "grey55")
