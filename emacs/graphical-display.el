@@ -278,14 +278,14 @@
 
     (grail-set-font (grail-build-font frame))
     (grail-set-transparency grail-transparency)
+
     (grail-default-transparency grail-transparency)
 
     (display-faces-graphical)
 
     (add-hook 'after-make-frame-functions
       (lambda (frame)
-        (grail-set-font (grail-build-font frame))
-        (set-frame-parameter frame 'alpha `(,grail-transparency . ,grail-transparency)) ))
+        (grail-set-font (grail-build-font frame)) ))
 
     (set-face-background 'default personal-bg-color)
     (set-face-foreground 'default "grey55")
@@ -309,7 +309,7 @@
 
 (defun grail-default-transparency (percent)
   (grail-set-transparency percent)
-  (add-to-list 'default-frame-alist (list 'alpha percent percent)) )
+  (add-to-list 'default-frame-alist `(alpha . (,percent . ,percent)) ))
 
 (defun show-fonts ()
   (interactive)
