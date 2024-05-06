@@ -71,6 +71,14 @@
   ("p" . push-mark-command)
   ("g" . pop-global-mark))
 
+(custom-key-group "window" "w" t
+  ("v" . split-window-horizontally)
+  ("h" . split-window-vertically)
+  ("n" . make-frame-command)
+  ("d" . delete-frame)
+  ("x" . delete-other-windows)
+  ("f" . toggle-frame-fullscreen) )
+
 (defvar swap-parens-keymap '(("[" . "(")
                              ("]" . ")")
                              ("(" . "[")
