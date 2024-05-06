@@ -4,4 +4,5 @@
 
 (setq
   grail-font-family '("Cousine" "Oxygen" "Hack" "DejaVu Sans Mono")
-  grail-transparency 90)
+;;  grail-transparency 90
+  )

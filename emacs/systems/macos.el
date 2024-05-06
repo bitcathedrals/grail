@@ -120,7 +120,8 @@
 (setq
   grail-font-family '("Cousine" "Hack" "Spleen" "DejaVu Sans Mono" "Courier New")
   grail-font-size 22
-  grail-transparency 90)
+;;  grail-transparency 90
+  )
 
 
 (require 'eat)
