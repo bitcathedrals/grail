@@ -193,7 +193,7 @@
       (if (equal status 0)
         (progn
           (with-current-buffer (get-pysh-buffer)
-            (local-set-key (kbd "q") 'pysh-quit))
+            (keymap-local-set "q" 'pysh-quit))
 
           (pop-to-buffer (get-pysh-buffer)) )
         (message "py.sh failed with: %d" status)) ) ))

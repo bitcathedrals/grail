@@ -6,6 +6,10 @@
 
 (require 'pysh)
 
+(require 'eglot)
+
+(require 'puni)
+
 ;;
 ;; some generic code editing stuff
 ;;
@@ -35,6 +39,18 @@
 (defvar configure-programming-hook nil
   "hook so other programming tools can run after programming-mode-generic")
 
+(defun search-buffer-functions ()
+  "search-buffer-functions
+
+   search the buffer for functions
+  "
+  (interactive)
+
+  (if (boundp 'programming-generic/buffer-functions)
+    (funcall programming-generic/buffer-functions)
+    (message "no programming-generic/buffer-functions defined in buffer.")) )
+
+
 (defun programming-mode-generic ( &optional fn-search )
   "Enable my programming customizations for the buffer"
 
@@ -46,7 +62,7 @@
   (run-custom-hooks configure-programming-hook)
 
   ;; better return key for programming
-  (local-set-key (kbd "<return>") 'newline-and-indent)
+  (keymap-local-set "<return>" 'newline-and-indent)
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
 
@@ -55,7 +71,32 @@
 
   (ruler-mode)
 
-  (display-line-numbers-mode))
+  (display-line-numbers-mode)
+
+  (keymap-local-set "C-c <right>" 'puni-forward-sexp)
+  (keymap-local-set "C-c <left>"  'puni-backward-sexp)
+  (keymap-local-set "C-c m"       'puni-expand-region)
+  (keymap-local-set "C-c <up>"    'puni-backward-sexp-or-up-list)
+  (keymap-local-set "C-c <down>"  'down-list)
+
+  (when fn-search
+    (set (make-local-variable 'programming-generic/buffer-functions) fn-search))
+
+  (custom-key-group "puni" "p"  nil
+    ("<right>" . puni-forward-kill-word)
+    ("<left>"  . puni-backward-kill-word)
+    ("<up>"    . puni-kill-line)
+    ("<down>"  . puni-backward-kill-line)
+    ("b"       . puni-beginning-of-sexp)
+    ("e"       . puni-end-of-sexp) )
+
+  (custom-key-group "coding" "x"  nil
+    ("c" . toggle-comment-region)
+    ("f" . xref-find-definitions)
+    ("a" . xref-find-apropos)
+    ("w" . xref-find-definitions-other-window)
+    ("p" . xref-go-back)
+    ("n" . xref-go-forward)) )
 
 (defun get-clean-report-buffer ()
   (let
@@ -126,6 +167,7 @@
 (defun delta-insert (type)
   "delta-insert
 
+   insert a conventional commit.
   "
   (interactive (list (completing-read
                        "commit type|fix: " ;; prompt
@@ -154,8 +196,15 @@
                     (concat "(" type "): " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
 
-(custom-key-group "code insert" "i"  t
-  ("c" . comment-region)
-  ("d" . delta-insert))
+(defun setup-magit-for-delta ()
+  "setup-magit-for-delta
+
+   setup delta-insert keybindings for magit mode
+  "
+  (interactive)
+
+  (keymap-local-set "C-c i" 'delta-insert))
+
+(add-hook 'magit-mode-hook 'setup-magit-for-delta)
 
 (provide 'programming-generic)

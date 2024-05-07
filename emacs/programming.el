@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;; programming.el
-
 (require 'merging)
 (require 'ext-merging)
 
@@ -104,3 +102,52 @@
   (buffer-ring/local-keybindings) )
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
+
+(defun shell-mode-functions ()
+  "shell-mode-functions
+
+   occur all the functions in a shell mode buffer
+  "
+  (interactive)
+  (occur "function.*"))
+
+(defun shell-mode-setup ()
+  "shell-mode-setup
+
+   setup shell mode with enhanced features
+  "
+  (interactive)
+  (programming-mode-generic 'shell-mode-functions) )
+
+(add-hook 'shell-mode-hook 'shell-mode-setup)
+
+(defun python-mode-functions ()
+  "python-mode-functions
+
+   occur all the functions in a python mode buffer
+  "
+  (interactive)
+
+  (occur "def.*") )
+
+(require 'eglot)
+
+(setq
+  eldoc-documentation-strategy 'ignore
+  global-eldoc-mode nil
+  eldoc-documentation-functions nil)
+
+(add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+
+(defun python-mode-setup ()
+  "python-mode-setup
+
+   setup python-mode enhanced features.
+  "
+  (interactive)
+
+  (eglot-ensure)
+
+  (programming-mode-generic 'python-mode-functions) )
+
+(add-hook 'python-mode-hook 'python-mode-setup)

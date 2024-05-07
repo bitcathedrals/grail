@@ -1,8 +1,5 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; dwim-tab.el
-;;----------------------------------------------------------------------
 (defvar dwim-tab-register-expand nil
   "dwim-tab function for expanding registers")
 
@@ -170,6 +167,6 @@
   (when indent-function
       (setq dwim-tab-indent indent-function))
 
-  (local-set-key (kbd "TAB") 'dwim-tab-do-magic))
+  (keymap-local-set "<tab>" 'dwim-tab-do-magic))
 
 (provide 'dwim-tab)

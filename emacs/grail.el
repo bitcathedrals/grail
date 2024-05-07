@@ -56,9 +56,6 @@
 ;; detailed description of the file and directory structure that is
 ;; significant to Grail.
 
-(defconst grail-maintainer-email "codermattie@runbox.com"
-  "The maintainer's e-mail address")
-
 (defconst grail-project-url "https://github.com/bitcathedrals/grail/"
   "the project page for Grail")
 

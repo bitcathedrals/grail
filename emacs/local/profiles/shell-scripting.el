@@ -1,8 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; shell-script
-;;----------------------------------------------------------------------
 (require 'programming-generic)
 (require 'dwim-tab)
 
@@ -25,7 +22,7 @@
     sh-indentation 2
     sh-basic-offset 2)
 
-  (local-set-key (kbd "<return>") 'hard-electric-newline)
+  (keymap-local-set "<return>" 'hard-electric-newline)
 
   (turn-on-dwim-tab) )
 

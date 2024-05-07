@@ -87,6 +87,10 @@
     (borg-repl/error-msg "no REPL eval region defined here.") ) )
 
 (defun borg-repl/macro-expand ()
+  "borg-repl/macro-expand
+
+   perform a macro expand at the point
+  "
   (interactive)
 
   (if (boundp 'borg-repl/macro-expand)

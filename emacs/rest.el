@@ -1,18 +1,33 @@
 ;; -*-no-byte-compile: t; -*-
 
-(defun rest-buffer ( url )
-  (interactive "sURL:")
+(require 'restclient)
 
-  (lexical-let
-    ((url-buffer nil))
+(require 'borg-repl)
+(require 'buffer-ring)
+(require 'programming-generic)
 
-    (setq url-buffer (url-retrieve
-                       url
-                       (lambda ( &rest args )
-                         (pop-to-buffer url-buffer)) )) ))
+(defconst restclient/ring-name "http")
 
+(setq auto-mode-alist
+  (append '(("\\.http$"    . restclient-mode)) auto-mode-alist))
 
-(custom-key-group "rest" "u" t
-  ("g" . rest-buffer))
+(setq
+  rest-client-buffer-response-name "*REST*")
 
-(provide 'rest)
+(defun http-methods ()
+  "shell-mode-functions
+
+   occur all the functions in a shell mode buffer
+  "
+  (interactive)
+  (occur "^\(GET|PUT|POST|DELETE\).*"))
+
+(defun setup-restclient ()
+  (interactive)
+
+  (buffer-ring/add restclient/ring-name)
+  (buffer-ring/local-keybindings)
+
+  (programmming-mode-generic 'http-methods))
+
+(add-hook 'restclient-mode-hook 'setup-restclient)

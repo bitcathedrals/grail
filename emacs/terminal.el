@@ -1,9 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; enhanced terminal
-;;----------------------------------------------------------------------
-
 (require 'term)
 (require 'buffer-ring)
 (require 'custom-key)
@@ -57,11 +53,31 @@
       command
       terminal-profile-local-shell)) )
 
-(custom-key-group "execute" "x" t
-    ("t" . full-term)
-    ("s" . shell-term)
-    ("c" . shell-command))
-
 ;; setup shell-mode in case I use it
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+;; tmux
+
+(defun tmux ()
+  "tmux
+
+   start a tmux session
+  "
+  (interactive)
+
+  (term "tmux") )
+
+;; eat
+
+(require 'eat)
+
+(defun setup-eat-general ()
+  (interactive)
+
+  (setq-local process-adaptive-read-buffering nil) )
+
+(add-hook 'eat-mode-hook 'setup-eat-general)
+
+
+

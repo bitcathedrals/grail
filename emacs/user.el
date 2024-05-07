@@ -1,8 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; user.el - user interface configuration
-;;----------------------------------------------------------------------
 (require 'buffer-ring)
 
 (setq warning-minimum-level :emergency)
@@ -12,11 +9,6 @@
 ;;----------------------------------------------------------------------
 (require 'dwim-tab)
 (require 'buffer-ring)
-
-;;----------------------------------------------------------------------
-;; utilities
-;;----------------------------------------------------------------------
-(require 'ext-logging)
 
 ;;----------------------------------------------------------------------
 ;; general grail profiles
@@ -94,29 +86,6 @@
 ;;----------------------------------------------------------------------
 (setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist))
 
-;----------------------------------------------------------------------
-;;                    EShell
-;;----------------------------------------------------------------------
-
-(require 'eshell)
-
-(setq
-  eshell-windowed t                ;; enable windowing
-  eshell-save-history-on-exit nil) ;; kill the prompt to save history
-
-(add-hook 'eshell-mode-hook
-  (lambda ()
-    ;; add a list of commands that will pop a term buffer for out-of-eshell
-    ;; handling. Note: the variable eshell-visual-commands is buffer-local.
-    (setq eshell-visual-commands
-      (append eshell-visual-commands (list "ssh" "su" "telnet"
-                                           "ftp" "lftp" "links")))
-
-    ;; I rarely want to quit eshell. when I do I can use quit. map
-    ;; the usual kill-buffer keybinding to rid-window.
-    (local-set-key (kbd "C-x k") 'rid-window))
-  t)
-
 ;;----------------------------------------------------------------------
 ;;                    ERC
 ;;----------------------------------------------------------------------
@@ -125,10 +94,9 @@
 
 (grail-try-elisp "local/elisp/erc-sensitive.el")
 
-(require 'erc-sensitive)
+(require 'sensitive)
 
 (setq
-  erc-default-server "irc.libera.chat"
   erc-default-port "6667"
   erc-prompt-for-nickserv-password nil
   erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")) )
@@ -140,9 +108,31 @@
   (buffer-ring/add "erc")
   (buffer-ring/local-keybindings)
 
-  (local-set-key (kbd "<up>") 'erc-previous-command) )
+  (keymap-local-set "<up>" 'erc-previous-command) )
 
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
+
+(require 'erc-services)
+(erc-services-mode 1)
+
+(defun johngalt ()
+  (interactive)
+
+  (erc
+    :server "irc.libera.chat"
+    :port "6667"
+    :nick "JohnGalt"
+
+    ))
+
+(defun techbro ()
+  (interactive)
+
+  (erc
+    :server "irc.libera.chat"
+    :port "6667"
+    :nick "TechBroLifer"))
+
 
 ;;----------------------------------------------------------------------
 ;; helm completion
@@ -182,11 +172,6 @@
     automatically switch to the frame created by helm
    "
   (select-frame (helm-frame-window) t))
-
-;;----------------------------------------------------------------------
-;; read/write perm handling
-;;----------------------------------------------------------------------
-(require 'rw-utilities)
 
 (setq auto-mode-alist
   (cons '("\\.firewall$" . conf-mode) auto-mode-alist))

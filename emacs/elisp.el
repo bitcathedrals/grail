@@ -2,6 +2,8 @@
 
 (setq-default lexical-binding t)
 
+(setq native-comp-async-report-warnings-errors 'silent)
+
 (defun extract-string-with-regex (regexp)
   (save-excursion
     (goto-char (point-min))
