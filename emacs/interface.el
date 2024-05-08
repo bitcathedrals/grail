@@ -23,7 +23,8 @@
   inhibit-splash-screen t
   inhibit-startup-echo-area-message t
 
-  global-font-lock-mode t)
+  global-font-lock-mode t
+  undo-no-redo t)
 
 (transient-mark-mode -1)
 
