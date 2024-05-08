@@ -11,6 +11,7 @@
 
 (setq vc-follow-symlinks t)
 
+(require 'company)
 
 ;; indentation
 
