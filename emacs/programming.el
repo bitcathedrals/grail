@@ -12,6 +12,9 @@
 (setq vc-follow-symlinks t)
 
 (require 'company)
+(require 'company-tabnine)
+
+(add-to-list 'company-backends #'company-tabnine)
 
 ;; indentation
 
