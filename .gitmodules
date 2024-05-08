@@ -233,3 +233,9 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/git/company-tabnine"]
+	path = emacs/dist/git/company-tabnine
+	url = https://github.com/TommyX12/company-tabnine.git
+	branch = master
+	ignore = dirty
+
