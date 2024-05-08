@@ -37,3 +37,21 @@
     ((lambda (x)
        (concat (substring x 0 3) ":" (substring x 3 5)))
       (format-time-string "%z"))) )
+
+(defun minor-mode-active-list ()
+  "minor-mode-active-list
+
+   Get a list of which minor modes are enabled in the current buffer.
+  "
+  (let
+    ((active nil))
+
+    (mapc
+      (lambda (minor-mode)
+        (condition-case nil
+          (when (and (symbolp minor-mode) (symbol-value minor-mode))
+            (setq active (cons minor-mode active)))
+          (error nil)) )
+      minor-mode-list)
+
+    (sort active 'string<) ))
