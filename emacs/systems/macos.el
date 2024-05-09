@@ -85,8 +85,6 @@
           (add-to-list 'woman-path man-path)))
       mac-man-paths) )
 
-  (maybe-add-path "/Applications/Emacs.app/Contents/MacOS/bin" 'exec-path)
-
   (when (file-directory-p user-brew)
     (map-paths user-brew bin-dirs 'exec-path)
     (map-paths user-brew man-dirs 'woman-path))
@@ -97,7 +95,10 @@
 
   (when (file-directory-p opt-brew)
     (map-paths opt-brew bin-dirs 'exec-path)
-    (map-paths opt-brew man-dirs 'woman-path)) )
+    (map-paths opt-brew man-dirs 'woman-path))
+
+  (maybe-add-path "/Applications/Emacs.app/Contents/MacOS/bin" 'exec-path)
+  (maybe-add-path (concat (getenv "HOME") "/tools/local/libexec") 'exec-path) )
 
 (setup-macos-paths)
 

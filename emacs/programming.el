@@ -148,6 +148,12 @@
 
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
 
+(defun tree-sitter-install-python ()
+  (interactive)
+  (call-interactively 'treesit-install-language-grammar
+    "python"
+    (concat (getenv "HOME") "/tools/local/libexec")))
+
 (defun tree-sitter-for-python ()
   (interactive)
 
