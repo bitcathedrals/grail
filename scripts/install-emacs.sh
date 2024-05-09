@@ -8,8 +8,7 @@ case $1 in
 
     doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-    test -d $GIT || mkdir -p $GIT
-    test -d $GIT/.git || git clone https://github.com/emacs-mirror/emacs.git $GIT
+    test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
 
     command -v autoconf >/dev/null 2>&1
     if [[ $? -ne 0 ]]
@@ -67,6 +66,62 @@ case $1 in
 
     cp desktop/emacs.desktop $LOCAL_DESKTOP/
     cp desktop/emacs-icon.png $HOME/tools/
+  ;;
+   "macos-git")
+    TOOLS=$HOME/tools/local/
+
+    test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
+
+    command -v autoconf >/dev/null 2>&1
+    if [[ $? -ne 0 ]]
+    then
+      echo >/dev/stderr "autoconf is required to build emacs - please install autoconf."
+      exit 1
+    fi
+
+    command -v automake >/dev/null 2>&1
+    if [[ $? -ne 0 ]]
+    then
+      echo >/dev/stderr "automake is required to build emacs - please install automake."
+      exit 1
+    fi
+
+    command -v makeinfo >/dev/null 2>&1
+
+    if [[ $? -ne 0 ]]
+    then
+      echo >/dev/stderr "makeinfo is required to build emacs - please install texinfo."
+      exit 1
+    fi
+
+    command -v gcc >/dev/null 2>&1
+    if [[ $? -ne 0 ]]
+    then
+      echo >/dev/stderr "gcc is required to build emacs - please install gcc."
+      exit 1
+    fi
+
+    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-native-compilation=no --with-xpm=no --with-gif=no && make bootstrap)
+    then
+      echo "compile ok."
+    else
+      echo "COMPILE FAILED!"
+      exit 1
+    fi
+
+    read -p "Proceed with emacs install? [y/n]: " proceed
+
+    if [[ $proceed = "y" ]]
+    then
+      echo ">>> proceeding with install!"
+    else
+      echo ">>> ABORT! exiting now!"
+      exit 1
+    fi
+
+    test -d $TOOLS || mkdir -p $TOOLS
+
+    (cd $GIT && make install)
   ;;
   "macos-compile")
     brew tap d12frosted/emacs-plus
