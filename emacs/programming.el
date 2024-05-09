@@ -12,13 +12,13 @@
 (setq vc-follow-symlinks t)
 
 (require 'company)
-(require 'company-tabnine)
+;; (require 'company-tabnine)
 
 ;; Trigger completion immediately.
 (setq
   company-idle-delay 0)
 
-(add-to-list 'company-backends #'company-tabnine)
+;; (add-to-list 'company-backends #'company-tabnine)
 
 ;; indentation
 
@@ -143,9 +143,9 @@
 (setq
   eldoc-documentation-strategy 'ignore
   global-eldoc-mode nil
-  eldoc-documentation-functions nil
+  eldoc-documentation-functions nil)
 
-  eglot-ignored-server-capabilities '(:completionProvider) )
+;; (setq eglot-ignored-server-capabilities '(:completionProvider))
 
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
 
