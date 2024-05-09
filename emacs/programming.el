@@ -149,6 +149,11 @@
 
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
 
+(defun tree-sitter-for-python ()
+  (interactive)
+
+  (treesit-language-available-p 'python))
+
 (defun python-mode-setup ()
   "python-mode-setup
 
