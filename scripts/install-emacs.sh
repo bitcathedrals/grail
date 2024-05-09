@@ -2,6 +2,9 @@
 
 GIT=$HOME/code/emacs
 
+NATIVE=no
+SITTER=yes
+
 case $1 in
   "linux")
     TOOLS=$HOME/tools/local/
@@ -39,7 +42,7 @@ case $1 in
       exit 1
     fi
 
-    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-xpm=no --with-gif=no && make bootstrap)
+    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-tree-sitter=$SITTER --with-xpm=no --with-gif=no && make bootstrap)
     then
       echo "compile ok."
     else
@@ -101,7 +104,7 @@ case $1 in
       exit 1
     fi
 
-    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-native-compilation=no --with-xpm=no --with-gif=no && make bootstrap)
+    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-native-compilation=$NATIVE --with-tree-sitter=$SITTER --with-xpm=no --with-gif=no && make bootstrap)
     then
       echo "compile ok."
     else
@@ -125,7 +128,7 @@ case $1 in
   ;;
   "macos-compile")
     brew tap d12frosted/emacs-plus
-    brew install emacs-plus --with-native-comp || exit 1
+    brew install emacs-plus@29 --with-native-comp=$NATIVE --with-tree-sitter=$SITTER || exit 1
   ;;
   "macos-link")
     brew_emacs="emacs-plus@29"
