@@ -33,14 +33,13 @@
 
 ;; higher level functionality
 
-(use-grail-profiles 1 "emacs-lisp" "common-lisp" "scheme" "shell-scripting")
+(use-grail-profiles 1 "emacs-lisp" "common-lisp" "scheme" "shell-scripting" "python")
 
 ;; advanced functionality
 
 (use-grail-profiles 3 "slime")
 
-
-;;                          version control
+;; version control
 
 (require 'magit)
 
