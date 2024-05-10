@@ -239,3 +239,9 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/git/yaml-mode"]
+	path = emacs/dist/git/yaml-mode
+	url = https://github.com/yoshiki/yaml-mode.git
+	branch = master
+	ignore = dirty
+
