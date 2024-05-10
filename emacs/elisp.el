@@ -19,7 +19,7 @@
 
     (when (and (not (string-empty-p candidate-path))
                (file-directory-p candidate-path))
-      (add-to-list path-list candidate-path)) ))
+      (add-to-list path-list candidate-path t)) ))
 
 (defun map-paths ( dir sub-dirs path-list)
   "from a stem directory DIR look in SUB-DIR and add missing paths to PATH-LIST"
@@ -55,3 +55,35 @@
       minor-mode-list)
 
     (sort active 'string<) ))
+
+(defun make-unique (list)
+  (let
+    ((seen-table (make-hash-table))
+     (output nil))
+
+    (mapc
+      (lambda (element)
+        (when (not (gethash element seen-table))
+          (add-to-list 'output element t)) )
+      list) ))
+
+(defun print-unique-exec-path ()
+  (interactive)
+
+  (mapc
+    (lambda (path)
+      (princ (concat path "\n")))
+    (make-unique exec-path)) )
+
+(defun message-macos-paths ()
+  (interactive)
+  (mapc
+    (lambda (path)
+      (message "exec: %s" path))
+    exec-path)
+
+  (mapc
+    (lambda (path)
+      (message "woman: %s" path))
+    woman-path))
+
