@@ -1,0 +1,3 @@
+[packages]
+python-lsp-server = "~=1.11"
+

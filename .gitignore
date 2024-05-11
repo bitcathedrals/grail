@@ -1,9 +1,6 @@
 **/.DS_Store
-emacs/dist/elpa
 emacs/local/elisp/sensitive.el
 **/*.elc
-Pipfile
-Pipfile.lock
 
 
 
