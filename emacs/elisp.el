@@ -58,32 +58,27 @@
 
 (defun make-unique (list)
   (let
-    ((seen-table (make-hash-table))
+    ((seen-table (make-hash-table :test 'equal))
      (output nil))
 
     (mapc
       (lambda (element)
         (when (not (gethash element seen-table))
-          (add-to-list 'output element t)) )
-      list) ))
+          (add-to-list 'output element t)
+          (puthash element t seen-table)) )
+      list)
 
-(defun print-unique-exec-path ()
-  (interactive)
+    output))
 
-  (mapc
-    (lambda (path)
-      (princ (concat path "\n")))
-    (make-unique exec-path)) )
-
-(defun message-macos-paths ()
+(defun print-system-paths ()
   (interactive)
   (mapc
     (lambda (path)
-      (message "exec: %s" path))
+      (princ (concat "exec: " path "\n")) )
     exec-path)
 
   (mapc
     (lambda (path)
-      (message "woman: %s" path))
-    woman-path))
+      (princ (concat "woman: " path "\n")) )
+    woman-path) )
 
