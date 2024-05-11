@@ -227,3 +227,21 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/git/company"]
+	path = emacs/dist/git/company
+	url = https://github.com/company-mode/company-mode.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/company-tabnine"]
+	path = emacs/dist/git/company-tabnine
+	url = https://github.com/TommyX12/company-tabnine.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/yaml-mode"]
+	path = emacs/dist/git/yaml-mode
+	url = https://github.com/yoshiki/yaml-mode.git
+	branch = master
+	ignore = dirty
+

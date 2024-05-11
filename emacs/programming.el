@@ -11,6 +11,14 @@
 
 (setq vc-follow-symlinks t)
 
+(require 'company)
+;; (require 'company-tabnine)
+
+;; Trigger completion immediately.
+(setq
+  company-idle-delay 0)
+
+;; (add-to-list 'company-backends #'company-tabnine)
 
 ;; indentation
 
@@ -25,14 +33,13 @@
 
 ;; higher level functionality
 
-(use-grail-profiles 1 "emacs-lisp" "common-lisp" "scheme" "shell-scripting")
+(use-grail-profiles 1 "emacs-lisp" "common-lisp" "scheme" "shell-scripting" "python")
 
 ;; advanced functionality
 
 (use-grail-profiles 3 "slime")
 
-
-;;                          version control
+;; version control
 
 (require 'magit)
 
@@ -137,7 +144,20 @@
   global-eldoc-mode nil
   eldoc-documentation-functions nil)
 
+;; (setq eglot-ignored-server-capabilities '(:completionProvider))
+
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+
+(defun tree-sitter-install-python ()
+  (interactive)
+  (call-interactively 'treesit-install-language-grammar
+    "python"
+    (concat (getenv "HOME") "/tools/local/libexec")))
+
+(defun tree-sitter-for-python ()
+  (interactive)
+
+  (treesit-language-available-p 'python))
 
 (defun python-mode-setup ()
   "python-mode-setup
@@ -147,6 +167,7 @@
   (interactive)
 
   (eglot-ensure)
+  (company-mode)
 
   (programming-mode-generic 'python-mode-functions) )
 
