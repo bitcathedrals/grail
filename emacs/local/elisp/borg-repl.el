@@ -19,29 +19,52 @@
                                  info) ", ") " ]")
       "")))
 
-(defun borg-repl/bind-repl ( repl-name create-fn line-fn region-fn buffer-fn &optional defun-fn )
+(defun borg-repl/bind-repl ( repl-name
+                             create-fn
+                             line-fn
+                             region-fn
+                             buffer-fn
+                             &optional defun-fn
+                             &optional get-buffer)
   (set (make-local-variable 'borg-repl/repl-name) repl-name)
   (set (make-local-variable 'borg-repl/create-repl) create-fn)
   (set (make-local-variable 'borg-repl/eval-line) line-fn)
   (set (make-local-variable  'borg-repl/eval-region) region-fn)
-  (set (make-local-variable  'borg-repl/eval-buffer) buffer-fn)
 
   (when defun-fn
-    (set (make-local-variable 'borg-repl/eval-defun) defun-fn)) )
+    (set (make-local-variable 'borg-repl/eval-defun) defun-fn))
+
+  (when get-buffer
+    (set (make-local-variable 'borg-repl/get-buffer) get-buffer))
+
+  (custom-key-group "borg repl" "e" nil
+    ("x" . borg-repl/start)
+    ("c" . borg-repl/connect)
+    ("e" . borg-repl/statement)
+    ("r" . borg-repl/region)
+    ("b" . borg-repl/buffer)
+    ("d" . borg-repl/definition)
+    ("v" . borg-repl/view)
+    ("s" . borg-repl/switch)
+    ("<left>" . borg-repl/next)
+    ("<right>" . borg-repl/prev)
+    ("m" . borg-repl/macro-expand)) )
 
 (defun borg-repl/bind-macro-expand ( expand-fn )
   (set (make-local-variable 'borg-repl/macro-expand) expand-fn))
 
 (defun borg-repl/bind-connect ( connect-fn )
-  (set (make-local-variable 'borg-repl/connect) connect-fn))
+  (set (make-local-variable 'borg-repl/connect) connect-fn) )
 
 (defun borg-repl/invoke-binding ( binding )
-  (if (commandp binding)
-    (let
-      (( current-prefix-arg nil ))
+  (if (buffer-local-variable binding (current-buffer))
+    (if (commandp binding)
+      (let
+        (( current-prefix-arg nil ))
 
-      (call-interactively binding))
-    (funcall binding) ))
+        (call-interactively binding))
+      (funcall binding) )
+    (borg-repl/error-msg  "borg-repl: no binding for - " (symbol-name binding)) ))
 
 (defun borg-repl/start ()
   "borg-repl/start
@@ -50,7 +73,7 @@
   "
   (interactive)
 
-  (if (boundp 'borg-repl/create-repl)
+  (if (buffer-local-value 'borg-repl/create-repl (current-buffer))
     (borg-repl/invoke-binding borg-repl/create-repl)
     (borg-repl/error-msg "no REPL start defined here.") ) )
 
@@ -61,7 +84,7 @@
   "
   (interactive)
 
-  (if (boundp 'borg-repl/connect)
+  (if (buffer-local-value 'borg-repl/connect (current-buffer))
     (borg-repl/invoke-binding borg-repl/connect)
     (borg-repl/error-msg "no REPL connect defined here.") ) )
 
@@ -72,7 +95,7 @@
   "
   (interactive)
 
-  (if (boundp 'borg-repl/eval-line)
+  (if (buffer-local-value 'borg-repl/eval-line (current-buffer))
     (borg-repl/invoke-binding borg-repl/eval-line)
     (borg-repl/error-msg "no REPL eval line defined here.") ) )
 
@@ -82,7 +105,7 @@
    eval the region.
   "
   (interactive)
-  (if (boundp 'borg-repl/eval-region)
+  (if (buffer-local-value 'borg-repl/eval-region (current-buffer))
     (borg-repl/invoke-binding borg-repl/eval-region)
     (borg-repl/error-msg "no REPL eval region defined here.") ) )
 
@@ -93,7 +116,7 @@
   "
   (interactive)
 
-  (if (boundp 'borg-repl/macro-expand)
+  (if (buffer-local-value 'borg-repl/macro-expand (current-buffer))
     (borg-repl/invoke-binding borg-repl/macro-expand)
     (borg-repl/error-msg "no REPL macro expand defined here.") ) )
 
@@ -103,8 +126,7 @@
    eval the buffer.
   "
   (interactive)
-
-  (if (boundp 'borg-repl/eval-buffer)
+  (if (buffer-local-value 'borg-repl/eval-buffer (current-buffer))
     (borg-repl/invoke-binding borg-repl/eval-buffer)
     (borg-repl/error-msg "no REPL eval buffer defined here.") ) )
 
@@ -115,7 +137,7 @@
   "
   (interactive)
 
-  (if (boundp 'borg-repl/eval-defun)
+  (if (buffer-local-value 'borg-repl/eval-defun (current-buffer))
     (borg-repl/invoke-binding borg-repl/eval-defun)
     (borg-repl/error-msg "no REPL eval definition defined here.") ) )
 
@@ -125,26 +147,31 @@
    get the current repl buffer for this buffer performing all the null
    checks along the way.
   "
-  (if (boundp 'borg-repl/repl-name)
-    (let
-      (( repl-buffer (buffer-torus/get-ring-buffer borg-repl/repl-name) ))
+  (let
+    ((repl-buffer (buffer-local-value 'borg-repl/get-buffer (current-buffer))))
 
-      (if repl-buffer
-        (progn
-          (setq repl-buffer (get-buffer repl-buffer))
+    (if repl-buffer
+      repl-buffer
+      (if (buffer-local-value 'borg-repl/repl-name (current-buffer))
+        (let
+          ((repl-buffer (buffer-torus/get-ring-buffer borg-repl/repl-name) ))
 
           (if repl-buffer
-            repl-buffer
             (progn
-              (borg-repl/error-msg "ghost REPL buffer does not exist anymore. will clean REPL ring.")
-              (buffer-ring/fix (buffer-torus/search-rings borg-repl/repl-name))
+              (setq repl-buffer (get-buffer repl-buffer))
+
+              (if repl-buffer
+                repl-buffer
+                (progn
+                  (borg-repl/error-msg "ghost REPL buffer does not exist anymore. will clean REPL ring.")
+                  (buffer-ring/fix (buffer-torus/search-rings borg-repl/repl-name))
+                  nil)) )
+            (progn
+              (borg-repl/error-msg "no REPL in this ring. try creating one.")
               nil)) )
         (progn
-          (borg-repl/error-msg "no REPL in this ring. try creating one.")
-          nil)) )
-    (progn
-      (borg-repl/error-msg "no REPL for this buffer")
-      nil) ) )
+          (borg-repl/error-msg "no REPL for this buffer")
+          nil) )) ))
 
 (defun borg-repl/view ()
   "borg-repl/view
@@ -154,7 +181,7 @@
   (interactive)
 
   (let
-    (( repl-buffer (borg-repl/get-buffer) ))
+    ((repl-buffer (borg-repl/get-buffer) ))
 
     (when repl-buffer
       (pop-to-buffer repl-buffer) ) ))
@@ -167,7 +194,7 @@
   (interactive)
 
   (let
-    (( repl-buffer (borg-repl/get-buffer) ))
+    ((repl-buffer (borg-repl/get-buffer) ))
 
     (when repl-buffer
       (pop-to-buffer repl-buffer)
@@ -180,9 +207,9 @@
   "
   (interactive)
 
-  (if (boundp 'borg-repl/repl-name)
+  (if (buffer-local-value 'borg-repl/repl-name (current-buffer))
     (let
-      (( repl-ring (buffer-torus/search-rings borg-repl/repl-name) ))
+      ((repl-ring (buffer-torus/search-rings borg-repl/repl-name) ))
 
       (if repl-ring
         (buffer-ring/next repl-ring)
@@ -191,7 +218,7 @@
           nil)) )
     (progn
       (borg-repl/error-msg "no REPL for this buffer")
-      nil) ) )
+      nil)) )
 
 (defun borg-repl/prev ()
   "borg-repl/prev
@@ -200,9 +227,9 @@
   "
   (interactive)
 
-  (if (boundp 'borg-repl/repl-name)
+  (if (buffer-local-value 'borg-repl/repl-name (current-buffer))
     (let
-      (( repl-ring (buffer-torus/search-rings borg-repl/repl-name) ))
+      ((repl-ring (buffer-torus/search-rings borg-repl/repl-name) ))
 
       (if repl-ring
         (buffer-ring/prev repl-ring)
@@ -212,19 +239,5 @@
     (progn
       (borg-repl/error-msg "no REPL for this buffer")
       nil) ) )
-
-
-(custom-key-group "borg repl" "e" t
-  ("x" . borg-repl/start)
-  ("c" . borg-repl/connect)
-  ("e" . borg-repl/statement)
-  ("r" . borg-repl/region)
-  ("b" . borg-repl/buffer)
-  ("d" . borg-repl/definition)
-  ("v" . borg-repl/view)
-  ("s" . borg-repl/switch)
-  ("n" . borg-repl/next)
-  ("p" . borg-repl/prev)
-  ("m" . borg-repl/macro-expand))
 
 (provide 'borg-repl)
