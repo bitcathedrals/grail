@@ -141,6 +141,10 @@
         (setq-local python/environment new-buffer)
         new-buffer) ) ))
 
+(defun python/repl-pop ()
+  (interactive)
+  (pop-to-buffer (python/environment-default)) )
+
 (defun python/repl-get ()
   (with-current-buffer (python/environment-default)
     python-interpreter) )
