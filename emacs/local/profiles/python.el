@@ -1,5 +1,9 @@
 ;; -*-no-byte-compile: t; -*-
 
+(require 'subr-x)
+
+(require 'puni)
+
 (require 'pysh)
 (require 'borg-repl)
 
@@ -141,10 +145,6 @@
         (setq-local python/environment new-buffer)
         new-buffer) ) ))
 
-(defun python/repl-pop ()
-  (interactive)
-  (pop-to-buffer (python/environment-default)) )
-
 (defun python/repl-get ()
   (with-current-buffer (python/environment-default)
     python-interpreter) )
@@ -162,6 +162,16 @@
              (point))))
 
     (python/repl-string (buffer-substring-no-properties start stop)) ))
+
+(defun python/repl-name ()
+  (interactive)
+  (if (buffer-local-value python/environment)
+    (buffer-name python/environment)
+    "no python repl"))
+
+(defun python/repl-pop ()
+  (interactive)
+  (pop-to-buffer (python/environment-default)) )
 
 (defun python/repl-region ()
   (interactive)
