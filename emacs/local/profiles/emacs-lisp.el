@@ -42,7 +42,7 @@
          (variables nil))
 
         (mapatoms
-          (lambda ( entry )
+
             (if (functionp entry)
               (setq functions (cons (symbol-name entry) functions))
               (setq variables (cons (symbol-name entry) variables))) )
@@ -50,7 +50,7 @@
 
         (list
           (dwim-complete-build-helm-from-generator "functions" functions)
-          (dwim-complete-build-helm-from-generator "variables" variables)) )) ))
+          (dwim-complete-build-helm-from-generator "variables" variables)) )) )
 
 ;;
 ;; borg-repl backend
@@ -76,7 +76,8 @@
   (buffer-ring/add elisp/mode-name)
   (buffer-ring/local-keybindings)
 
-  (borg-repl/bind-repl elisp/mode-name
+  (borg-repl/bind-repl
+    elisp/mode-name
     'elisp/repl-new
     'eval-last-sexp
     'eval-region
