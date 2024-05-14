@@ -82,7 +82,8 @@
     'eval-last-sexp
     'eval-region
     'eval-buffer
-    'eval-defun)
+    'eval-defun
+    nil)
 
   (borg-repl/bind-macro-expand 'pp-macroexpand-last-sexp)
 

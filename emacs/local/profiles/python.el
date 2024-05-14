@@ -1,10 +1,10 @@
 ;; -*-no-byte-compile: t; -*-
 
 (require 'subr-x)
+(require 'vc)
 
 (require 'puni)
 
-(require 'pysh)
 (require 'borg-repl)
 
 (defconst python/mode-name "python")
@@ -42,7 +42,7 @@
   (concat "*python:" venv "*"))
 
 (defun python/environment-buffer (venv)
-  (get-buffer-create (python/venv-name)) )
+  (get-buffer-create (python/environment-name venv)) )
 
 (defun python/environment-close (interpreter-buffer)
   (if (and interpreter-buffer (buffer-live-p interpreter-buffer))
@@ -62,8 +62,8 @@
   (if (buffer-live-p buffer)
     (with-current-buffer repl-buffer
       (if (and
-            (buffer-local-value python-interpreter buffer)
-            (process-live-p (buffer-local-value python-interpreter)))
+            (local-or-nil 'python-interpreter buffer)
+            (process-live-p python-interpreter))
         t
         nil))
     nil) )
@@ -102,26 +102,24 @@
 (defun python/interpreter-create (venv buffer)
   (with-current-buffer buffer
     (let
-      ((default-directory (pysh-repo-dir)))
+      ((default-directory (vc-root-dir)))
 
       (erase-buffer)
 
       (setq-local
         python-environment venv
         python-interpreter (make-process
-                             :name (python/venv-name venv)
-                             :command "python-interpreter"
+                             :name (python/environment-name venv)
+                             :command (list "python-interpreter" venv)
                              :buffer buffer
                              :connection-type 'pty'
                              :stderr nil
-                             :sentinel 'python/interpreter-sentinel
-                             venv
-                             default-directory)) )
+                             :sentinel 'python/interpreter-sentinel)) )
     t))
 
 (defun python/environment-default ()
   (let
-    ((env-buffer (buffer-local-value python/environment (current-buffer))))
+    ((env-buffer (local-or-nil 'python/environment (current-buffer))))
 
     (if env-buffer
       (if (python/environment-active env-buffer)
@@ -134,16 +132,22 @@
             ((venv (python/virtualenv-select))
               (new-buffer (python/environment-buffer venv)))
 
-            (interpreter-create venv new-buffer)
+            (python/interpreter-create venv new-buffer)
             new-buffer) ))
       (let*
         ((venv (python/virtualenv-select))
           (new-buffer (python/environment-buffer venv)))
 
-        (interpreter-create venv new-buffer)
+        (python/interpreter-create venv new-buffer)
 
         (setq-local python/environment new-buffer)
         new-buffer) ) ))
+
+(defun python/repl-name ()
+  (interactive)
+  (if (local-or-nil 'python/environment (current-buffer))
+    (buffer-name python/environment)
+    (message "python/repl-name: no python repl defined")) )
 
 (defun python/repl-get ()
   (with-current-buffer (python/environment-default)
@@ -163,12 +167,6 @@
 
     (python/repl-string (buffer-substring-no-properties start stop)) ))
 
-(defun python/repl-name ()
-  (interactive)
-  (if (buffer-local-value python/environment)
-    (buffer-name python/environment)
-    "no python repl"))
-
 (defun python/repl-pop ()
   (interactive)
   (pop-to-buffer (python/environment-default)) )
@@ -185,9 +183,22 @@
   (interactive)
   (python/repl-string (buffer-substring-no-properties (point-min) (point-max))) )
 
+(defconst python/repl-ring-name "python:repl")
+
 (defun python/setup-python-profile ()
   (interactive)
-  (dwim-tab-localize-context (dwim-tab-make-expander 'dwim-tab/word-trigger 'python-completion-at-point)) )
+
+  (borg-repl/bind-repl
+    python/repl-ring-name
+    python/environment-default
+    python/repl-sexp
+    python/repl-region
+    python/repl-buffer
+    nil
+    python/environment-default)
+
+  (dwim-tab-localize-context
+    (dwim-tab-make-expander 'dwim-tab/word-trigger 'python-completion-at-point)) )
 
 (add-hook 'python-mode-hook 'python/setup-python-profile)
 

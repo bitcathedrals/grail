@@ -67,7 +67,9 @@
     'slime-eval-last-expression
     'slime-eval-region
     'slime-eval-buffer
-    'slime-eval-defun)
+    'slime-eval-defun
+    nil
+    nil)
 
   (borg-repl/bind-connect 'slime-connect)
 

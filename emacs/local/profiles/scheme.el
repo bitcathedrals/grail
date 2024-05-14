@@ -53,7 +53,9 @@
     'scheme-send-last-sexp
     'scheme-send-region
     'scheme-load-file
-    'scheme-send-definition)
+    'scheme-send-definition
+    nil
+    nil)
 
   (programming-mode-generic 'scheme-list-functions)
 
