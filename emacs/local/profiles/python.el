@@ -102,7 +102,7 @@
 (defun python/interpreter-create (venv buffer)
   (with-current-buffer buffer
     (let
-      ((default-directory (vc-root-dir)))
+      ((default-directory (or (vc-root-dir) ".")))
 
       (erase-buffer)
 
@@ -110,9 +110,8 @@
         python-environment venv
         python-interpreter (make-process
                              :name (python/environment-name venv)
-                             :command (list "python-interpreter" venv)
                              :buffer buffer
-                             :connection-type 'pty'
+                             :command (list "python-interpreter" venv)
                              :stderr nil
                              :sentinel 'python/interpreter-sentinel)) )
     t))
