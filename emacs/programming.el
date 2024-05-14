@@ -128,7 +128,7 @@
 
 (add-hook 'shell-mode-hook 'shell-mode-setup)
 
-(defun python-mode-functions ()
+(defun python/mode-functions ()
   "python-mode-functions
 
    occur all the functions in a python mode buffer
@@ -154,12 +154,14 @@
     "python"
     (concat (getenv "HOME") "/tools/local/libexec")))
 
+(defconst python/mode-name "python")
+
 (defun tree-sitter-for-python ()
   (interactive)
 
   (treesit-language-available-p 'python))
 
-(defun python-mode-setup ()
+(defun python/mode-setup ()
   "python-mode-setup
 
    setup python-mode enhanced features.
@@ -169,6 +171,8 @@
   (eglot-ensure)
   (company-mode)
 
-  (programming-mode-generic 'python-mode-functions) )
+  (buffer-ring/local-keybindings python/mode-name)
 
-(add-hook 'python-mode-hook 'python-mode-setup)
+  (programming-mode-generic 'python/mode-functions) )
+
+(add-hook 'python-mode-hook 'python/mode-setup)
