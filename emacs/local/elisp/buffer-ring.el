@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-(defconst buffer-ring-version "0.1.1" "buffer-ring version")
-
 (require 'dynamic-ring)
 (require 'buffer-status)
 (require 'custom-key)
@@ -150,7 +148,7 @@
 
 (defun buffer-ring/buffer-id ( &optional buffer )
   (buffer-ring/with-buffer (buffer-ring/buffer-name buffer)
-    (if (boundp 'buffer-ring-id)
+    (if (local-or-nil 'buffer-ring-id (current-buffer))
       buffer-ring-id
       nil) ))
 
@@ -199,7 +197,10 @@
 
     ;; create the buffer variables and markers
     (set (make-local-variable 'buffer-ring) (buffer-torus/get-ring ring-name))
-    (set (make-local-variable 'buffer-ring-name) ring-name)
+
+    (when (not (local-or-nil 'buffer-ring-name (current-buffer)))
+      (set (make-local-variable 'buffer-ring-name) ring-name))
+
     (set (make-local-variable 'buffer-ring-id) (buffer-ring/mk-id buffer-ring))
     (set (make-local-variable 'buffer-ring-modeline) (concat "(" ring-name ")"))
 
@@ -472,7 +473,10 @@
     ("f" . buffer-ring/fix)
     ("k" . buffer-torus/delete) ) )
 
-(defun buffer-ring/local-keybindings ()
+(defun buffer-ring/local-keybindings (&optional name)
+  (when name
+    (setq-local buffer-ring-name name))
+
   (keymap-local-unset "M-<right>")
   (keymap-local-unset "M-<left>")
 
