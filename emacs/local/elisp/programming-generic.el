@@ -10,6 +10,9 @@
 
 (require 'puni)
 
+(setq indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
+
 ;;
 ;; some generic code editing stuff
 ;;
@@ -53,8 +56,6 @@
 (defun programming-mode-generic ( &optional fn-search )
   "Enable my programming customizations for the buffer"
 
-  ;; whitespace
-  (setq indent-tabs-mode nil)
   (whitespace-mode)
 
   ;; run hooks for programming configuration
