@@ -153,7 +153,11 @@
     python-interpreter) )
 
 (defun python/repl-string (code)
-  (process-send-string (python/repl-get) code) )
+  (process-send-string (python/repl-get) (concat code "\n")) )
+
+(defun python/repl-test ()
+  (interactive)
+  (python/repl-string "1 + 1") )
 
 (defun python/repl-sexp ()
   (interactive)
