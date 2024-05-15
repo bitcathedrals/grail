@@ -6,7 +6,6 @@
 (require 'programming-generic)
 
 (defconst elisp/mode-name "elisp-mode")
-(defconst elisp/repl-name (borg-repl/repl-name elisp/mode-name))
 
 ;;
 ;; global settings
@@ -77,7 +76,6 @@
   (buffer-ring/local-keybindings)
 
   (borg-repl/bind-repl
-    elisp/mode-name
     'elisp/repl-new
     'eval-last-sexp
     'eval-region

@@ -70,8 +70,7 @@
 (defun python/environment-select-buffer ()
   (get-buffer-create python/environment-select-name))
 
-(defun python/environment-select ()
-  (interactive)
+(defun python/environment-list ()
   (let
     ((environments nil))
 
@@ -80,10 +79,16 @@
         (let
           ((name (buffer-name buffer)))
 
-          (when (string-match "^python:" name)
+          (when (string-match "^*python:" name)
             (add-to-list 'environments name)) ))
 
       (buffer-list))
+    environments))
+
+(defun python/environment-select ()
+  (interactive)
+  (let
+    ((environments (python/environment-list)))
 
     (helm
       :sources (helm-build-sync-source
@@ -130,10 +135,12 @@
 
     (if env-buffer
       env-buffer
-      (setq-local python-environment
-        (if (yes-or-no-p "existing environment? yes = select|no = create")
-          (get-buffer (call-interactively 'python/environment))
-          python/environment)) )))
+      (setq-local python/environment
+        (if (python/environment-list)
+          (if (yes-or-no-p "existing environment? yes = select|no = create")
+            (get-buffer (call-interactively 'python/environment-select))
+            (python/new-environment))
+          (python/new-environment)) ) )))
 
 (defun python/repl-name ()
   (interactive)
@@ -191,8 +198,7 @@
     'python/repl-region
     'python/repl-buffer
     nil
-    'python/environment-default
-    )
+    'python/environment-default)
 
   (dwim-tab-localize-context
     (dwim-tab-make-expander 'dwim-tab/word-trigger 'python-completion-at-point)) )

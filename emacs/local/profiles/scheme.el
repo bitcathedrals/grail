@@ -10,7 +10,6 @@
 (require 'geiser-completion)
 
 (defconst scheme/mode-name "scheme")
-(defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
 
 (defvar scheme-function-decl ".*(define.*")
 
@@ -48,7 +47,7 @@
 (defun profile/scheme-setup ()
   (geiser-mode)
 
-  (borg-repl/bind-repl scheme/repl-name
+  (borg-repl/bind-repl
     'profile/scheme-repl
     'scheme-send-last-sexp
     'scheme-send-region

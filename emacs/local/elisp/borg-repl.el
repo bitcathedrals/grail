@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'buffer-ring)
-
 (make-variable-buffer-local 'borg-repl/repl-name)
 (make-variable-buffer-local 'borg-repl/create-repl)
 (make-variable-buffer-local 'borg-repl/eval-line)
@@ -9,9 +7,6 @@
 (make-variable-buffer-local 'borg-repl/eval-buffer)
 (make-variable-buffer-local 'borg-repl/eval-defun)
 (make-variable-buffer-local 'borg-repl/get-buffer)
-
-(defun borg-repl/repl-name ( mode-name )
-  (concat mode-name "/repl") )
 
 (defun borg-repl/error-msg ( msg &rest info )
   (message "borg-repl Error: %s %s" msg
@@ -118,23 +113,21 @@
 
 (defun borg-repl/no-defun ()
   (interactive)
-  (message "no defun evaluator defined for mode [%s]" borg-repl/repl-name)
+  (message "no defun evaluator defined for mode [%s]" major-mode)
   nil)
 
 (defun borg-repl/no-buffer-get ()
   (interactive)
-  (message "no buffer-get defined for mode [%s]" borg-repl/repl-name)
+  (message "no buffer-get defined for mode [%s]" major-mode)
   nil)
 
-(defun borg-repl/bind-repl (repl-name
-                            create-fn
+(defun borg-repl/bind-repl (create-fn
                             line-fn
                             region-fn
                             buffer-fn
                             defun-fn
                             get-buffer)
 
-  (set  'borg-repl/repl-name    repl-name)
   (fset 'borg-repl/create-repl  (symbol-function create-fn))
   (fset 'borg-repl/eval-line    (symbol-function line-fn))
   (fset 'borg-repl/eval-region  (symbol-function region-fn))
