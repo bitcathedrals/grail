@@ -79,6 +79,7 @@
                                 ("\\.cc$"      . c++-mode)
                                 ("\\.cpp$"     . c++-mode)
                                 ("\\.h$"       . c++-mode)
+                                ("\\.py$"      . python-mode)
                                 ("\\.scheme$"  . scheme-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
@@ -175,6 +176,6 @@
 
   (buffer-ring/local-keybindings python/mode-name)
 
-  (programming-mode-generic 'python/mode-functions) )
+  (programming-mode-generic 'python/mode-functions))
 
 (add-hook 'python-mode-hook 'python/mode-setup)
