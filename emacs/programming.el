@@ -26,6 +26,8 @@
 ;; modes
 
 (electric-indent-mode 0)
+(setq-default
+  tab-width 2)
 
 ;; programming packages not dependent on third party support
 
