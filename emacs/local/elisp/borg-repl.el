@@ -2,6 +2,14 @@
 
 (require 'buffer-ring)
 
+(make-variable-buffer-local 'borg-repl/repl-name)
+(make-variable-buffer-local 'borg-repl/create-repl)
+(make-variable-buffer-local 'borg-repl/eval-line)
+(make-variable-buffer-local 'borg-repl/eval-region)
+(make-variable-buffer-local 'borg-repl/eval-buffer)
+(make-variable-buffer-local 'borg-repl/eval-defun)
+(make-variable-buffer-local 'borg-repl/get-buffer)
+
 (defun borg-repl/repl-name ( mode-name )
   (concat mode-name "/repl") )
 
@@ -17,7 +25,7 @@
       "")))
 
 (defun borg-repl/invoke-binding ( binding )
-  (if (local-or-nil binding (current-buffer))
+  (if (symbol-function binding)
     (if (commandp binding)
       (let
         ((current-prefix-arg nil))
@@ -170,6 +178,14 @@
       (borg-repl/error-msg "no REPL for this buffer")
       nil) ) )
 
+(defun borg-repl/no-defun ()
+  (interactive)
+  (message "no defun evaluator defined for mode [%s]" borg-repl/repl-name))
+
+(defun borg-repl/no-buffer-get ()
+  (interactive)
+  (message "no buffer-get defined for mode [%s]" borg-repl/repl-name))
+
 (defun borg-repl/bind-repl (repl-name
                             create-fn
                             line-fn
@@ -177,13 +193,15 @@
                             buffer-fn
                             defun-fn
                             get-buffer)
-  (fset (make-local-variable #'borg-repl/repl-name) repl-name)
-  (fset (make-local-variable #'borg-repl/create-repl) create-fn)
-  (fset (make-local-variable #'borg-repl/eval-line) line-fn)
-  (fset (make-local-variable #'borg-repl/eval-region) region-fn)
-  (fset (make-local-variable #'borg-repl/eval-buffer) buffer-fn)
-  (fset (make-local-variable #'borg-repl/eval-defun) defun-fn)
-  (fset (make-local-variable #'borg-repl/get-repl-buffer) get-buffer)
+
+  (set  'borg-repl/repl-name    repl-name)
+  (fset 'borg-repl/create-repl  (symbol-function create-fn))
+  (fset 'borg-repl/eval-line    (symbol-function line-fn))
+  (fset 'borg-repl/eval-region  (symbol-function region-fn))
+  (fset 'borg-repl/eval-buffer  (symbol-function buffer-fn))
+
+  (fset 'borg-repl/eval-defun (or (symbol-function defun-fn) #'borg-repl/no-defun))
+  (fset 'borg-repl/get-buffer (or (symbol-function get-buffer) #'borg-repl/no-buffer-get))
 
   (custom-key-group "borg repl" "e" nil
     ("x" . borg-repl/start)
