@@ -58,20 +58,17 @@
       (kill-buffer interpreter-buffer) )
     (message "python interpreter buffer already dead: %s" (buffer-name interpreter-buffer)) ))
 
-(defun python/environment-active (buffer)
-  (if (buffer-live-p buffer)
-    (with-current-buffer repl-buffer
-      (if (and
-            (local-or-nil 'python-interpreter buffer)
-            (process-live-p python-interpreter))
-        t
-        nil))
-    nil) )
+(defun python/environment-active ()
+  (and
+    (local-variable-p 'python/environment)
+    (buffer-live-p python/environment)
+    (with-current-buffer python/environment
+      (process-live-p python-interpreter)) ) )
 
 (defconst python/environment-select-name "*python: select environment*")
 
 (defun python/environment-select-buffer ()
-  (get-buffer-create (python/environment-select-name)) )
+  (get-buffer-create python/environment-select-name))
 
 (defun python/environment-select ()
   (interactive)
@@ -116,31 +113,27 @@
                              :sentinel 'python/interpreter-sentinel)) )
     t))
 
+(defun python/new-environment ()
+  (let*
+    ((venv (python/virtualenv-select))
+      (new-buffer (python/environment-buffer venv)))
+
+    (python/interpreter-create venv new-buffer)
+    new-buffer))
+
 (defun python/environment-default ()
   (let
-    ((env-buffer (local-or-nil 'python/environment (current-buffer))))
+    ((env-buffer (when (and
+                         (local-variable-p 'python/environment)
+                         (python/environment-active))
+                   python/environment)))
 
     (if env-buffer
-      (if (python/environment-active env-buffer)
-        env-buffer
+      env-buffer
+      (setq-local python-environment
         (if (yes-or-no-p "existing environment? yes = select|no = create")
-          (let
-            ((env-chosen (call-interactively 'python/environment-select)))
-            (setq-local python/environment (get-buffer env-chosen)) )
-          (let*
-            ((venv (python/virtualenv-select))
-              (new-buffer (python/environment-buffer venv)))
-
-            (python/interpreter-create venv new-buffer)
-            new-buffer) ))
-      (let*
-        ((venv (python/virtualenv-select))
-          (new-buffer (python/environment-buffer venv)))
-
-        (python/interpreter-create venv new-buffer)
-
-        (setq-local python/environment new-buffer)
-        new-buffer) ) ))
+          (get-buffer (call-interactively 'python/environment))
+          python/environment)) )))
 
 (defun python/repl-name ()
   (interactive)
