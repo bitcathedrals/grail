@@ -89,38 +89,6 @@
   (interactive)
   (borg-repl/invoke-binding 'borg-repl/eval-defun))
 
-(defun borg-repl/get-buffer ()
-  "borg-repl/get-buffer
-
-   get the current repl buffer for this buffer performing all the null
-   checks along the way.
-  "
-  (let
-    ((repl-buffer (local-or-nil 'borg-repl/get-repl-buffer (current-buffer))))
-
-    (if repl-buffer
-      (funcall repl-buffer)
-      (if (local-or-nil 'borg-repl/repl-name (current-buffer))
-        (let
-          ((repl-buffer (buffer-torus/get-ring-buffer borg-repl/repl-name) ))
-
-          (if repl-buffer
-            (progn
-              (setq repl-buffer (get-buffer repl-buffer))
-
-              (if repl-buffer
-                repl-buffer
-                (progn
-                  (borg-repl/error-msg "ghost REPL buffer does not exist anymore. will clean REPL ring.")
-                  (buffer-ring/fix (buffer-torus/search-rings borg-repl/repl-name))
-                  nil)) )
-            (progn
-              (borg-repl/error-msg "no REPL in this ring. try creating one.")
-              nil)) )
-        (progn
-          (borg-repl/error-msg "no REPL for this buffer")
-          nil) )) ))
-
 (defun borg-repl/view ()
   "borg-repl/view
 
@@ -129,10 +97,10 @@
   (interactive)
 
   (let
-    ((repl-buffer (borg-repl/get-buffer) ))
+    ((repl-buffer (borg-repl/invoke-binding 'borg-repl/get-buffer) ))
 
     (when repl-buffer
-      (pop-to-buffer repl-buffer) ) ))
+      (pop-to-buffer repl-buffer)) ))
 
 (defun borg-repl/switch ()
   "borg-repl/switch
@@ -148,43 +116,15 @@
       (pop-to-buffer repl-buffer)
       (switch-to-buffer repl-buffer) ) ))
 
-(defun borg-repl/next ()
-  "borg-repl/next
-
-   rotate the REPL ring right.
-  "
-  (interactive)
-
-  (if (local-or-nil 'borg-repl/repl-name (current-buffer))
-    (if repl-ring
-      (buffer-ring/next repl-ring)
-      (progn
-        (borg-repl/error-msg "no REPL in this ring. try creating one.")
-        nil))
-    (progn
-      (borg-repl/error-msg "no REPL for this buffer")
-      nil)) )
-
-(defun borg-repl/prev ()
-  "borg-repl/prev
-
-   rotate the REPL ring left.
-  "
-  (interactive)
-
-  (if (local-or-nil 'borg-repl/repl-name (current-buffer))
-    (funcall borg-repl/repl-name)
-    (progn
-      (borg-repl/error-msg "no REPL for this buffer")
-      nil) ) )
-
 (defun borg-repl/no-defun ()
   (interactive)
-  (message "no defun evaluator defined for mode [%s]" borg-repl/repl-name))
+  (message "no defun evaluator defined for mode [%s]" borg-repl/repl-name)
+  nil)
 
 (defun borg-repl/no-buffer-get ()
   (interactive)
-  (message "no buffer-get defined for mode [%s]" borg-repl/repl-name))
+  (message "no buffer-get defined for mode [%s]" borg-repl/repl-name)
+  nil)
 
 (defun borg-repl/bind-repl (repl-name
                             create-fn
@@ -212,8 +152,6 @@
     ("d" . borg-repl/definition)
     ("v" . borg-repl/view)
     ("s" . borg-repl/switch)
-    ("<left>" . borg-repl/next)
-    ("<right>" . borg-repl/prev)
     ("m" . borg-repl/macro-expand)) )
 
 (defun borg-repl/bind-macro-expand ( expand-fn )
