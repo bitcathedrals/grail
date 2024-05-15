@@ -186,12 +186,13 @@
 
   (borg-repl/bind-repl
     python/repl-ring-name
-    python/environment-default
-    python/repl-sexp
-    python/repl-region
-    python/repl-buffer
+    'python/environment-default
+    'python/repl-sexp
+    'python/repl-region
+    'python/repl-buffer
     nil
-    python/environment-default)
+    'python/environment-default
+    )
 
   (dwim-tab-localize-context
     (dwim-tab-make-expander 'dwim-tab/word-trigger 'python-completion-at-point)) )
