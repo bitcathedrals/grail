@@ -177,13 +177,13 @@
                             buffer-fn
                             defun-fn
                             get-buffer)
-  (fset (make-local-variable 'borg-repl/repl-name) repl-name)
-  (fset (make-local-variable 'borg-repl/create-repl) create-fn)
-  (fset (make-local-variable 'borg-repl/eval-line) line-fn)
-  (fset (make-local-variable 'borg-repl/eval-region) region-fn)
-  (fset (make-local-variable 'borg-repl/eval-buffer) buffer-fn)
-  (fset (make-local-variable 'borg-repl/eval-defun) defun-fn)
-  (fset (make-local-variable 'borg-repl/get-repl-buffer) get-buffer)
+  (fset (make-local-variable #'borg-repl/repl-name) repl-name)
+  (fset (make-local-variable #'borg-repl/create-repl) create-fn)
+  (fset (make-local-variable #'borg-repl/eval-line) line-fn)
+  (fset (make-local-variable #'borg-repl/eval-region) region-fn)
+  (fset (make-local-variable #'borg-repl/eval-buffer) buffer-fn)
+  (fset (make-local-variable #'borg-repl/eval-defun) defun-fn)
+  (fset (make-local-variable #'borg-repl/get-repl-buffer) get-buffer)
 
   (custom-key-group "borg repl" "e" nil
     ("x" . borg-repl/start)
