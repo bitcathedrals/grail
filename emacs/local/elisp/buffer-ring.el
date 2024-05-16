@@ -473,13 +473,9 @@
     ("k" . buffer-torus/delete) ))
 
 (defun buffer-ring/local-keybindings ()
-  (keymap-local-unset "M-<right>")
-  (keymap-local-unset "M-<left>")
-  (keymap-local-unset "M-<up>")
-
   (keymap-local-set "M-<right>" #'buffer-ring/prev)
   (keymap-local-set "M-<left>"  #'buffer-ring/next)
-  (keymap-local-set "M-<up>"    #'buffer-ring/rotate) )
+  (keymap-local-set "M-<up>"    #'buffer-ring/rotate))
 
 (buffer-ring/global-keybindings)
 
