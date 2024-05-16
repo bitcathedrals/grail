@@ -121,15 +121,17 @@
 
 (defun python/new-environment ()
   (let*
-    ((venv (python/virtualenv-select))
-     (new-buffer (python/environment-buffer venv))
-     (mode-name (symbol-name major-mode)))
+    ((mode-name (symbol-name major-mode))
+     (venv (python/virtualenv-select))
+     (new-buffer (python/environment-buffer venv)) )
 
     (python/interpreter-create venv new-buffer)
 
     (with-current-buffer new-buffer
       (buffer-ring/add mode-name)
       (buffer-ring/local-keybindings))
+
+    (message "mode-name is %s" mode-name)
 
     new-buffer))
 
