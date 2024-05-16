@@ -165,8 +165,7 @@
       ;; ELPA is loaded so do the ugly parts and hook into package.el's guts
       ;; to pick up it's modifications to load-path
 
-      (advice-add 'package-activate-1 :after #'grail-elpa-snoop/advise)
-      (package-initialize) )))
+      (advice-add 'package-activate-1 :after #'grail-elpa-snoop/advise) )))
 
 (grail-fail
  "grail-load ELPA"
