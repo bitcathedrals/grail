@@ -6,7 +6,6 @@
 (require 'programming-generic)
 
 (defconst elisp/mode-name "elisp-mode")
-(defconst elisp/repl-name (borg-repl/repl-name elisp/mode-name))
 
 ;;
 ;; global settings
@@ -42,7 +41,7 @@
          (variables nil))
 
         (mapatoms
-          (lambda ( entry )
+
             (if (functionp entry)
               (setq functions (cons (symbol-name entry) functions))
               (setq variables (cons (symbol-name entry) variables))) )
@@ -50,38 +49,18 @@
 
         (list
           (dwim-complete-build-helm-from-generator "functions" functions)
-          (dwim-complete-build-helm-from-generator "variables" variables)) )) ))
-
-;;
-;; borg-repl backend
-;;
-
-(defun elisp/repl-new ()
-  (interactive)
-  (let
-    ((new-elisp-repl (get-buffer-create (concat "*" (generate-new-buffer-name "elisp/eval") "*")) ))
-
-    (pop-to-buffer
-      (if new-elisp-repl
-        (with-current-buffer new-elisp-repl
-          (emacs-lisp-mode)
-          (current-buffer))
-        (progn
-          (message "profile/elisp: cannot create new scratch buffer")
-          nil) )) ))
+          (dwim-complete-build-helm-from-generator "variables" variables)) )) )
 
 (defun emacs-lisp/profile ()
-  (programming-mode-generic 'emacs-lisp/buffer-functions)
+  (programming-mode-generic 'emacs-lisp/buffer-functions elisp/mode-name)
 
-  (buffer-ring/add elisp/mode-name)
-  (buffer-ring/local-keybindings)
-
-  (borg-repl/bind-repl elisp/mode-name
+  (borg-repl/bind-repl
     'elisp/repl-new
     'eval-last-sexp
     'eval-region
     'eval-buffer
-    'eval-defun)
+    'eval-defun
+    nil)
 
   (borg-repl/bind-macro-expand 'pp-macroexpand-last-sexp)
 
@@ -96,6 +75,6 @@
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
-(add-hook 'emacs-lisp-mode-hook 'emacs-lisp/profile t)
+(add-hook 'emacs-lisp-mode-hook 'emacs-lisp/profile)
 
 (provide 'profile/emacs-lisp)

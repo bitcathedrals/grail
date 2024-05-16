@@ -42,24 +42,30 @@
     (end-of-line)
     (newline) ))
 
+(defvar grail-profile/loaded (make-hash-table :test 'equal))
+
 (defun grail-load-profile ( profile )
   (grail-info "grail: loading [profile] ->  " profile)
 
   (let
-    ((path (concat grail-local-profiles "/"  profile ".el") ))
+    ((path (expand-file-name (concat grail-local-profiles "/"  profile ".el")) ))
 
     (grail-info "grail: loading [path] -> " path)
 
-    (condition-case trap
+    (if (gethash path grail-profile/loaded)
+      (grail-info "grail: skipping already loaded path [path] -> " path)
       (progn
-        (load (expand-file-name path))
-        (grail-info "grail: [OK] " profile)
-        (push profile grail-ok))
-      (error
-       (progn
-         (grail-info "grail: [FAIL!] " profile " [error]: " (car trap) " [details]: " (cdr trap))
-         (push profile grail-failed))) ) ))
+        (puthash path t grail-profile/loaded)
 
+        (condition-case trap
+          (progn
+            (load path)
+            (grail-info "grail: [OK] " profile)
+            (push profile grail-ok))
+          (error
+            (progn
+              (grail-info "grail: [FAIL!] " profile " [error]: " (car trap) " [details]: " (cdr trap))
+              (push profile grail-failed))) ) )) ))
 
 (defun grail-load-all-profiles ()
   "grail-load-requested-profiles

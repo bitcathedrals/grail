@@ -82,3 +82,15 @@
       (princ (concat "woman: " path "\n")) )
     woman-path) )
 
+(defun local-or-nil (variable buffer)
+  "local-or-nil VARIABLE BUFFER
+
+   if VARIABLE is local in BUFFER return
+   that value, or nil.
+  "
+  (if (local-variable-p variable buffer)
+    (with-current-buffer buffer
+      variable)
+    nil))
+
+

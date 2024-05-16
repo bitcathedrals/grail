@@ -3,7 +3,7 @@
 GIT=$HOME/code/emacs
 
 NATIVE=no
-SITTER=yes
+SITTER=no
 
 case $1 in
   "linux")
@@ -104,7 +104,7 @@ case $1 in
       exit 1
     fi
 
-    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-native-compilation=$NATIVE --with-tree-sitter=$SITTER --with-xpm=no --with-gif=no && make bootstrap)
+    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-native-compilation=$NATIVE --with-tree-sitter=$SITTER --with-xpm=no --with-gif=no --with-gnutls=ifavailable && make bootstrap)
     then
       echo "compile ok."
     else

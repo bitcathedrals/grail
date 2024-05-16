@@ -6,8 +6,6 @@
 (require 'buffer-ring)
 (require 'programming-generic)
 
-(defconst restclient/ring-name "http")
-
 (setq auto-mode-alist
   (append '(("\\.http$"    . restclient-mode)) auto-mode-alist))
 
@@ -24,9 +22,6 @@
 
 (defun setup-restclient ()
   (interactive)
-
-  (buffer-ring/add restclient/ring-name)
-  (buffer-ring/local-keybindings)
 
   (programmming-mode-generic 'http-methods))
 

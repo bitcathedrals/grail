@@ -26,6 +26,8 @@
 ;; modes
 
 (electric-indent-mode 0)
+(setq-default
+  tab-width 2)
 
 ;; programming packages not dependent on third party support
 
@@ -77,6 +79,7 @@
                                 ("\\.cc$"      . c++-mode)
                                 ("\\.cpp$"     . c++-mode)
                                 ("\\.h$"       . c++-mode)
+                                ("\\.py$"      . python-mode)
                                 ("\\.scheme$"  . scheme-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
@@ -86,27 +89,21 @@
   (c-set-offset 'substatement-open '0)  ;; hanging braces
 
   ;; auto-hungry newline and whitespace delete
-  (c-toggle-auto-hungry-state 1) )
+  (c-toggle-auto-hungry-state 1))
 
 (add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
 
 (defconst c-mode-name "C")
 
 (defun c-mode-setup ()
-  (programming-mode-generic)
-
-  (buffer-ring/add c-mode-name)
-  (buffer-ring/local-keybindings) )
+  (programming-mode-generic))
 
 (add-hook 'c-mode-hook 'c-mode-setup t)
 
 (defconst c-mode-name "C++")
 
 (defun c++-mode-setup ()
-  (programming-mode-generic)
-
-  (buffer-ring/add c++-mode-name)
-  (buffer-ring/local-keybindings) )
+  (programming-mode-generic))
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
 
@@ -128,7 +125,7 @@
 
 (add-hook 'shell-mode-hook 'shell-mode-setup)
 
-(defun python-mode-functions ()
+(defun python/mode-functions ()
   "python-mode-functions
 
    occur all the functions in a python mode buffer
@@ -154,12 +151,14 @@
     "python"
     (concat (getenv "HOME") "/tools/local/libexec")))
 
+(defconst python/mode-name "python")
+
 (defun tree-sitter-for-python ()
   (interactive)
 
   (treesit-language-available-p 'python))
 
-(defun python-mode-setup ()
+(defun python/mode-setup ()
   "python-mode-setup
 
    setup python-mode enhanced features.
@@ -169,6 +168,6 @@
   (eglot-ensure)
   (company-mode)
 
-  (programming-mode-generic 'python-mode-functions) )
+  (programming-mode-generic 'python/mode-functions))
 
-(add-hook 'python-mode-hook 'python-mode-setup)
+(add-hook 'python-mode-hook 'python/mode-setup)

@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
 (require 'subr-x)
+(require 'vc)
 
 (defun get-clean-pysh-buffer ()
   (let

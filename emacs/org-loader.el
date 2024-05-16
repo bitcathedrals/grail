@@ -9,8 +9,6 @@
 (require 'oc)
 (require 'oc-bibtex)
 
-(require 'helm-bibtex)
-
 (require 'org-ref)
 (require 'org-ref-helm)
 

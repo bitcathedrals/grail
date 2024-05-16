@@ -136,7 +136,10 @@
        "> /"
 
        (:eval (car (vc-git-branches)))
-       ))
+
+       " :"
+
+       (:eval (which-function)) ))
 
   (mega-modeline-find-battery-command)
   (mega-modeline-battery-set-timer)

@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(require 'buffer-ring)
 (require 'custom-key)
 (require 'utilities)
 (require 'subr-x)
@@ -9,6 +10,9 @@
 (require 'eglot)
 
 (require 'puni)
+
+(setq indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
 ;;
 ;; some generic code editing stuff
@@ -50,12 +54,9 @@
     (funcall programming-generic/buffer-functions)
     (message "no programming-generic/buffer-functions defined in buffer.")) )
 
-
-(defun programming-mode-generic ( &optional fn-search )
+(defun programming-mode-generic ( &optional fn-search mode-name )
   "Enable my programming customizations for the buffer"
 
-  ;; whitespace
-  (setq indent-tabs-mode nil)
   (whitespace-mode)
 
   ;; run hooks for programming configuration
@@ -96,7 +97,10 @@
     ("a" . xref-find-apropos)
     ("w" . xref-find-definitions-other-window)
     ("p" . xref-go-back)
-    ("n" . xref-go-forward)) )
+    ("n" . xref-go-forward))
+
+  (buffer-ring/add (or mode-name (symbol-name major-mode)))
+  (buffer-ring/local-keybindings))
 
 (defun get-clean-report-buffer ()
   (let
@@ -109,7 +113,17 @@
 (defun get-report-buffer ()
   (get-buffer-create "*report output*"))
 
-(defconst delta-conventional '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta" "release" "refactor" "doc"))
+(defconst delta-conventional '("feat"
+                               "fix"
+                               "bug"
+                               "issue"
+                               "sync"
+                               "merge"
+                               "alpha"
+                               "beta"
+                               "release"
+                               "refactor"
+                               "doc"))
 
 (defun delta-sync-string (module)
   (interactive "senter syncd module: ")
@@ -123,7 +137,6 @@
                   (magit-staged-files)) ))
 
     (string-join file-list ",") ))
-
 
 (defun delta-repo-dir ()
   (let

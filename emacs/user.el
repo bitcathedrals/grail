@@ -4,11 +4,7 @@
 
 (setq warning-minimum-level :emergency)
 
-;;----------------------------------------------------------------------
-;; emacs enhancements
-;;----------------------------------------------------------------------
 (require 'dwim-tab)
-(require 'buffer-ring)
 
 ;;----------------------------------------------------------------------
 ;; general grail profiles
@@ -108,7 +104,7 @@
   (buffer-ring/add "erc")
   (buffer-ring/local-keybindings)
 
-  (keymap-local-set "<up>" 'erc-previous-command) )
+  (keymap-local-set "<up>" 'erc-previous-command))
 
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
 

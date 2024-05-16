@@ -1,11 +1,4 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; grail-load.el
-;;----------------------------------------------------------------------
-
-;;
-;; grail-match - return a list of paths that match a given criteria
-;;
 
 (defun grail-elisp-files-only ( path-arg )
   (directory-files path-arg t ".*\.elc?$"))
@@ -144,6 +137,17 @@
 ;; ELPA
 ;;
 
+(require 'package)
+
+(defun grail-elpa-snoop/advise ()
+  (let
+    ((snooped (car load-path))) ;; elpa always cons's the new path on the front.
+
+    (when snooped
+      (message "grail: snooped load-path update %s from package.el" snooped)
+      (setq grail-elpa-load-path (cons snooped grail-elpa-load-path))
+      (grail-update-load-path)) ))
+
 (defun load-elpa-when-installed ()
   "load-elpa-when-installed
 
@@ -161,20 +165,11 @@
       ;; ELPA is loaded so do the ugly parts and hook into package.el's guts
       ;; to pick up it's modifications to load-path
 
-      (defadvice package-activate-1 (after grail-snoop/do-activate)
-        (let
-          ((snooped (car load-path))) ;; elpa always cons's the new path on the front.
+      (advice-add 'package-activate-1 :after #'grail-elpa-snoop/advise) )))
 
-          (when snooped
-            (message "grail: snooped load-path update %s from package.el" snooped)
-            (setq grail-elpa-load-path (cons snooped grail-elpa-load-path))
-            (grail-update-load-path)) ))
-
-      (ad-activate 'package-activate-1)
-
-      (grail-fail
-        "grail-load ELPA"
-        "running package initialize to trigger a ELPA package load"
-        (package-initialize)) ) ))
+(grail-fail
+ "grail-load ELPA"
+ "running package initialize to trigger a ELPA package load"
+  (load-elpa-when-installed) )
 
 (provide 'grail-load)

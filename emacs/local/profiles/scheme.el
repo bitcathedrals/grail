@@ -2,7 +2,6 @@
 
 (require 'custom-key)
 (require 'borg-repl)
-(require 'buffer-ring)
 (require 'programming-generic)
 
 (require 'geiser)
@@ -10,7 +9,6 @@
 (require 'geiser-completion)
 
 (defconst scheme/mode-name "scheme")
-(defconst scheme/repl-name (borg-repl/repl-name scheme/mode-name))
 
 (defvar scheme-function-decl ".*(define.*")
 
@@ -48,17 +46,16 @@
 (defun profile/scheme-setup ()
   (geiser-mode)
 
-  (borg-repl/bind-repl scheme/repl-name
+  (borg-repl/bind-repl
     'profile/scheme-repl
     'scheme-send-last-sexp
     'scheme-send-region
     'scheme-load-file
-    'scheme-send-definition)
+    'scheme-send-definition
+    nil
+    nil)
 
   (programming-mode-generic 'scheme-list-functions)
-
-  (buffer-ring/add scheme/mode-name)
-  (buffer-ring/local-keybindings)
 
   (turn-on-dwim-tab 'lisp-indent-line) )
 
