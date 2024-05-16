@@ -51,26 +51,8 @@
           (dwim-complete-build-helm-from-generator "functions" functions)
           (dwim-complete-build-helm-from-generator "variables" variables)) )) )
 
-;;
-;; borg-repl backend
-;;
-
-(defun elisp/repl-new ()
-  (interactive)
-  (let
-    ((new-elisp-repl (get-buffer-create (concat "*" (generate-new-buffer-name "elisp/eval") "*")) ))
-
-    (pop-to-buffer
-      (if new-elisp-repl
-        (with-current-buffer new-elisp-repl
-          (emacs-lisp-mode)
-          (current-buffer))
-        (progn
-          (message "profile/elisp: cannot create new scratch buffer")
-          nil) )) ))
-
 (defun emacs-lisp/profile ()
-  (programming-mode-generic 'emacs-lisp/buffer-functions)
+  (programming-mode-generic 'emacs-lisp/buffer-functions elisp/mode-name)
 
   (borg-repl/bind-repl
     'elisp/repl-new
