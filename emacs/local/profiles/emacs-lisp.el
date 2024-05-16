@@ -93,6 +93,6 @@
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
-(add-hook 'emacs-lisp-mode-hook 'emacs-lisp/profile t)
+(add-hook 'emacs-lisp-mode-hook 'emacs-lisp/profile)
 
 (provide 'profile/emacs-lisp)
