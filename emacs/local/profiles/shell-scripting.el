@@ -3,9 +3,7 @@
 (require 'programming-generic)
 (require 'dwim-tab)
 
-(require 'generic-indent)
-
-(defconst shell-function-regex "function")
+(defconst shell-function-regex "^function")
 (defconst profile/shell-name "shell")
 
 (defun shell-list-fn-signatures ()
@@ -23,6 +21,6 @@
 
   (turn-on-dwim-tab) )
 
-(add-hook 'sh-mode-hook 'profile/shell-mode-setup t)
+(add-hook 'sh-mode-hook 'profile/shell-mode-setup)
 
 (provide 'profile/shell-scripting)
