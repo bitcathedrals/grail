@@ -28,10 +28,10 @@
       (funcall binding) )
     (borg-repl/error-msg  "borg-repl: no binding for - " (symbol-name binding)) ))
 
-(defun borg-repl/start ()
-  "borg-repl/start
+(defun borg-repl/create ()
+  "borg-repl/create
 
-   start the REPL this buffer is configured for.
+   create a REPL for this buffer's language
   "
   (interactive)
   (borg-repl/invoke-binding 'borg-repl/create-repl))
@@ -137,8 +137,8 @@
   (fset 'borg-repl/get-buffer (or (symbol-function get-buffer) #'borg-repl/no-buffer-get))
 
   (custom-key-group "borg repl" "e" nil
-    ("x" . borg-repl/start)
-    ("c" . borg-repl/connect)
+    ("c" . borg-repl/create)
+    ("x" . borg-repl/connect)
     ("e" . borg-repl/statement)
     ("r" . borg-repl/region)
     ("b" . borg-repl/buffer)
