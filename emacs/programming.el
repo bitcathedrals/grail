@@ -89,27 +89,21 @@
   (c-set-offset 'substatement-open '0)  ;; hanging braces
 
   ;; auto-hungry newline and whitespace delete
-  (c-toggle-auto-hungry-state 1) )
+  (c-toggle-auto-hungry-state 1))
 
 (add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
 
 (defconst c-mode-name "C")
 
 (defun c-mode-setup ()
-  (programming-mode-generic)
-
-  (buffer-ring/add c-mode-name)
-  (buffer-ring/local-keybindings) )
+  (programming-mode-generic))
 
 (add-hook 'c-mode-hook 'c-mode-setup t)
 
 (defconst c-mode-name "C++")
 
 (defun c++-mode-setup ()
-  (programming-mode-generic)
-
-  (buffer-ring/add c++-mode-name)
-  (buffer-ring/local-keybindings) )
+  (programming-mode-generic))
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
 
@@ -173,8 +167,6 @@
 
   (eglot-ensure)
   (company-mode)
-
-  (buffer-ring/local-keybindings python/mode-name)
 
   (programming-mode-generic 'python/mode-functions))
 

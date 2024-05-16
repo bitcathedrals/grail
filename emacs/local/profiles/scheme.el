@@ -2,7 +2,6 @@
 
 (require 'custom-key)
 (require 'borg-repl)
-(require 'buffer-ring)
 (require 'programming-generic)
 
 (require 'geiser)
@@ -57,9 +56,6 @@
     nil)
 
   (programming-mode-generic 'scheme-list-functions)
-
-  (buffer-ring/add scheme/mode-name)
-  (buffer-ring/local-keybindings)
 
   (turn-on-dwim-tab 'lisp-indent-line) )
 

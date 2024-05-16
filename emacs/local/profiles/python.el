@@ -1,5 +1,6 @@
 ;; -*-no-byte-compile: t; -*-
 
+(require 'buffer-ring)
 (require 'subr-x)
 (require 'vc)
 
@@ -121,9 +122,15 @@
 (defun python/new-environment ()
   (let*
     ((venv (python/virtualenv-select))
-      (new-buffer (python/environment-buffer venv)))
+     (new-buffer (python/environment-buffer venv))
+     (mode-name (symbol-name major-mode)))
 
     (python/interpreter-create venv new-buffer)
+
+    (with-current-buffer new-buffer
+      (buffer-ring/add mode-name)
+      (buffer-ring/local-keybindings))
+
     new-buffer))
 
 (defun python/environment-default ()
@@ -192,7 +199,6 @@
   (interactive)
 
   (borg-repl/bind-repl
-    python/repl-ring-name
     'python/environment-default
     'python/repl-sexp
     'python/repl-region

@@ -15,7 +15,7 @@
                                'dwim-tab-stem-trigger
                                'nxml-complete))
 
-  (turn-on-dwim-tab 'nxml-indent-line) )
+  (turn-on-dwim-tab 'nxml-indent-line))
 
 (add-hook 'nxml-mode-hook 'nxml-configure-for-mode t)
 

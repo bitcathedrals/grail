@@ -20,9 +20,6 @@
 (defun profile/cl-mode-setup ()
   (programming-mode-generic 'cl-list-functions)
 
-  (buffer-ring/add cl-lisp-name)
-  (buffer-ring/local-keybindings)
-
   (turn-on-dwim-tab 'lisp-indent-line))
 
 (add-hook 'lisp-mode-hook 'profile/cl-mode-setup)

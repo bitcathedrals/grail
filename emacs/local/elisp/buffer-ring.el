@@ -238,6 +238,7 @@
       nil)
     (progn
       (buffer-ring/insert-buffer ring-name (buffer-ring/buffer-name))
+      (setq-local buffer-ring-name ring-name)
       (add-hook 'kill-buffer-hook 'buffer-ring/delete t t)
       t) ))
 
@@ -320,6 +321,10 @@
       (buffer-ring/info "buffer to switch to not found .. very bad")) ))
 
 (defun buffer-ring/rotate ( direction &optional other-ring )
+  "buffer-ring/rotate
+
+   rotate rings.
+  "
   (let
     (( with-ring (or other-ring buffer-ring) ))
 
@@ -459,29 +464,22 @@
 
    set the global keybindings"
 
-  (keymap-global-set "M-<up>"   'buffer-torus/next)
-  (keymap-global-set "M-<down>" 'buffer-torus/prev)
-
-  (keymap-global-set "M-<right>"  'buffer-ring/next)
-  (keymap-global-set "M-<left>"   'buffer-ring/prev)
-
   (custom-key-group "buffer ring" "b" t
     ("b" . buffer-ring/list-buffers)
     ("r" . buffer-torus/list-rings)
     ("a" . buffer-ring/add)
     ("d" . buffer-ring/delete)
     ("f" . buffer-ring/fix)
-    ("k" . buffer-torus/delete) ) )
+    ("k" . buffer-torus/delete) ))
 
-(defun buffer-ring/local-keybindings (&optional name)
-  (when name
-    (setq-local buffer-ring-name name))
-
+(defun buffer-ring/local-keybindings ()
   (keymap-local-unset "M-<right>")
   (keymap-local-unset "M-<left>")
-
   (keymap-local-unset "M-<up>")
-  (keymap-local-unset "M-<down>") )
+
+  (keymap-local-set "M-<right>" #'buffer-ring/prev)
+  (keymap-local-set "M-<left>"  #'buffer-ring/next)
+  (keymap-local-set "M-<up>"    #'buffer-ring/rotate) )
 
 (buffer-ring/global-keybindings)
 

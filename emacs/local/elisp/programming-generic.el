@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(require 'buffer-ring)
 (require 'custom-key)
 (require 'utilities)
 (require 'subr-x)
@@ -98,7 +99,8 @@
     ("p" . xref-go-back)
     ("n" . xref-go-forward))
 
-  (buffer-ring/local-keybindings) )
+  (buffer-ring/add (symbol-name major-mode))
+  (buffer-ring/local-keybindings))
 
 (defun get-clean-report-buffer ()
   (let

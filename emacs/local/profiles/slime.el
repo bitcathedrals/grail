@@ -34,9 +34,6 @@
 (defun slime/slime-repl-setup ()
   (turn-on-dwim-tab 'lisp-indent-line)
 
-  (buffer-ring/add slime/mode-name)
-  (buffer-ring/local-keybindings)
-
   (dwim-complete/setup-for-buffer slime/mode-name
     (dwim-complete/make-source "slime: "
       (lambda ()
@@ -67,7 +64,6 @@
     'slime-eval-region
     'slime-eval-buffer
     'slime-eval-defun
-    nil
     nil)
 
   (borg-repl/bind-connect 'slime-connect)

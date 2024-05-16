@@ -72,9 +72,6 @@
 (defun emacs-lisp/profile ()
   (programming-mode-generic 'emacs-lisp/buffer-functions)
 
-  (buffer-ring/add elisp/mode-name)
-  (buffer-ring/local-keybindings)
-
   (borg-repl/bind-repl
     'elisp/repl-new
     'eval-last-sexp

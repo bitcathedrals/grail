@@ -15,9 +15,6 @@
 (defun profile/shell-mode-setup ()
   (programming-mode-generic 'shell-list-fn-signatures)
 
-  (buffer-ring/add profile/shell-name)
-  (buffer-ring/local-keybindings)
-
   (setq
     sh-indentation 2
     sh-basic-offset 2)
