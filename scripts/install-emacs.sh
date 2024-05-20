@@ -47,7 +47,21 @@ case $1 in
       exit 1
     fi
 
-    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-tree-sitter=$SITTER --with-xpm=no --with-gif=no && make bootstrap)
+    if (cd $GIT && make extraclean && \
+          ./autogen.sh && \
+          ./configure \
+            --prefix=$TOOLS \
+            --with-x-toolkit=gtk3 \
+            --with-mailutils=$MAIL \
+            --with-native-compilation=$NATIVE \
+            --with-tree-sitter=$SITTER \
+            --with-xpm=no \
+            --with-png=$PNG \
+            --with-gif=no \
+            --with-gnutls=$TLS \
+            --with-modules=$MODULES \
+            --without-webp && \
+          make bootstrap)
     then
       echo "compile ok."
     else
