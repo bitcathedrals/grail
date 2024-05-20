@@ -14,7 +14,7 @@ case $1 in
   "linux")
     TOOLS=$HOME/tools/local/
 
-    doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
+doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev libtree-sitter-dev libgnutls28-dev
 
     test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
 
