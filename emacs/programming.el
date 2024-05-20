@@ -1,5 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
 
+(require 'treesit)
+
 (require 'merging)
 (require 'ext-merging)
 
@@ -156,7 +158,10 @@
 (defun tree-sitter-for-python ()
   (interactive)
 
-  (treesit-language-available-p 'python))
+  (message
+    (if (treesit-language-available-p 'python)
+    "treesit for python is available"
+    "treesit for python is unavailable")) )
 
 (defun python/mode-setup ()
   "python-mode-setup
