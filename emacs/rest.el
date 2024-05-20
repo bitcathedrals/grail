@@ -7,7 +7,7 @@
 (require 'programming-generic)
 
 (setq auto-mode-alist
-  (append '(("\\.http$"    . restclient-mode)) auto-mode-alist))
+  (append '(("\\.http\\'"    . restclient-mode)) auto-mode-alist))
 
 (setq
   rest-client-buffer-response-name "*REST*")

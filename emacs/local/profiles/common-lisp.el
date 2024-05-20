@@ -14,8 +14,8 @@
 (require 'lisp-mode)
 
 (setq
-  auto-mode-alist (append '(("\\.cl$" . lisp-mode)
-                            ("\\.lisp$" . lisp-mode)) auto-mode-alist))
+  auto-mode-alist (append '(("\\.cl\\'" . lisp-mode)
+                            ("\\.lisp\\'" . lisp-mode)) auto-mode-alist))
 
 (defun profile/cl-mode-setup ()
   (programming-mode-generic 'cl-list-functions)

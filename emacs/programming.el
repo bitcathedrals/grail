@@ -77,12 +77,12 @@
 ;; C/C++ common
 ;;----------------------------------------------------------------------
 
-(setq auto-mode-alist (append '(("\\.c$"       . c-mode)
-                                ("\\.cc$"      . c++-mode)
-                                ("\\.cpp$"     . c++-mode)
-                                ("\\.h$"       . c++-mode)
-                                ("\\.py$"      . python-mode)
-                                ("\\.scheme$"  . scheme-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.c\\'"       . c-mode)
+                                ("\\.cc\\'"      . c++-mode)
+                                ("\\.cpp\\'"     . c++-mode)
+                                ("\\.h\\'"       . c++-mode)
+                                ("\\.py\\'"      . python-mode)
+                                ("\\.scheme\\'"  . scheme-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
   (c-set-style "linux")                 ;; base off of linux style

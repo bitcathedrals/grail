@@ -10,9 +10,9 @@
 
   (programming-mode-generic) )
 
-(setq auto-mode-alist (append '(("\\.toml$"    . toml-ts-mode)
-                                ("\\.yaml$"    . yaml-mode)
-                                ("\\.yml$"     . yaml-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.toml\\'"    . toml-ts-mode)
+                                ("\\.yaml\\'"    . yaml-mode)
+                                ("\\.yml\\'"     . yaml-mode)) auto-mode-alist))
 
 (add-hook 'yaml-mode-hook 'configure-modes-configure)
 (add-hook 'toml-ts-mode 'configure-modes-configure)
