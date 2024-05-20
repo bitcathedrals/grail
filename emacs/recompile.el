@@ -33,3 +33,8 @@
           (file-expand-wildcards (concat dir "/*.el")) )))
     load-path))
 
+(defun compile-dist ()
+  (interactive)
+
+  (byte-recompile-directory grail-dist-git 0)
+  (byte-recompile-directory grail-dist-elisp 0) )
