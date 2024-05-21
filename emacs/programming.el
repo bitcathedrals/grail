@@ -1,5 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
 
+(require 'treesit)
+
 (require 'merging)
 (require 'ext-merging)
 
@@ -75,12 +77,12 @@
 ;; C/C++ common
 ;;----------------------------------------------------------------------
 
-(setq auto-mode-alist (append '(("\\.c$"       . c-mode)
-                                ("\\.cc$"      . c++-mode)
-                                ("\\.cpp$"     . c++-mode)
-                                ("\\.h$"       . c++-mode)
-                                ("\\.py$"      . python-mode)
-                                ("\\.scheme$"  . scheme-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.c\\'"       . c-mode)
+                                ("\\.cc\\'"      . c++-mode)
+                                ("\\.cpp\\'"     . c++-mode)
+                                ("\\.h\\'"       . c++-mode)
+                                ("\\.py\\'"      . python-mode)
+                                ("\\.scheme\\'"  . scheme-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
   (c-set-style "linux")                 ;; base off of linux style
@@ -156,7 +158,10 @@
 (defun tree-sitter-for-python ()
   (interactive)
 
-  (treesit-language-available-p 'python))
+  (message
+    (if (treesit-language-available-p 'python)
+    "treesit for python is available"
+    "treesit for python is unavailable")) )
 
 (defun python/mode-setup ()
   "python-mode-setup

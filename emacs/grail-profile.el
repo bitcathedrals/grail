@@ -50,7 +50,7 @@
   (let
     ((path (expand-file-name (concat grail-local-profiles "/"  profile ".el")) ))
 
-    (grail-info "grail: loading [path] -> " path)
+    (grail-info (format "grail: loading [%s] -> " path))
 
     (if (gethash path grail-profile/loaded)
       (grail-info "grail: skipping already loaded path [path] -> " path)

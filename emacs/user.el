@@ -80,7 +80,7 @@
 ;;----------------------------------------------------------------------
 ;; associate major modes with file extensions.
 ;;----------------------------------------------------------------------
-(setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.txt\\'"     . text-mode)) auto-mode-alist))
 
 ;;----------------------------------------------------------------------
 ;;                    ERC
@@ -170,7 +170,7 @@
   (select-frame (helm-frame-window) t))
 
 (setq auto-mode-alist
-  (cons '("\\.firewall$" . conf-mode) auto-mode-alist))
+  (cons '("\\.firewall\\'" . conf-mode) auto-mode-alist))
 
 ;;----------------------------------------------------------------------
 ;; dpaste

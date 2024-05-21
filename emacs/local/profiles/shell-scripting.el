@@ -15,11 +15,7 @@
 
   (setq
     sh-indentation 2
-    sh-basic-offset 2)
-
-  (keymap-local-set "<return>" 'hard-electric-newline)
-
-  (turn-on-dwim-tab) )
+    sh-basic-offset 2))
 
 (add-hook 'sh-mode-hook 'profile/shell-mode-setup)
 

@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; grail.el
-;;----------------------------------------------------------------------
+
 (require 'subr-x)
 (require 'server)
 
@@ -35,26 +33,8 @@
 ;; functionality, but they are a burden to maintain, and especially to
 ;; replicate across multiple machines.
 
-;; The primary mechanism for managing third party elisp is installing
-;; and activating ELPA, the package management system hosted at
-;; http://tromey.com/elpa/.  For those packages not hosted by ELPA
-;; grail can install them in a limited way.
-
-;; To collalesce a variety of packages into a feature group Grail
-;; provides the "profile" configuration files. In a profile file
-;; third party elisp is managed with installation and configuration.
-
-;; In a group when elisp packages are missing an install function and
-;; a initialization function are generated, with calls to those
-;; functions inserted into the scratch buffer. The user can uncomment
-;; the functions and execute them to replace the missing peices and
-;; execute the configuration bits that depend on them.
-
-;; ---> Starting with Grail.
-
-;; The README.grail file provides installation instructions a more
-;; detailed description of the file and directory structure that is
-;; significant to Grail.
+;; grail provides a sophisticated loader for loading custom code and
+;; third party packages.
 
 (defconst grail-project-url "https://github.com/bitcathedrals/grail/"
   "the project page for Grail")
@@ -101,7 +81,13 @@
   (grail-report "Error/ignored" component message info))
 
 (defun grail-report-info ( component &rest info )
-  (message "Grail Info (%s) %s" component (string-join (mapcar 'pp-to-string info) " ") ))
+  (message "Grail Info (%s) %s" component (string-join (mapcar
+                                                         (lambda (data)
+                                                           (if (stringp data)
+                                                             data
+                                                             (pp-to-string data)))
+                                                         info)
+                                            " > ") ))
 
 (defun grail-report-quiet ( type component message &optional info )
   (message "Grail %s! (%s) while \"%s\": %s"

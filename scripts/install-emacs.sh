@@ -3,13 +3,18 @@
 GIT=$HOME/code/emacs
 
 NATIVE=no
-SITTER=no
+SITTER=yes
+# ifavailable
+TLS=yes
+MODULES=yes
+MAIL=yes
+PNG=yes
 
 case $1 in
   "linux")
     TOOLS=$HOME/tools/local/
 
-    doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
+doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev libtree-sitter-dev libgnutls28-dev
 
     test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
 
@@ -42,7 +47,21 @@ case $1 in
       exit 1
     fi
 
-    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-x-toolkit=gtk3 --with-native-compilation=yes --with-tree-sitter=$SITTER --with-xpm=no --with-gif=no && make bootstrap)
+    if (cd $GIT && make extraclean && \
+          ./autogen.sh && \
+          ./configure \
+            --prefix=$TOOLS \
+            --with-x-toolkit=gtk3 \
+            --with-mailutils=$MAIL \
+            --with-native-compilation=$NATIVE \
+            --with-tree-sitter=$SITTER \
+            --with-xpm=no \
+            --with-png=$PNG \
+            --with-gif=no \
+            --with-gnutls=$TLS \
+            --with-modules=$MODULES \
+            --without-webp && \
+          make bootstrap)
     then
       echo "compile ok."
     else
@@ -70,6 +89,16 @@ case $1 in
     cp desktop/emacs.desktop $LOCAL_DESKTOP/
     cp desktop/emacs-icon.png $HOME/tools/
   ;;
+  "macos-arm64")
+    test -d /opt/Homebrew || mkdir -p /opt/Homebrew
+    curl -L https://github.com/Homebrew/brew/tarball/master >/tmp/brew.xz
+    sudo tar xJf /tmp/brew.xz --strip 1 -C /opt/Homebrew/
+    sudo chown -R mattie /opt/Homebrew
+    ;;
+  "macos-deps")
+    eval "$(/opt/Homebrew/bin/brew shellenv)" && arch -arm64 brew reinstall --build-from-source pkg-config gnutls libpng tree-sitter little-cms2
+
+    ;;
    "macos-git")
     TOOLS=$HOME/tools/local/
 
@@ -104,7 +133,22 @@ case $1 in
       exit 1
     fi
 
-    if (cd $GIT && ./autogen.sh && ./configure --prefix=$TOOLS --with-native-compilation=$NATIVE --with-tree-sitter=$SITTER --with-xpm=no --with-gif=no --with-gnutls=ifavailable && make bootstrap)
+    if (cd $GIT && eval "$(/opt/Homebrew/bin/brew shellenv)" && \
+          arch -arm64 make extraclean && \
+          ./autogen.sh && \
+          arch -arm64 ./configure \
+                         --prefix=$TOOLS \
+                         --with-ns \
+                         --with-mailutils=$MAIL \
+                         --with-native-compilation=$NATIVE \
+                         --with-tree-sitter=$SITTER \
+                         --with-xpm=no \
+                         --with-png=$PNG \
+                         --with-gif=no \
+                         --with-gnutls=$TLS \
+                         --with-modules=$MODULES \
+                         --without-webp && \
+          arch -arm64 make bootstrap)
     then
       echo "compile ok."
     else
