@@ -88,8 +88,6 @@
 (require 'erc)
 (require 'erc-truncate)
 
-(grail-try-elisp "local/elisp/erc-sensitive.el")
-
 (require 'sensitive)
 
 (setq
@@ -176,7 +174,7 @@
 ;; dpaste
 ;;----------------------------------------------------------------------
 (require 'dpaste)
-(setq dpaste-poster "JohnGalt")
+(setq dpaste-poster "Anonymous")
 
 ;;----------------------------------------------------------------------
 ;; force spaces over tabs
