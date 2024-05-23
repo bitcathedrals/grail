@@ -88,8 +88,6 @@
 (require 'erc)
 (require 'erc-truncate)
 
-(grail-try-elisp "local/elisp/erc-sensitive.el")
-
 (require 'sensitive)
 
 (setq
@@ -110,25 +108,6 @@
 
 (require 'erc-services)
 (erc-services-mode 1)
-
-(defun johngalt ()
-  (interactive)
-
-  (erc
-    :server "irc.libera.chat"
-    :port "6667"
-    :nick "JohnGalt"
-
-    ))
-
-(defun techbro ()
-  (interactive)
-
-  (erc
-    :server "irc.libera.chat"
-    :port "6667"
-    :nick "TechBroLifer"))
-
 
 ;;----------------------------------------------------------------------
 ;; helm completion
@@ -176,7 +155,7 @@
 ;; dpaste
 ;;----------------------------------------------------------------------
 (require 'dpaste)
-(setq dpaste-poster "JohnGalt")
+(setq dpaste-poster "Anonymous")
 
 ;;----------------------------------------------------------------------
 ;; force spaces over tabs
