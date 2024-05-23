@@ -109,25 +109,6 @@
 (require 'erc-services)
 (erc-services-mode 1)
 
-(defun johngalt ()
-  (interactive)
-
-  (erc
-    :server "irc.libera.chat"
-    :port "6667"
-    :nick "JohnGalt"
-
-    ))
-
-(defun techbro ()
-  (interactive)
-
-  (erc
-    :server "irc.libera.chat"
-    :port "6667"
-    :nick "TechBroLifer"))
-
-
 ;;----------------------------------------------------------------------
 ;; helm completion
 ;;----------------------------------------------------------------------
