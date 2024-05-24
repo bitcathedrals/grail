@@ -121,3 +121,10 @@
 
       (pop-to-buffer (current-buffer)) )) )
 
+(custom-key-group "window" "w" t
+  ("v" . split-window-horizontally)
+  ("t" . split-window-vertically)
+  ("n" . make-frame-command)
+  ("d" . delete-frame)
+  ("x" . delete-other-windows)
+  ("f" . toggle-frame-fullscreen) )
