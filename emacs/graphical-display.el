@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; graphical-display
-;;----------------------------------------------------------------------
+
 (require 'subr-x)
 
 (defvar grail-frame-width 120 "default width of the frame in characters")
