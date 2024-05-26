@@ -245,3 +245,9 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/git/bbdb"]
+	path = emacs/dist/git/bbdb
+	url = https://github.com/emacsmirror/bbdb.git
+	branch = master
+	ignore = dirty
+
