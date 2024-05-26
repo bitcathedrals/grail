@@ -1,4 +1,6 @@
 (require 'gnus)
+(require 'bbdb)
+
 (require 'sensitive)
 
 (setq
@@ -7,3 +9,8 @@
 
 (add-to-list 'gnus-secondary-select-methods
   '(nnmaildir "proton" (directory "~/mail/")))
+
+(setq
+  bbdb-complete-name-allow-cycling t
+  bbdb-use-pop-up nil)
+
