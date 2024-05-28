@@ -4,10 +4,11 @@
 (require 'sensitive)
 
 (setq
-  gnus-select-method '(nnnil "")
+  gnus-select-method '(nntp "news.eweka.nl")
   gnus-parameters '((".*" (display . all))) )
 
-(add-to-list 'gnus-secondary-select-methods
+(add-to-list
+  'gnus-secondary-select-methods
   '(nnmaildir "proton" (directory "~/mail/")))
 
 (setq
