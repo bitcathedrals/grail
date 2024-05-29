@@ -51,7 +51,9 @@
   (interactive)
 
   (if (boundp 'programming-generic/buffer-functions)
-    (funcall programming-generic/buffer-functions)
+    (if (commandp 'programming-generic/buffer-functions)
+      (call-interactively 'programming-generic/buffer-functions)
+      (funcall programming-generic/buffer-functions))
     (message "no programming-generic/buffer-functions defined in buffer.")) )
 
 (defun programming-mode-generic ( &optional fn-search mode-name )
@@ -97,7 +99,8 @@
     ("a" . xref-find-apropos)
     ("w" . xref-find-definitions-other-window)
     ("p" . xref-go-back)
-    ("n" . xref-go-forward))
+    ("n" . xref-go-forward)
+    ("g" . search-buffer-functions) )
 
   (buffer-ring/add (or mode-name (symbol-name major-mode)))
   (buffer-ring/local-keybindings))
