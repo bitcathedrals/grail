@@ -19,6 +19,16 @@
   tramp-default-method "ssh"
   tramp-chunksize 500)
 
+(defun doas (dir)
+  (interactive "Ddoas directory? ")
+  (message "attempting to connect to doas: %s" dir)
+  (find-file (concat "/doas::" dir)) )
+
+(defun sudo (dir)
+  (interactive "Dsudo directory? ")
+  (message "attempting to connect to sudo: %s" dir)
+  (find-file (concat "/sudo::" dir)) )
+
 ;;----------------------------------------------------------------------
 ;; tramping around
 ;;----------------------------------------------------------------------
