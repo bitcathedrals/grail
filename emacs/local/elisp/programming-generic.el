@@ -101,7 +101,7 @@
     ("g" . search-buffer-functions) )
 
   (buffer-ring/add (or mode-name (symbol-name major-mode)))
-  (buffer-ring/local-keybindings))
+  (buffer-ring/local-keybindings) )
 
 (defun get-clean-report-buffer ()
   (let
