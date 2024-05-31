@@ -41,15 +41,16 @@
          (variables nil))
 
         (mapatoms
-
+          (lambda (entry)
             (if (functionp entry)
               (setq functions (cons (symbol-name entry) functions))
-              (setq variables (cons (symbol-name entry) variables))) )
-          obarray)
+              (setq variables (cons (symbol-name entry) variables))) ))
 
         (list
           (dwim-complete-build-helm-from-generator "functions" functions)
           (dwim-complete-build-helm-from-generator "variables" variables)) )) )
+
+    (dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator)) )
 
 (defun emacs-lisp/profile ()
   (programming-mode-generic 'elisp 'emacs-lisp/buffer-functions elisp/mode-name)
@@ -66,12 +67,6 @@
 
   (custom-key-group "elisp-debug" "d" nil
      ("d" . eval-defun))
-
-  (grail-require profile/dwim-complete
-    "emacs-lisp"
-    "initializing dwim-complete"
-
-    (dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator)))
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
