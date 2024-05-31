@@ -1,5 +1,8 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(require 'thingatpt)
+(require 'syntax-move)
+
 (defvar dwim-tab-register-expand nil
   "dwim-tab function for expanding registers")
 
@@ -123,7 +126,7 @@
   (let
     ((complete (dwim-tab-expanders-by-context))
      (point-before (point))
-     (success nil))
+      (success nil))
 
     (when complete
       (dwim-install-change-hook)
@@ -144,6 +147,20 @@
 
       success))
 
+(defun dwim-tab-hop ()
+  (interactive)
+  (let
+    ((before (point)))
+
+    (when (and
+          (thing-at-point 'word)
+          (syntax-move/enabled))
+      (syntax-move/forward)
+
+      (if (not (equal before (point)))
+        t
+        nil) ) ))
+
 (defun dwim-tab-do-magic ()
   "dwim-tab-do-magic FUNCTIONS
 
@@ -159,7 +176,9 @@
   (interactive)
 
   (unless (try-complete-dwim)
-    (funcall dwim-tab-indent)) )
+    (unless (dwim-tab-hop)
+      (funcall dwim-tab-indent))) )
+
 
 (defun turn-on-dwim-tab ( &optional indent-function )
   (interactive)
