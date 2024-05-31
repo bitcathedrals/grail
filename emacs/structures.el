@@ -8,7 +8,7 @@
   "
   (interactive)
 
-  (programming-mode-generic) )
+  (programming-mode-generic nil) )
 
 (setq auto-mode-alist (append '(("\\.toml\\'"    . toml-ts-mode)
                                 ("\\.yaml\\'"    . yaml-mode)

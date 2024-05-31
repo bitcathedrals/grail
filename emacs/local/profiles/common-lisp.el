@@ -18,7 +18,7 @@
                             ("\\.lisp\\'" . lisp-mode)) auto-mode-alist))
 
 (defun profile/cl-mode-setup ()
-  (programming-mode-generic 'cl-list-functions)
+  (programming-mode-generic 'cl 'cl-list-functions)
 
   (turn-on-dwim-tab 'lisp-indent-line))
 

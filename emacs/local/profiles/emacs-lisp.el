@@ -52,7 +52,7 @@
           (dwim-complete-build-helm-from-generator "variables" variables)) )) )
 
 (defun emacs-lisp/profile ()
-  (programming-mode-generic 'emacs-lisp/buffer-functions elisp/mode-name)
+  (programming-mode-generic 'elisp 'emacs-lisp/buffer-functions elisp/mode-name)
 
   (borg-repl/bind-repl
     'elisp/repl-new

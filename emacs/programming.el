@@ -13,16 +13,15 @@
 
 (setq vc-follow-symlinks t)
 
+(require 'eglot)
 (require 'company)
+
 ;; (require 'company-tabnine)
+;; (add-to-list 'company-backends #'company-tabnine)
 
 ;; Trigger completion immediately.
 (setq
   company-idle-delay 0)
-
-;; (add-to-list 'company-backends #'company-tabnine)
-
-;; indentation
 
 ;; disable electric stuff to avoid problems with my more sophisticated
 ;; modes
@@ -98,14 +97,14 @@
 (defconst c-mode-name "C")
 
 (defun c-mode-setup ()
-  (programming-mode-generic))
+  (programming-mode-generic 'c))
 
 (add-hook 'c-mode-hook 'c-mode-setup t)
 
 (defconst c-mode-name "C++")
 
 (defun c++-mode-setup ()
-  (programming-mode-generic))
+  (programming-mode-generic 'c++))
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
 
@@ -123,7 +122,7 @@
    setup shell mode with enhanced features
   "
   (interactive)
-  (programming-mode-generic 'shell-mode-functions) )
+  (programming-mode-generic 'shell 'shell-mode-functions) )
 
 (add-hook 'shell-mode-hook 'shell-mode-setup)
 
@@ -134,9 +133,7 @@
   "
   (interactive)
 
-  (occur "def.*") )
-
-(require 'eglot)
+  (occur "def.*"))
 
 (setq
   eldoc-documentation-strategy 'ignore
@@ -173,6 +170,6 @@
   (eglot-ensure)
   (company-mode)
 
-  (programming-mode-generic 'python/mode-functions))
+  (programming-mode-generic 'python 'python/mode-functions))
 
 (add-hook 'python-mode-hook 'python/mode-setup)

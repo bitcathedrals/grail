@@ -11,6 +11,8 @@
 
 (require 'puni)
 
+(require 'syntax-move)
+
 (setq indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
 
@@ -56,7 +58,7 @@
       (funcall programming-generic/buffer-functions))
     (message "no programming-generic/buffer-functions defined in buffer.")) )
 
-(defun programming-mode-generic ( &optional fn-search mode-name )
+(defun programming-mode-generic (lang &optional fn-search mode-name)
   "Enable my programming customizations for the buffer"
 
   (whitespace-mode)
@@ -76,16 +78,12 @@
 
   (display-line-numbers-mode)
 
-  (keymap-local-set "C-c <right>" 'puni-forward-sexp)
-  (keymap-local-set "C-c <left>"  'puni-backward-sexp)
-  (keymap-local-set "C-c m"       'puni-expand-region)
-  (keymap-local-set "C-c <up>"    'puni-backward-sexp-or-up-list)
-  (keymap-local-set "C-c <down>"  'down-list)
+  (syntax-move/bind-lang lang)
 
   (when fn-search
     (set (make-local-variable 'programming-generic/buffer-functions) fn-search))
 
-  (custom-key-group "puni" "p"  nil
+  (custom-key-group "syntax" "s" nil
     ("<right>" . puni-forward-kill-word)
     ("<left>"  . puni-backward-kill-word)
     ("<up>"    . puni-kill-line)
