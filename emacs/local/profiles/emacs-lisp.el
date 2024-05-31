@@ -2,7 +2,6 @@
 
 (require 'custom-key)
 (require 'borg-repl)
-(require 'buffer-ring)
 (require 'programming-generic)
 
 (defconst elisp/mode-name "elisp-mode")
@@ -30,27 +29,21 @@
 ;; dwim tab completion backend
 ;;
 
-(grail-require profile/dwim-complete
-  "emacs-lisp requires dwim-complete"
-  "building dwim-complete support for emacs lisp"
+(defun emacs-lisp-helm-generator ()
+  (lambda ()
+    (let
+      ((functions nil)
+        (variables nil))
 
-  (defun emacs-lisp-helm-generator ()
-    (lambda ()
-      (let
-        ((functions nil)
-         (variables nil))
+      (mapatoms
+        (lambda (entry)
+          (if (functionp entry)
+            (setq functions (cons (symbol-name entry) functions))
+            (setq variables (cons (symbol-name entry) variables))) ))
 
-        (mapatoms
-          (lambda (entry)
-            (if (functionp entry)
-              (setq functions (cons (symbol-name entry) functions))
-              (setq variables (cons (symbol-name entry) variables))) ))
-
-        (list
-          (dwim-complete-build-helm-from-generator "functions" functions)
-          (dwim-complete-build-helm-from-generator "variables" variables)) )) )
-
-    (dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator)) )
+      (list
+        (dwim-complete-build-helm-from-generator "functions" functions)
+        (dwim-complete-build-helm-from-generator "variables" variables)) )) )
 
 (defun emacs-lisp/profile ()
   (programming-mode-generic 'elisp 'emacs-lisp/buffer-functions elisp/mode-name)
@@ -67,6 +60,8 @@
 
   (custom-key-group "elisp-debug" "d" nil
      ("d" . eval-defun))
+
+(dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator))
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
