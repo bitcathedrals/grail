@@ -2,7 +2,7 @@
 
 (require 'puni)
 
-(make-variable-buffer-local 'syntax-move/enabled)
+(make-variable-buffer-local 'syntax-move/configured)
 (make-variable-buffer-local 'syntax-move/forward)
 (make-variable-buffer-local 'syntax-move/backward)
 (make-variable-buffer-local 'sytax-move/up)
@@ -35,7 +35,8 @@
 
    return non-nil if syntax-move is enabled in the buffer.
   "
-  (if (boundp 'syntax-move/enabled)) )
+  (when (boundp 'syntax-move/configured)
+    t))
 
 (defun syntax-move/forward ()
   "syntax-move/forward
@@ -83,7 +84,7 @@
    bind syntax movement functions for LANG where lang
    is a symbol with the language name.
   "
-  (fset 'syntax-move/enabled t)
+  (fset 'syntax-move/configured t)
 
   (if (and
         lang
