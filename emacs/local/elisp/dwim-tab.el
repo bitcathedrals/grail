@@ -18,10 +18,20 @@
 (defun dwim-tab-set-register-expand ( expander )
   (setq dwim-tab-register-expand expander))
 
+(defun dwim-tab/at-whitespace()
+  "dwim-tab/at-whitespace
+
+   return t if at whitespace, otherwise return nil
+  "
+  (when (string-match "[\r\n\t\v\f ]" (string (char-after)))
+    t))
+
 (defun dwim-tab/word-trigger ()
   (interactive)
 
-  (if (thing-at-point 'word)
+  (if (and
+        (thing-at-point 'word)
+        (dwim-tab/at-whitespace))
     t
     nil))
 
