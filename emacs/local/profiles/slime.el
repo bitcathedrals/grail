@@ -4,7 +4,6 @@
 ;; slime
 ;;
 (require 'borg-repl)
-(require 'programming-generic)
 (require 'mode-tools)
 (require 'profile/common-lisp)
 

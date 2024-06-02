@@ -55,7 +55,7 @@
     nil
     nil)
 
-  (programming-mode-generic 'scheme-list-functions)
+  (programming-mode-generic 'scheme 'scheme-list-functions)
 
   (turn-on-dwim-tab 'lisp-indent-line) )
 

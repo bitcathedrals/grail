@@ -11,7 +11,7 @@
   (occur shell-function-regex))
 
 (defun profile/shell-mode-setup ()
-  (programming-mode-generic 'shell-list-fn-signatures)
+  (programming-mode-generic 'shell 'shell-list-fn-signatures)
 
   (setq
     sh-indentation 2
