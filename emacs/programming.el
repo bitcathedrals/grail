@@ -16,6 +16,9 @@
 (require 'eglot)
 (require 'company)
 
+(require 'lsp-mode)
+(require 'helm-lsp)
+
 ;; (require 'company-tabnine)
 ;; (add-to-list 'company-backends #'company-tabnine)
 
