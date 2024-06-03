@@ -1,20 +1,24 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'treesit)
-
 (require 'merging)
 (require 'ext-merging)
 
 (require 'buffer-ring)
 
 (require 'programming-generic)
-
 (require 'borg-repl)
 
-(setq vc-follow-symlinks t)
+;;
+;; language support
+;;
+
+(require 'treesit)
 
 (require 'eglot)
 (require 'company)
+
+(require 'lsp-mode)
+(require 'helm-lsp)
 
 ;; (require 'company-tabnine)
 ;; (add-to-list 'company-backends #'company-tabnine)
@@ -27,6 +31,7 @@
 ;; modes
 
 (electric-indent-mode 0)
+
 (setq-default
   tab-width 2)
 
@@ -42,13 +47,16 @@
 
 (use-grail-profiles 3 "slime")
 
-;; version control
+;;
+;; magit
+;;
 
 (require 'magit)
 
+(setq vc-follow-symlinks t)
+
 ;; refresh after edit
-(with-eval-after-load 'magit-mode
-  (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
+(add-hook 'after-save-hook 'magit-after-save-refresh-status t)
 
 (setq git-commit-style-convention-checks
       (remove 'non-empty-second-line git-commit-style-convention-checks))
@@ -72,16 +80,14 @@
   ("r" . magit-ediff-resolve-all)
   ("p" . magit-push))
 
-;;----------------------------------------------------------------------
-;; C/C++ common
-;;----------------------------------------------------------------------
+;;
+;; C/C++
+;;
 
 (setq auto-mode-alist (append '(("\\.c\\'"       . c-mode)
                                 ("\\.cc\\'"      . c++-mode)
                                 ("\\.cpp\\'"     . c++-mode)
-                                ("\\.h\\'"       . c++-mode)
-                                ("\\.py\\'"      . python-mode)
-                                ("\\.scheme\\'"  . scheme-mode)) auto-mode-alist))
+                                ("\\.h\\'"       . c++-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
   (c-set-style "linux")                 ;; base off of linux style
@@ -108,6 +114,10 @@
 
 (add-hook 'c++-mode-hook 'c++mode-setup t)
 
+;;
+;; shell mode
+;;
+
 (defun shell-mode-functions ()
   "shell-mode-functions
 
@@ -125,6 +135,12 @@
   (programming-mode-generic 'shell 'shell-mode-functions) )
 
 (add-hook 'shell-mode-hook 'shell-mode-setup)
+
+;;
+;; python
+;;
+
+(setq auto-mode-alist (append '(("\\.py\\'" . python-mode)) auto-mode-alist))
 
 (defun python/mode-functions ()
   "python-mode-functions
@@ -173,3 +189,9 @@
   (programming-mode-generic 'python 'python/mode-functions))
 
 (add-hook 'python-mode-hook 'python/mode-setup)
+
+;;
+;; scheme
+;;
+
+(setq auto-mode-alist (append '(("\\.scheme\\'"  . scheme-mode)) auto-mode-alist))

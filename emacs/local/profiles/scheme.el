@@ -8,6 +8,10 @@
 (require 'geiser-chicken)
 (require 'geiser-completion)
 
+(require 'lsp-scheme)
+
+(setq lsp-scheme-implementation "chicken")
+
 (defconst scheme/mode-name "scheme")
 
 (defvar scheme-function-decl ".*(define.*")
@@ -35,14 +39,6 @@
   (interactive)
   (occur cl-function-decl))
 
-(grail-require profile/dwim-complete
-  "scheme"
-  "initializing dwim-complete"
-
-  (dwim-complete/setup-for-buffer scheme/mode-name
-    (lambda ()
-      (dwim-complete-build-helm-from-generator "scheme/symbols" (geiser-completion--symbol-list))) ) )
-
 (defun profile/scheme-setup ()
   (geiser-mode)
 
@@ -52,18 +48,13 @@
     'scheme-send-region
     'scheme-load-file
     'scheme-send-definition
-    nil
     nil)
 
   (programming-mode-generic 'scheme 'scheme-list-functions)
 
+;;  (lsp-scheme)
+
   (turn-on-dwim-tab 'lisp-indent-line) )
-
-;; causes infinite loop
-
-;; (defun profile/auto-launch-scheme ()
-;;   (if (not (bufferp scheme-buffer))
-;;     (pop-to-buffer (scheme-proc) 'display-buffer-pop-up-window)) )
 
 (add-hook 'scheme-mode-hook 'profile/scheme-setup)
 

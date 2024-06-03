@@ -1,7 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; grail-profile.el
-;;----------------------------------------------------------------------
+
+(require 'subr-x)
+
 (defvar grail-masked
   nil
   "List of grail profiles masked by the user.")
@@ -33,39 +33,43 @@
 
 (defun grail-info ( &rest info )
   (with-current-buffer (grail-profile-buffer)
-    (mapc
-     (lambda ( str )
-       (insert (pp-to-string str))
-       (end-of-line))
-     info)
-
+    (insert (string-join (mapcar
+                          (lambda (elt)
+                            (if (stringp elt)
+                                elt
+                              (pp-to-string elt)))
+                          info) ","))
     (end-of-line)
-    (newline) ))
+    (newline)))
 
 (defvar grail-profile/loaded (make-hash-table :test 'equal))
 
 (defun grail-load-profile ( profile )
-  (grail-info "grail: loading [profile] ->  " profile)
-
   (let
-    ((path (expand-file-name (concat grail-local-profiles "/"  profile ".el")) ))
-
-    (grail-info (format "grail: loading [%s] -> " path))
+    ((path (expand-file-name (concat grail-local-profiles "/"  profile ".el")) )
+     (info nil))
 
     (if (gethash path grail-profile/loaded)
-      (grail-info "grail: skipping already loaded path [path] -> " path)
-      (progn
-        (puthash path t grail-profile/loaded)
+      (push (format "grail: skipping already loaded profile [%s]" profile) info)
+      (condition-case trap
+        (progn
+          (push (format "grail: loading [%s] -> %s" profile path) info)
 
-        (condition-case trap
+          (load path)
+
+          (push "grail: load [OK]" info)
+          (push profile grail-ok)
+
+          (puthash path t grail-profile/loaded))
+        (error
           (progn
-            (load path)
-            (grail-info "grail: [OK] " profile)
-            (push profile grail-ok))
-          (error
-            (progn
-              (grail-info "grail: [FAIL!] " profile " [error]: " (car trap) " [details]: " (cdr trap))
-              (push profile grail-failed))) ) )) ))
+            (push (format "grail: [FAIL!] %s [details] %s"
+                    (pp-to-string (car trap))
+                    (pp-to-string (cdr trap)))
+              info)
+            (push profile grail-failed))) ) )
+
+    (grail-info (reverse info)) ))
 
 (defun grail-load-all-profiles ()
   "grail-load-requested-profiles
@@ -79,7 +83,9 @@
                                      (if (< (car a) (car b)) t) )) ))
       (mapc
         (lambda ( level )
-          (grail-info "grail-load-all-profiles: [" (car level) "] [profiles]: " (pp-to-string (cdr level)))
+          (grail-info (format "grail-load-all-profiles: [%s] -> %s"
+                        (car level)
+                        (string-join (cdr level) ",")))
 
           (mapc
             (lambda ( profile )
@@ -102,7 +108,7 @@
    request a list of string quoted groups to be loaded after the configuration
    files have been loaded.
   "
-  (grail-info "grail: adding [" (pp-to-string order) "]: " (pp-to-string requested))
+  (grail-info (format "grail: adding [%d]: %s " order (string-join requested ",") ) )
 
   (let
     ((combined '()))
