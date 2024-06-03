@@ -1,14 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; macro-extensions.el - a library of routines to deal with macro problems
-;;
-;; description:
-;;
-;; there are many issues with how emacs implements macros such as
-;; capture issues. This library helps deal with such problems
-;;----------------------------------------------------------------------
-
 (defun macros-anon-symbol ()
   (make-symbol (format "anonymous-symbol-%s" (random 100000))))
 
@@ -33,13 +24,6 @@
         symbol-value)
       (error symbol-value)) ))
 
-;; (setq foo "crappy")
-
-;; (setq bar "shitty")
-
-;; (princ (macros-symbol-value-soft 'foo) )
-;; (princ  (macros-symbol-value-soft (macros-bind-value "shitty") ))
-
 (defun macros-symbol-try-eval ( symbol )
   (let
     ((symbol-value (macros-symbol-value-soft symbol)))
@@ -56,11 +40,6 @@
         ((listp element) (macros-symbol-value-recursive element))
         (t element) ))
     list))
-
-;; (eval (macros-symbol-value-recursive `(message "%s %s" foo bar)))
-;; (macros-symbol-value-recursive `(message "%s %s" foo bar))
-
-(macros-symbol-value-recursive `(message "%s %s" foo (lambda () "foo")))
 
 (defmacro macros-insert-value ( &rest body )
   `,(car body))
