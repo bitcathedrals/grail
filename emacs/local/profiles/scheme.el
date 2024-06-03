@@ -21,6 +21,16 @@
   geiser-chicken-binary "csi"
   geiser-active-implementations '(chicken))
 
+(defun profile/scheme-setup-repl ()
+  (buffer-ring/add scheme/mode-name)
+  (buffer-ring/local-keybindings))
+
+(add-hook 'inferior-scheme-mode-hook #'profile/scheme-setup-repl)
+
+(defun profile/scheme-buffer ()
+  ;; defined in cmuscheme.el
+  scheme-buffer)
+
 (defun profile/scheme-repl ()
   "new-scheme-repl
 
@@ -31,7 +41,7 @@
     ((restore (current-buffer)))
 
     (run-scheme scheme-program-name)
-    (pop-to-buffer scheme-buffer 'display-buffer-pop-up-window)
+    (pop-to-buffer (profile/scheme-buffer) 'display-buffer-pop-up-window)
     (other window 1)
     (switch-to-other-buffer restore)) )
 
@@ -48,9 +58,9 @@
     'scheme-send-region
     'scheme-load-file
     'scheme-send-definition
-    nil)
+    'profile/scheme-buffer)
 
-  (programming-mode-generic 'scheme 'scheme-list-functions)
+  (programming-mode-generic 'scheme 'scheme-list-functions scheme/mode-name)
 
 ;;  (lsp-scheme)
 
