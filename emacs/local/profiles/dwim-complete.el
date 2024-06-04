@@ -182,7 +182,7 @@
 
 (defun dwim-complete-make-context ()
   (cons
-   'dwim-tab/word-trigger
+   'dwim-tab/after-word
    'dwim-complete/complete))
 
 (defun dwim-complete/setup-for-buffer ( mode &optional generator )

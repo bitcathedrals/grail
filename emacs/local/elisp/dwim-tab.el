@@ -30,7 +30,12 @@
       t
       (string-match "[\r\n\t\v\f ]" (string after))) ))
 
-(defun dwim-tab/word-trigger ()
+(defun dwim-tab/in-word ()
+  (interactive)
+
+  (thing-at-point 'word))
+
+(defun dwim-tab/after-word ()
   (interactive)
 
   (and

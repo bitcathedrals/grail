@@ -208,7 +208,7 @@
     'python/environment-default)
 
   (dwim-tab-localize-context
-    (dwim-tab-make-expander 'dwim-tab/word-trigger 'python-completion-at-point)) )
+    (dwim-tab-make-expander 'dwim-tab/after-word 'python-completion-at-point)) )
 
 (add-hook 'python-mode-hook 'python/setup-python-profile)
 
