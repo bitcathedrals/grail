@@ -23,17 +23,19 @@
 
    return t if at whitespace, otherwise return nil
   "
-  (when (string-match "[\r\n\t\v\f ]" (string (char-after)))
-    t))
+  (let
+    ((after (char-after)))
+
+    (if (not after)
+      t
+      (string-match "[\r\n\t\v\f ]" (string after))) ))
 
 (defun dwim-tab/word-trigger ()
   (interactive)
 
-  (if (and
-        (thing-at-point 'word)
-        (dwim-tab/at-whitespace))
-    t
-    nil))
+  (and
+    (thing-at-point 'word)
+    (dwim-tab/at-whitespace)) )
 
 (defun dwim-tab/prefix ()
   (interactive)
@@ -163,8 +165,9 @@
     ((before (point)))
 
     (when (and
-          (thing-at-point 'word)
-          (syntax-move/enabled))
+            (not (looking-back "^"))
+            (thing-at-point 'word)
+            (syntax-move/enabled))
       (syntax-move/forward)
 
       (if (not (equal before (point)))
