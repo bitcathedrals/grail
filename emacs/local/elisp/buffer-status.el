@@ -17,7 +17,7 @@
       (mapc (lambda ( status-msg )
               (setq status-display-string (if (string-equal "" status-display-string)
                                             status-msg
-                                            (concat status-display-string " , " status-msg)) ))
+                                            (concat status-display-string ", " status-msg)) ))
         buffer-status-list)
 
       (message "%s" status-display-string)
