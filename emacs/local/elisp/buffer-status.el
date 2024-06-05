@@ -10,20 +10,11 @@
 
 (defun buffer-display-status ()
   (interactive)
-  (let
-    ((status-display-string ""))
 
-    (when buffer-status-list
-      (mapc (lambda ( status-msg )
-              (setq status-display-string (if (string-equal "" status-display-string)
-                                            status-msg
-                                            (concat status-display-string ", " status-msg)) ))
-        buffer-status-list)
-
-      (message "%s" status-display-string)
-      (setq buffer-status-list nil)) ))
+  (when buffer-status-list
+    (message "%s" (string-join buffer-status-list ", ")) ))
 
 (defun buffer-status-add ( message )
-  (setq buffer-status-list (cons message buffer-status-list)))
+  (add-to-list 'buffer-status-list message))
 
 (provide 'buffer-status)
