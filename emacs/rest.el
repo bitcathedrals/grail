@@ -23,6 +23,6 @@
 (defun setup-restclient ()
   (interactive)
 
-  (programmming-mode-generic 'http-methods))
+  (programmming-mode-generic nil 'http-methods))
 
 (add-hook 'restclient-mode-hook 'setup-restclient)

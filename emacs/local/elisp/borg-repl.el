@@ -127,7 +127,15 @@
                             buffer-fn
                             defun-fn
                             get-buffer)
+  "borg-repl/bind-repl
 
+  CREATE-FN
+  LINE-FN
+  REGION-FN
+  BUFFER-FUN
+  DEFUN-FN
+  GET-BUFFER
+  "
   (fset 'borg-repl/create-repl  (symbol-function create-fn))
   (fset 'borg-repl/eval-line    (symbol-function line-fn))
   (fset 'borg-repl/eval-region  (symbol-function region-fn))

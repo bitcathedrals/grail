@@ -11,6 +11,8 @@
 ;; options
 ;;
 
+(make-variable-buffer-local 'dwim-complete-buffer-mode)
+
 (setq-default helm-execute-action-at-once-if-one t)
 
 (defvar dwim-complete-fuzzy-match t)
@@ -180,11 +182,11 @@
 
 (defun dwim-complete-make-context ()
   (cons
-   'dwim-tab/word-trigger
+   'dwim-tab/after-word
    'dwim-complete/complete))
 
 (defun dwim-complete/setup-for-buffer ( mode &optional generator )
-  (set (make-local-variable 'dwim-complete-buffer-mode) mode)
+  (setq dwim-complete-buffer-mode mode)
 
   (when generator
     (setq dwim-complete-build-generator generator))

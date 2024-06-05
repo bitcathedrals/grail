@@ -245,3 +245,45 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/git/bbdb"]
+	path = emacs/dist/git/bbdb
+	url = https://github.com/emacsmirror/bbdb.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/emacs-lsp-scheme"]
+	path = emacs/dist/git/emacs-lsp-scheme
+	url = https://codeberg.org/rgherdt/emacs-lsp-scheme.git
+	branch = main
+	ignore = dirty
+
+[submodule "emacs/dist/git/lsp-mode"]
+	path = emacs/dist/git/lsp-mode
+	url = https://github.com/emacs-lsp/lsp-mode.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/helm-lsp"]
+	path = emacs/dist/git/helm-lsp
+	url = https://github.com/emacs-lsp/helm-lsp.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/ht"]
+	path = emacs/dist/git/ht
+	url = https://github.com/Wilfred/ht.el.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/markdown-mode"]
+	path = emacs/dist/git/markdown-mode
+	url = https://github.com/jrblevin/markdown-mode.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/git/spinner"]
+	path = emacs/dist/git/spinner
+	url = https://github.com/Malabarba/spinner.el.git
+	branch = master
+	ignore = dirty
+

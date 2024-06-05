@@ -1,10 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; command-queue
-;;
-;; run commands in the background in a worker queue like implementation
-;;----------------------------------------------------------------------
 (require 'async-command-builders)
 (require 'idle-queue)
 

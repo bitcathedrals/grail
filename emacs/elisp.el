@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
-(setq-default lexical-binding t)
+(setq-default
+  lexical-binding t
+  deactivate-mark t) ;; turn of mark message and CUA
 
 (setq native-comp-async-report-warnings-errors 'silent)
 

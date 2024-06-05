@@ -26,5 +26,5 @@
 ;; create a tab context where tab will invoke flyspell-auto-correct-word
 ;; at the point.
 
-(dwim-tab-globalize-context (dwim-tab-make-expander 'dwim-tab/word-trigger 'correct-over-flyspell))
+(dwim-tab-globalize-context (dwim-tab-make-expander 'dwim-tab/in-word 'correct-over-flyspell))
 

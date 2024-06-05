@@ -1,13 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; dynamic-ring.el
-;;----------------------------------------------------------------------
-(defconst dynamic-ring-version "0.1.1" "dynamic-ring version")
-
-(eval-when-compile
-  (require 'cl))
-
 ;;
 ;; ring structure
 ;;
@@ -123,7 +115,7 @@
    values of FN for each element is collected into a list and
    returned.
   "
-  (lexical-let
+  (let
     ((output nil))
 
     (dyn-ring-traverse ring-struct
@@ -171,7 +163,7 @@
 
    The list of matching elements is returned.
   "
-  (lexical-let
+  (let
     ((found nil)
      (p     predicate))
 

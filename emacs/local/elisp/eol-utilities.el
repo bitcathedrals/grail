@@ -1,14 +1,11 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; eol utilities.
-;;----------------------------------------------------------------------
 (require 'buffer-status)
 
 (defun warn-if-dos-eol-in-buffer ()
   (interactive)
   (save-excursion
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (when (search-forward-regexp "$" nil t)
       (buffer-status-add "!WARNING! DOS EOL lines"))))
 

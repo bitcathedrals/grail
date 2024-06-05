@@ -8,6 +8,10 @@
 (require 'geiser-chicken)
 (require 'geiser-completion)
 
+(require 'lsp-scheme)
+
+(setq lsp-scheme-implementation "chicken")
+
 (defconst scheme/mode-name "scheme")
 
 (defvar scheme-function-decl ".*(define.*")
@@ -16,6 +20,16 @@
   scheme-program-name "csi"
   geiser-chicken-binary "csi"
   geiser-active-implementations '(chicken))
+
+(defun profile/scheme-setup-repl ()
+  (buffer-ring/add scheme/mode-name)
+  (buffer-ring/local-keybindings))
+
+(add-hook 'inferior-scheme-mode-hook #'profile/scheme-setup-repl)
+
+(defun profile/scheme-buffer ()
+  ;; defined in cmuscheme.el
+  scheme-buffer)
 
 (defun profile/scheme-repl ()
   "new-scheme-repl
@@ -27,21 +41,13 @@
     ((restore (current-buffer)))
 
     (run-scheme scheme-program-name)
-    (pop-to-buffer scheme-buffer 'display-buffer-pop-up-window)
+    (pop-to-buffer (profile/scheme-buffer) 'display-buffer-pop-up-window)
     (other window 1)
     (switch-to-other-buffer restore)) )
 
 (defun scheme-list-functions ()
   (interactive)
   (occur cl-function-decl))
-
-(grail-require profile/dwim-complete
-  "scheme"
-  "initializing dwim-complete"
-
-  (dwim-complete/setup-for-buffer scheme/mode-name
-    (lambda ()
-      (dwim-complete-build-helm-from-generator "scheme/symbols" (geiser-completion--symbol-list))) ) )
 
 (defun profile/scheme-setup ()
   (geiser-mode)
@@ -52,18 +58,13 @@
     'scheme-send-region
     'scheme-load-file
     'scheme-send-definition
-    nil
-    nil)
+    'profile/scheme-buffer)
 
-  (programming-mode-generic 'scheme-list-functions)
+  (programming-mode-generic 'scheme 'scheme-list-functions scheme/mode-name)
+
+;;  (lsp-scheme)
 
   (turn-on-dwim-tab 'lisp-indent-line) )
-
-;; causes infinite loop
-
-;; (defun profile/auto-launch-scheme ()
-;;   (if (not (bufferp scheme-buffer))
-;;     (pop-to-buffer (scheme-proc) 'display-buffer-pop-up-window)) )
 
 (add-hook 'scheme-mode-hook 'profile/scheme-setup)
 

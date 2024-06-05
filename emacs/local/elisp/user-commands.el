@@ -1,12 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; commands.el
-;;----------------------------------------------------------------------
-
 (require 'ucase-word)
 (require 'buffer-status)
-(require 'cl)
 
 (require 'whitespace-utilities)
 (require 'eol-utilities)

@@ -1,14 +1,11 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; async-command-builders.el
-;;----------------------------------------------------------------------
 (require 'macro-extensions)
 
-(defun async-build-basic ( prefix command callback &optional use-buffer &optional chained )
+(defun async-build-basic ( prefix command callback &optional use-buffer chained )
   (let
     ((grail-async-runner
-       (lexical-let
+       (let
          ((output-buffer (or use-buffer
                              (get-buffer-create (concat prefix "-proc"))))
           (bind-command  command)
