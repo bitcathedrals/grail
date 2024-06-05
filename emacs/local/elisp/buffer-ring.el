@@ -86,7 +86,7 @@
    Search the buffer torus for a ring NAME and return it if found
    or nil otherwise.
   "
-  (lexical-let*
+  (let*
     ((search-name name)
      (found (dyn-ring-find buffer-ring-torus
               (lambda ( found-name )
