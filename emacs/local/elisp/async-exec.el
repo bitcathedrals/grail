@@ -27,7 +27,7 @@
    With this function processes can be changed by nesting another
    grail-process-async-chain as the tail, or NEXT-FN function for
    a sequence of process execution."
-  (lexical-let
+  (let
     ((async-proc (funcall start-process-fn))
      (no-start   doesnt-start-fn)
      (fail-fn    proc-fail-fn)
@@ -61,7 +61,7 @@
 
    run ON-EXIT after process in PROC-BUFFER
   "
-  (lexical-let*
+  (let*
     ((p-buffer   (current-buffer))
      (p-proc     (get-buffer-process proc-buffer))
      (p-sentinel (make-symbol "async-exec-sentinal"))

@@ -49,7 +49,7 @@
 (defun macros-bind-eval ( value )
   (let
     ((wrapped-lambda
-       (lexical-let
+       (let
          ((wrapped-value))
 
          (lambda () wrapped-value)) ))

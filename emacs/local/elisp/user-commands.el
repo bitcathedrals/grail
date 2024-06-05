@@ -2,7 +2,6 @@
 
 (require 'ucase-word)
 (require 'buffer-status)
-(require 'cl)
 
 (require 'whitespace-utilities)
 (require 'eol-utilities)
