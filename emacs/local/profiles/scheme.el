@@ -61,6 +61,8 @@
     'scheme-send-definition
     'profile/scheme-buffer)
 
+  (dwim-tab-localize-context (dwim-tab-make-expander 'dwim-tab/after-word 'helm-lsp))
+
   (programming-mode-generic 'scheme 'scheme-list-functions scheme/mode-name)
 
   (turn-on-dwim-tab 'lisp-indent-line))
