@@ -4,11 +4,11 @@
 (require 'borg-repl)
 (require 'programming-generic)
 
+(require 'lsp-scheme)
+
 (require 'geiser)
 (require 'geiser-chicken)
 (require 'geiser-completion)
-
-(require 'lsp-scheme)
 
 (setq lsp-scheme-implementation "chicken")
 
@@ -51,6 +51,7 @@
 
 (defun profile/scheme-setup ()
   (geiser-mode)
+  (lsp-scheme)
 
   (borg-repl/bind-repl
     'profile/scheme-repl
@@ -62,9 +63,7 @@
 
   (programming-mode-generic 'scheme 'scheme-list-functions scheme/mode-name)
 
-;;  (lsp-scheme)
-
-  (turn-on-dwim-tab 'lisp-indent-line) )
+  (turn-on-dwim-tab 'lisp-indent-line))
 
 (add-hook 'scheme-mode-hook 'profile/scheme-setup)
 
