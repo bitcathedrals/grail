@@ -18,6 +18,13 @@
 (require 'company)
 
 (require 'lsp-mode)
+(require 'lsp-lens)
+(require 'lsp-modeline)
+(require 'lsp-headerline)
+
+(add-hook 'lsp-mode-hook #'lsp-lens-mode)
+(setq lsp-signature-render-documentation nil)
+
 (require 'helm-lsp)
 
 ;; (require 'company-tabnine)
