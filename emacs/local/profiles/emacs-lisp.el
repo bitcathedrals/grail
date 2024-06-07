@@ -61,7 +61,7 @@
   (custom-key-group "elisp-debug" "d" nil
      ("d" . eval-defun))
 
-(dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator))
+  (dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator))
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
