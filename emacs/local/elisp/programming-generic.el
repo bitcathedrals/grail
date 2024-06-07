@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(require 'hideshow)
+
 (require 'buffer-ring)
 (require 'custom-key)
 (require 'utilities)
@@ -91,7 +93,7 @@
     ("b"       . puni-beginning-of-sexp)
     ("e"       . puni-end-of-sexp) )
 
-  (custom-key-group "coding" "x"  nil
+  (custom-key-group "coding" "x" nil
     ("c" . toggle-comment-region)
     ("f" . xref-find-definitions)
     ("a" . xref-find-apropos)
@@ -101,7 +103,16 @@
     ("g" . search-buffer-functions) )
 
   (buffer-ring/add (or mode-name (symbol-name major-mode)))
-  (buffer-ring/local-keybindings) )
+  (buffer-ring/local-keybindings)
+
+  (hs-minor-mode)
+
+  (custom-key-group "folding" "f" nil
+    ("a" . hs-hide-all)
+    ("s" . hs-show-all)
+    ("f" . hs-toggle-hiding)
+    ("b" . hs-hide-block-at-point)
+    ("c" . hs-show-block)) )
 
 (defun get-clean-report-buffer ()
   (let
