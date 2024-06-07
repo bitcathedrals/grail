@@ -39,7 +39,7 @@
   (interactive)
 
   (and
-    (thing-at-point 'word)
+    (thing-at-point 'symbol)
     (dwim-tab/at-whitespace)) )
 
 (defun dwim-tab/prefix ()
