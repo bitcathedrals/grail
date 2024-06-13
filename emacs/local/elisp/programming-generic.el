@@ -85,7 +85,7 @@
   (when fn-search
     (set (make-local-variable 'programming-generic/buffer-functions) fn-search))
 
-  (custom-key-group "syntax" "s" nil
+  (custom-key-group "syntax" "k" nil
     ("<right>" . puni-forward-kill-word)
     ("<left>"  . puni-backward-kill-word)
     ("<up>"    . puni-kill-line)

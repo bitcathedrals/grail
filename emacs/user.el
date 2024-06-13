@@ -123,7 +123,7 @@
 (require 'helm-ring)
 (require 'helm-frame)
 
-(custom-key-group "helm complete" "c" t
+(custom-key-group "complete" "c" t
   ("f" . helm-find-files)
   ("b" . helm-buffers-list)
   ("g" . helm-grep-do-git-grep)
@@ -131,7 +131,7 @@
   ("r" . helm-register)
   ("s" . helm-regexp)
   ("m" . helm-man-woman)
-  ("k" . helm-show-kill-ring) )
+  ("k" . helm-show-kill-ring))
 
 (defun helm-on-frames ()
   (interacive)

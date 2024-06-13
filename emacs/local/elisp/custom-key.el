@@ -27,7 +27,7 @@
           (format "(%s) %s"
             (car table-pair)
             (keybindings-help-first-line (cdr table-pair))) )
-        (cdr table))
+        table)
       "
 ") ))
 
@@ -38,7 +38,7 @@
         (format "(%s) %s"
           (car table-pair)
           (keybindings-help-first-line (cdr table-pair))) )
-      (cdr table))
+      table)
     "
 "))
 
@@ -139,8 +139,10 @@
      (custom-key-group-register ,chord ,description ',body)
 
      ;; set a help key for this group
-     (keymap-local-set (concat custom-key-prefix " " ,chord " h") (keybindings-help-local ,description ',body))
-     ))
+     (,(if global
+	'keymap-global-set
+	'keymap-local-set)
+      (concat custom-key-prefix " " ,chord " h") (keybindings-help-local ,description ',body)) ))
 
 (custom-key-group "help" "h" t
   ("a" . apropos)
