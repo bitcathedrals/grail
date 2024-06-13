@@ -59,13 +59,6 @@
   (interactive)
   (dired-other-window (file-name-directory buffer-file-name)) )
 
-(custom-key-group "files" "f" t
-    ("d" . dired)
-    ("c" . pop-dired-in-file)
-    ("n" . user-keys/start-tree-browser)
-    ("s" . save-some-buffers)
-    ("b" . hexl-find-file))
-
 (custom-key-group "mark" "m" t
   ("x" . exchange-point-and-mark)
   ("p" . push-mark-command)

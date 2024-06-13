@@ -58,7 +58,7 @@
     `(width . ,grail-frame-width)
     `(height . ,grail-frame-height)) )
 
-(defconst personal-bg-color "grey5")
+(defconst personal-bg-color "black")
 
 (defun display-faces-general ()
 
