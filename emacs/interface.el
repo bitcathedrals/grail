@@ -121,6 +121,22 @@
 
       (pop-to-buffer (current-buffer)) )) )
 
+(defun put-window-layout ()
+  "put-window-layout
+
+   put the window layout into the [w] register
+  "
+  (interactive)
+  (call-interactively 'window-configuration-to-register "w"))
+
+(defun get-window-layout ()
+  "get-window-layout
+
+   restore the window layout into the [w] register
+  "
+  (interactive)
+  (call-interactively 'jump-to-register "w"))
+
 (custom-key-group "window" "w" t
   ("v" . split-window-horizontally)
   ("t" . split-window-vertically)
@@ -128,4 +144,6 @@
   ("x" . delete-frame)
   ("1" . delete-other-windows)
   ("f" . toggle-frame-fullscreen)
-  ("x" . delete-window))
+  ("x" . delete-window)
+  ("p" . put-window-layout)
+  ("g" . get-window-layout))
