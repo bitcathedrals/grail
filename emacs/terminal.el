@@ -1,10 +1,15 @@
 ;; -*-no-byte-compile: t; -*-
 
+(require 'eat)
 (require 'term)
 (require 'buffer-ring)
 (require 'custom-key)
 
 (defconst user-terminal-name "shell")
+
+(setq grail-terminal "vt100")
+
+(setenv "TERM" grail-terminal)
 
 ;;----------------------------------------------------------------------
 ;;                 IPC shell:  comint/term mode
@@ -66,18 +71,16 @@
   "
   (interactive)
 
-  (term "tmux") )
+  (eat "tmux"))
 
 ;; eat
 
-(require 'eat)
+(setq eat-term-name grail-terminal)
 
 (defun setup-eat-general ()
   (interactive)
 
-  (setq-local process-adaptive-read-buffering nil) )
+  (setq-local process-adaptive-read-buffering nil))
 
 (add-hook 'eat-mode-hook 'setup-eat-general)
-
-
 
