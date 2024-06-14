@@ -1,7 +1,7 @@
 **/.DS_Store
-emacs/dist/elpa
-emacs/local/elisp/erc-sensitive.el
+emacs/local/elisp/sensitive.el
 **/*.elc
+
 
 
 

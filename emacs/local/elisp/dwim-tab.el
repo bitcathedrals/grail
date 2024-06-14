@@ -1,8 +1,8 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; dwim-tab.el
-;;----------------------------------------------------------------------
+(require 'thingatpt)
+(require 'syntax-move)
+
 (defvar dwim-tab-register-expand nil
   "dwim-tab function for expanding registers")
 
@@ -18,12 +18,29 @@
 (defun dwim-tab-set-register-expand ( expander )
   (setq dwim-tab-register-expand expander))
 
-(defun dwim-tab/word-trigger ()
+(defun dwim-tab/at-whitespace()
+  "dwim-tab/at-whitespace
+
+   return t if at whitespace, otherwise return nil
+  "
+  (let
+    ((after (char-after)))
+
+    (if (not after)
+      t
+      (string-match "[\r\n\t\v\f ]" (string after))) ))
+
+(defun dwim-tab/in-word ()
   (interactive)
 
-  (if (thing-at-point 'word)
-    t
-    nil))
+  (thing-at-point 'word))
+
+(defun dwim-tab/after-word ()
+  (interactive)
+
+  (and
+    (thing-at-point 'symbol)
+    (dwim-tab/at-whitespace)) )
 
 (defun dwim-tab/prefix ()
   (interactive)
@@ -126,7 +143,7 @@
   (let
     ((complete (dwim-tab-expanders-by-context))
      (point-before (point))
-     (success nil))
+      (success nil))
 
     (when complete
       (dwim-install-change-hook)
@@ -147,6 +164,21 @@
 
       success))
 
+(defun dwim-tab-hop ()
+  (interactive)
+  (let
+    ((before (point)))
+
+    (when (and
+            (not (looking-back "^"))
+            (thing-at-point 'word)
+            (syntax-move/enabled))
+      (syntax-move/forward)
+
+      (if (not (equal before (point)))
+        t
+        nil) ) ))
+
 (defun dwim-tab-do-magic ()
   "dwim-tab-do-magic FUNCTIONS
 
@@ -162,7 +194,9 @@
   (interactive)
 
   (unless (try-complete-dwim)
-    (funcall dwim-tab-indent)) )
+    (unless (dwim-tab-hop)
+      (funcall dwim-tab-indent))) )
+
 
 (defun turn-on-dwim-tab ( &optional indent-function )
   (interactive)
@@ -170,6 +204,6 @@
   (when indent-function
       (setq dwim-tab-indent indent-function))
 
-  (local-set-key (kbd "TAB") 'dwim-tab-do-magic))
+  (keymap-local-set "<tab>" 'dwim-tab-do-magic))
 
 (provide 'dwim-tab)

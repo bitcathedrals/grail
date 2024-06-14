@@ -1,6 +1,13 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'custom-key)
+(require 'puni)
+
+(make-variable-buffer-local 'syntax-move/configured)
+(make-variable-buffer-local 'syntax-move/forward)
+(make-variable-buffer-local 'syntax-move/backward)
+(make-variable-buffer-local 'sytax-move/up)
+(make-variable-buffer-local 'syntax-move/down)
+(make-variable-buffer-local 'syntax-move/mark)
 
 (defun syntax-move/error-msg ( msg &rest info )
   (message "syntax-move Error: %s %s" msg
@@ -13,116 +20,87 @@
                                  info) ", ") " ]")
       "")))
 
-(defun syntax-move/bind-prev ( binding )
-  (set (make-local-variable 'syntax-move/prev-binding) binding) )
+(defun syntax-move/invoke-binding ( binding )
+  (if (symbol-function binding)
+    (if (commandp binding)
+      (let
+        ((current-prefix-arg nil))
+        (call-interactively binding))
+      (funcall binding) )
+    (syntax-move/error-msg  "syntax-move: no binding for - " (symbol-name binding)) ))
 
-(defun syntax-move/bind-next ( binding )
-  (set (make-local-variable 'syntax-move/next-binding) binding) )
 
-(defun syntax-move/bind-opening ( binding )
-  (set (make-local-variable 'syntax-move/opening-binding) binding) )
+(defun syntax-move/enabled ()
+  "syntax-move/enabled
 
-(defun syntax-move/bind-closing ( binding )
-  (set (make-local-variable 'syntax-move/closing-binding) binding) )
+   return non-nil if syntax-move is enabled in the buffer.
+  "
+  (when (boundp 'syntax-move/configured)
+    t))
 
-(defun syntax-move/bind-up-scope ( binding )
-  (set (make-local-variable 'syntax-move/up-scope-binding) binding) )
+(defun syntax-move/forward ()
+  "syntax-move/forward
 
-(defun syntax-move/bind-down-scope ( binding )
-  (set (make-local-variable 'syntax-move/down-scope-binding) binding) )
-
-(defun syntax-move/bind-kill-expr ( binding )
-  (set (make-local-variable 'syntax-move/kill-expr-binding) binding) )
-
-(defun syntax-move/binding-wrapper ( binding )
-  (if (commandp binding)
-    (let
-      (( current-prefix-arg nil ))
-
-      (call-interactively binding))
-
-    (funcall binding) ))
-
-(defun syntax-move/prev ()
-  "syntax-move/next
-
-   move to the previous syntax object
+   move forward by syntax
   "
   (interactive)
-  (if (boundp 'syntax-move/prev-binding)
-    (syntax-move/binding-wrapper syntax-move/prev-binding)
-    (syntax-move/error-msg "no syntax-move/prev binding in this buffer") ))
+  (syntax-move/invoke-binding 'syntax-move/forward))
 
-(defun syntax-move/next ()
-  "syntax-move/next
+(defun syntax-move/backward ()
+  "syntax-move/backward
 
-   move to the next syntax object
+   connect to a running repl.
   "
   (interactive)
-  (if (boundp 'syntax-move/next-binding)
-    (syntax-move/binding-wrapper syntax-move/next-binding)
-    (syntax-move/error-msg "no syntax-move/next binding in this buffer") ))
+  (syntax-move/invoke-binding 'syntax-move/backward))
 
-(defun syntax-move/opening ()
-  "syntax-move/opening
+(defun syntax-move/up ()
+  "syntax-move/up
 
-   move to the opening of the scope
+   move up the syntax tree.
   "
   (interactive)
-  (if (boundp 'syntax-move/opening-binding)
-    (syntax-move/binding-wrapper syntax-move/opening-binding)
-    (syntax-move/error-msg "no syntax-move/opening binding in this buffer") ))
+  (syntax-move/invoke-binding 'syntax-move/up))
 
-(defun syntax-move/closing ()
-  "syntax-move/next
+(defun syntax-move/down ()
+  "syntax-move/down
 
-   move to the closing of the scope
+   move down the syntax tree
   "
   (interactive)
-  (if (boundp 'syntax-move/closing-binding)
-    (syntax-move/binding-wrapper syntax-move/closing-binding)
-    (syntax-move/error-msg "no syntax-move/closing binding in this buffer") ))
+  (syntax-move/invoke-binding 'syntax-move/down))
 
-(defun syntax-move/up-scope ()
-  "syntax-move/up-scope
+(defun syntax-move/mark ()
+  "syntax-move/mark
 
-   move to the top enclosing scope
+   mark the current syntax, moving upward.
   "
   (interactive)
-  (if (boundp 'syntax-move/up-scope-binding)
-    (syntax-move/binding-wrapper syntax-move/up-scope-binding)
-    (syntax-move/error-msg "no syntax-move/up-scope binding in this buffer") ))
+  (syntax-move/invoke-binding 'syntax-move/mark))
 
-(defun syntax-move/down-scope ()
-  "syntax-move/down-scope
+(defun syntax-move/bind-lang (lang)
+  "syntax-move/bind-lang
 
-   move to the bottom of the scope
+   bind syntax movement functions for LANG where lang
+   is a symbol with the language name.
   "
-  (interactive)
-  (if (boundp 'syntax-move/down-scope-binding)
-    (syntax-move/binding-wrapper syntax-move/down-scope-binding)
-    (syntax-move/error-msg "no syntax-move/down-scope binding in this buffer") ))
+  (fset 'syntax-move/configured t)
 
-(defun syntax-move/kill-expr ()
-  "syntax-move/kill-expr
+  (if (and
+        lang
+        (treesit-language-available-p lang))
+    (message "tree-sitter support not available for lang %s" (symbol-name lang))
+    (progn
+      (fset 'syntax-move/forward  'puni-forward-sexp)
+      (fset 'syntax-move/backward 'puni-backward-sexp)
+      (fset 'syntax-move/up       'puni-backward-sexp-or-up-list)
+      (fset 'syntax-move/down     'down-list)
+      (fset 'syntax-move/mark     'puni-expand-region)) )
 
-   kill the expr by syntax.
-  "
-  (interactive)
-  (if (boundp 'syntax-move/kill-expr-binding)
-    (syntax-move/binding-wrapper syntax-move/kill-expr-binding)
-    (syntax-move/error-msg "no syntax-move/kill-expr binding in this buffer") ))
-
-(defun syntax-move/local-keybindings ()
-  (interactive)
-
-  (custom-key-set "syntax move" "M-C" nil
-    ("b" . syntax-move/prev)
-    ("f" . syntax-move/next)
-    ("o" . syntax-move/opening)
-    ("c" . syntax-move/closing)
-    ("u" . syntax-move/up-scope)
-    ("d" . syntax-move/down-scope)
-    ("k" . syntax-move/kill-expr) ) )
+  (keymap-local-set "C-c <right>" 'syntax-move/forward)
+  (keymap-local-set "C-c <left>"  'syntax-move/backward)
+  (keymap-local-set "C-c <up>"    'syntax-move/up)
+  (keymap-local-set "C-c <down>"  'syntax-move/down)
+  (keymap-local-set "C-c m"       'syntax-move/mark) )
 
 (provide 'syntax-move)

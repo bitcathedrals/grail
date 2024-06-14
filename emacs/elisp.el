@@ -1,6 +1,10 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
-(setq-default lexical-binding t)
+(setq-default
+  lexical-binding t
+  deactivate-mark t) ;; turn of mark message and CUA
+
+(setq native-comp-async-report-warnings-errors 'silent)
 
 (defun extract-string-with-regex (regexp)
   (save-excursion
@@ -17,7 +21,7 @@
 
     (when (and (not (string-empty-p candidate-path))
                (file-directory-p candidate-path))
-      (add-to-list path-list candidate-path)) ))
+      (add-to-list path-list candidate-path t)) ))
 
 (defun map-paths ( dir sub-dirs path-list)
   "from a stem directory DIR look in SUB-DIR and add missing paths to PATH-LIST"
@@ -35,3 +39,60 @@
     ((lambda (x)
        (concat (substring x 0 3) ":" (substring x 3 5)))
       (format-time-string "%z"))) )
+
+(defun minor-mode-active-list ()
+  "minor-mode-active-list
+
+   Get a list of which minor modes are enabled in the current buffer.
+  "
+  (let
+    ((active nil))
+
+    (mapc
+      (lambda (minor-mode)
+        (condition-case nil
+          (when (and (symbolp minor-mode) (symbol-value minor-mode))
+            (setq active (cons minor-mode active)))
+          (error nil)) )
+      minor-mode-list)
+
+    (sort active 'string<) ))
+
+(defun make-unique (list)
+  (let
+    ((seen-table (make-hash-table :test 'equal))
+     (output nil))
+
+    (mapc
+      (lambda (element)
+        (when (not (gethash element seen-table))
+          (add-to-list 'output element t)
+          (puthash element t seen-table)) )
+      list)
+
+    output))
+
+(defun print-system-paths ()
+  (interactive)
+  (mapc
+    (lambda (path)
+      (princ (concat "exec: " path "\n")) )
+    exec-path)
+
+  (mapc
+    (lambda (path)
+      (princ (concat "woman: " path "\n")) )
+    woman-path) )
+
+(defun local-or-nil (variable buffer)
+  "local-or-nil VARIABLE BUFFER
+
+   if VARIABLE is local in BUFFER return
+   that value, or nil.
+  "
+  (if (local-variable-p variable buffer)
+    (with-current-buffer buffer
+      variable)
+    nil))
+
+

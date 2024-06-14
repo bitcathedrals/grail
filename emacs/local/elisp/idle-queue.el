@@ -1,13 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; idle-queue.el - idle queue for managing idle functions
-;;
-;; description:
-;;
-;; idle hook functions are very useful. Manage them in a central location
-;;----------------------------------------------------------------------
-
 ;; how many idle seconds for the idle hook runs.
 (defconst idle-queue-delay 4)
 

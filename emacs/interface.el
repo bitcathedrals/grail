@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; interface.el
-;;----------------------------------------------------------------------
+
 (require 'custom-key)
 
 ;; get rid of that horrible dinging
@@ -15,26 +13,20 @@
   (scroll-bar-mode -1)
   (menu-bar-mode -1) )
 
-;; mode-line customization
+(toggle-uniquify-buffer-names)
 
-(display-time)                            ;; display the time on the modeline
+(require 'mega-modeline)
+(setup-mega-modeline)
 
-(column-number-mode 1)                    ;; handy guides when following
-(line-number-mode 1)                      ;; errors
+(setq
+  initial-scratch-message nil
+  inhibit-splash-screen t
+  inhibit-startup-echo-area-message t
 
-(toggle-uniquify-buffer-names)                ;; more intelligent unique buffer names, will automatically
-                                              ;; simplify buffer names when collisions are reduced.
+  global-font-lock-mode t
+  undo-no-redo t)
 
-(require 'mattie-modeline)                 ;; my own modeline setup
-(setup-mattie-modeline)
-
-(setq initial-scratch-message nil)            ;; nix the scratch message, and the splash screen.
-(setq inhibit-splash-screen t)
-(setq inhibit-startup-echo-area-message t)
-
-(setq global-font-lock-mode t)                ;; turn on font lock mode globally
-
-(transient-mark-mode -1)                        ;; not a big fan of transient mark mode.
+(transient-mark-mode -1)
 
 (setq-default set-mark-command-repeat-pop t)  ;; C-u C-<spc> pops the mark, with this on
                                               ;; simply repeating C-<spc> continues backwards
@@ -44,9 +36,6 @@
 (fset 'yes-or-no-p 'y-or-n-p)                 ;; y/n instead of yes/no
 
 (put 'erase-buffer 'disabled nil)             ;; enable erase-buffer, no hand-holding.
-
-;; modern register interface
-(setq register-use-preview t)
 
 (defun reg-insert-buffer ()
   "insert the current buffer into a register"
@@ -72,7 +61,89 @@
 
   (pop-to-buffer buffer))
 
-(custom-key-group "system" "p" t
-  ("p" . proced)
-  ("n" . neofetch) )
+(setq-default auto-revert-verbose nil)
 
+(defun log-mode-enable-p (path)
+  (let
+    ((extension (file-name-extension path)))
+
+    (and (stringp extension) (string-equal "log" extension)) ))
+
+(defun log-mode-auto ()
+  "log-mode-auto
+
+   automatically turn on log-mode from find-file
+  "
+  (interactive)
+  (when (log-mode-enable-p buffer-file-name)
+    (call-interactively 'log-mode-on)
+    (buffer-status-add "log-mode-on for log file") ))
+
+(defun log-mode-on ()
+  "log-mode-on
+
+   turn on view-mode and auto-revert-tail-mode"
+  (interactive)
+
+  (view-mode-enter)
+  (auto-revert-tail-mode)
+
+  (keymap-local-set "j" 'pop-to-json) )
+
+(defun log-mode-off ()
+  "log-mode-off
+
+   turn off log mode
+  "
+  (interactive)
+
+  (view-mode-exit)
+  (auto-revert-tail-mode))
+
+(add-hook 'find-file-hook 'log-mode-auto)
+
+(defun pop-to-json (beginning end)
+  "pop-to-json
+
+   given a region pop to a pretty-printed json buffer
+  "
+  (interactive "r")
+
+  (let
+    ((json-region (buffer-substring beginning end)))
+
+    (with-current-buffer (get-buffer-create "*json*")
+      (erase-buffer)
+      (insert json-region)
+      (json-pretty-print (point-min) (point-max))
+
+      (keymap-local-set "q" 'keybindings-help-quit)
+
+      (pop-to-buffer (current-buffer)) )) )
+
+(defun put-window-layout ()
+  "put-window-layout
+
+   put the window layout into the [w] register
+  "
+  (interactive)
+  (call-interactively 'window-configuration-to-register "w"))
+
+(defun get-window-layout ()
+  "get-window-layout
+
+   restore the window layout into the [w] register
+  "
+  (interactive)
+  (call-interactively 'jump-to-register "w"))
+
+(custom-key-group "window" "w" t
+  ("v" . split-window-horizontally)
+  ("t" . split-window-vertically)
+  ("n" . make-frame-command)
+  ("x" . delete-frame)
+  ("1" . delete-other-windows)
+  ("f" . toggle-frame-fullscreen)
+  ("x" . delete-window)
+  ("p" . put-window-layout)
+  ("g" . get-window-layout))

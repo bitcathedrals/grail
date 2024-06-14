@@ -36,7 +36,7 @@
       reg-keyword-register-map) ))
 
 (defun reg-find-register-by-keyword ( keyword )
-  (lexical-let
+  (let
     ((register-found nil))
 
     (reg-find-and-apply
@@ -52,7 +52,7 @@
 (defun register-new-keyword ( keyword )
   "copy a region to a keyword mapped register"
   (interactive "sKeyword? ")
-  (lexical-let
+  (let
     ((insert-keyword keyword)
      (use-register nil))
 
@@ -70,7 +70,7 @@
 (defun register-delete-keyword ( keyword )
   "delete a keyword register mapping"
   (interactive "sKeyword? ")
-  (lexical-let
+  (let
     ((look-for-keyword keyword))
 
     (reg-find-and-update

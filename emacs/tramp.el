@@ -11,9 +11,23 @@
 ; tramp-chunksize is defensive to reduce problems with hangs from sending
 ; to large of chunks
 
+(setq-default
+  tramp-default-remote-shell "/bin/bash"
+  tramp-shell-prompt-pattern  ".*$")
+
 (setq
   tramp-default-method "ssh"
-  tramp-chunksize 500 )
+  tramp-chunksize 500)
+
+(defun doas (dir)
+  (interactive "Ddoas directory? ")
+  (message "attempting to connect to doas: %s" dir)
+  (find-file (concat "/doas::" dir)) )
+
+(defun sudo (dir)
+  (interactive "Dsudo directory? ")
+  (message "attempting to connect to sudo: %s" dir)
+  (find-file (concat "/sudo::" dir)) )
 
 ;;----------------------------------------------------------------------
 ;; tramping around
@@ -43,4 +57,5 @@
   (let
     ((name (concat "ssh " host)))
 
-    (ansi-term name name)) )
+    (with-current-buffer (eat name t)
+      (rename-buffer host)) ))

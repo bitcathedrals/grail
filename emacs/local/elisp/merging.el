@@ -1,10 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; merging.el
-;;
-;; merging and diffing support (internal)
-;;----------------------------------------------------------------------
 (require 'diff)
 
 ;;----------------------------------------------------------------------
@@ -84,23 +79,5 @@
 
   (merging-kill-all-listed
     (merging-matching-buffers-by-name merging-ediff-interface-buffer-regex-list)) )
-
-(defvar merging-ediff-teardown-diff-egg-toggle nil)
-
-(defun merging-ediff-teardown-diff-egg-toggle-enable ()
-  (setq merging-ediff-teardown-diff-egg-toggle t))
-
-(defun merging-ediff-teardown-diff-egg-toggle-disable ()
-  (setq merging-ediff-teardown-diff-egg-toggle nil))
-
-(defun merging-ediff-teardown-diff-egg ()
-  (kill-buffer ediff-buffer-A)
-  (merging-ediff-teardown-interface ediff-buffer-B)
-
-  (merging-ediff-teardown-diff-egg-toggle-disable))
-
-(add-hook 'ediff-quit-hook 'merging-ediff-teardown-diff-egg t)
-
-(remove-hook 'ediff-quit-hook 'ediff-cleanup-mess)
 
 (provide 'merging)

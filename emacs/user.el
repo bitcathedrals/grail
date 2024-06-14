@@ -1,22 +1,10 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; user.el - user interface configuration
-;;----------------------------------------------------------------------
 (require 'buffer-ring)
 
 (setq warning-minimum-level :emergency)
 
-;;----------------------------------------------------------------------
-;; emacs enhancements
-;;----------------------------------------------------------------------
 (require 'dwim-tab)
-(require 'buffer-ring)
-
-;;----------------------------------------------------------------------
-;; utilities
-;;----------------------------------------------------------------------
-(require 'ext-logging)
 
 ;;----------------------------------------------------------------------
 ;; general grail profiles
@@ -92,30 +80,7 @@
 ;;----------------------------------------------------------------------
 ;; associate major modes with file extensions.
 ;;----------------------------------------------------------------------
-(setq auto-mode-alist (append '(("\\.txt$"     . text-mode)) auto-mode-alist))
-
-;----------------------------------------------------------------------
-;;                    EShell
-;;----------------------------------------------------------------------
-
-(require 'eshell)
-
-(setq
-  eshell-windowed t                ;; enable windowing
-  eshell-save-history-on-exit nil) ;; kill the prompt to save history
-
-(add-hook 'eshell-mode-hook
-  (lambda ()
-    ;; add a list of commands that will pop a term buffer for out-of-eshell
-    ;; handling. Note: the variable eshell-visual-commands is buffer-local.
-    (setq eshell-visual-commands
-      (append eshell-visual-commands (list "ssh" "su" "telnet"
-                                           "ftp" "lftp" "links")))
-
-    ;; I rarely want to quit eshell. when I do I can use quit. map
-    ;; the usual kill-buffer keybinding to rid-window.
-    (local-set-key (kbd "C-x k") 'rid-window))
-  t)
+(setq auto-mode-alist (append '(("\\.txt\\'"     . text-mode)) auto-mode-alist))
 
 ;;----------------------------------------------------------------------
 ;;                    ERC
@@ -123,12 +88,9 @@
 (require 'erc)
 (require 'erc-truncate)
 
-(grail-try-elisp "local/elisp/erc-sensitive.el")
-
-(require 'erc-sensitive)
+(require 'sensitive)
 
 (setq
-  erc-default-server "irc.libera.chat"
   erc-default-port "6667"
   erc-prompt-for-nickserv-password nil
   erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")) )
@@ -140,9 +102,12 @@
   (buffer-ring/add "erc")
   (buffer-ring/local-keybindings)
 
-  (local-set-key (kbd "<up>") 'erc-previous-command) )
+  (keymap-local-set "<up>" 'erc-previous-command))
 
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
+
+(require 'erc-services)
+(erc-services-mode 1)
 
 ;;----------------------------------------------------------------------
 ;; helm completion
@@ -158,7 +123,7 @@
 (require 'helm-ring)
 (require 'helm-frame)
 
-(custom-key-group "helm complete" "c" t
+(custom-key-group "complete" "c" t
   ("f" . helm-find-files)
   ("b" . helm-buffers-list)
   ("g" . helm-grep-do-git-grep)
@@ -166,7 +131,7 @@
   ("r" . helm-register)
   ("s" . helm-regexp)
   ("m" . helm-man-woman)
-  ("k" . helm-show-kill-ring) )
+  ("k" . helm-show-kill-ring))
 
 (defun helm-on-frames ()
   (interacive)
@@ -183,19 +148,14 @@
    "
   (select-frame (helm-frame-window) t))
 
-;;----------------------------------------------------------------------
-;; read/write perm handling
-;;----------------------------------------------------------------------
-(require 'rw-utilities)
-
 (setq auto-mode-alist
-  (cons '("\\.firewall$" . conf-mode) auto-mode-alist))
+  (cons '("\\.firewall\\'" . conf-mode) auto-mode-alist))
 
 ;;----------------------------------------------------------------------
 ;; dpaste
 ;;----------------------------------------------------------------------
 (require 'dpaste)
-(setq dpaste-poster "JohnGalt")
+(setq dpaste-poster "Anonymous")
 
 ;;----------------------------------------------------------------------
 ;; force spaces over tabs

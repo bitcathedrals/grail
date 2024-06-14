@@ -1,15 +1,12 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; gnupg crypto support
-;;----------------------------------------------------------------------
+
 (require 'custom-key)
+(require 'sensitive)
 
 (require 'epg)
 (require 'epa-file)
 
-;; Enable loopback so that pinentry will pop up in emacs
-(setq
-  epg-user-id "codermattie@runbox.com")
+(setq epa-pinentry-mode 'loopback)
 
 (custom-key-group "crypto" "z" t
   ("k" . epa-list-keys)

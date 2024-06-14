@@ -4,13 +4,11 @@
 ;; slime
 ;;
 (require 'borg-repl)
-(require 'programming-generic)
 (require 'mode-tools)
 (require 'profile/common-lisp)
 
 (defconst slime/mode-name "slime")
 (defconst slime/file-mode-name "lisp")
-(defconst slime/repl-name (borg-repl/repl-name slime/mode-name))
 
 (require 'slime)
 
@@ -34,9 +32,6 @@
 
 (defun slime/slime-repl-setup ()
   (turn-on-dwim-tab 'lisp-indent-line)
-
-  (buffer-ring/add slime/repl-name)
-  (buffer-ring/local-keybindings)
 
   (dwim-complete/setup-for-buffer slime/mode-name
     (dwim-complete/make-source "slime: "
@@ -62,16 +57,17 @@
 
   (slime-mode t)
 
-  (borg-repl/bind-repl slime/repl-name
+  (borg-repl/bind-repl
     'slime
     'slime-eval-last-expression
     'slime-eval-region
     'slime-eval-buffer
-    'slime-eval-defun)
+    'slime-eval-defun
+    nil)
 
   (borg-repl/bind-connect 'slime-connect)
 
-  (borg-repl/bind-macro-expand 'slime-macroexpand-1) )
+  (borg-repl/bind-macro-expand 'slime-macroexpand-1))
 
 (add-hook 'lisp-mode-hook 'profile/slime-lisp-setup)
 

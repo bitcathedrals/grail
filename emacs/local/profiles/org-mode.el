@@ -124,14 +124,14 @@
   "
   (setq org-latex-classes
     (list
-      (latex-core "book" "Michael Mattie"
+      (latex-core "book" "M. Mattie"
         ("\\part{%s}" . "\\part*{%s}")
         ("\\chapter{%s}" . "\\chapter*{%s}")
         ("\\section{%s}" . "\\section*{%s}")
         ("\\subsection{%s}" . "\\subsection*{%s}")
         ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
 
-      (latex-core "article" "Michael Mattie"
+      (latex-core "article" "M. Mattie"
         ("\\part{%s}" . "\\part*{%s}")
         ("\\chapter{%s}" . "\\chapter*{%s}")
         ("\\section{%s}" . "\\section*{%s}")

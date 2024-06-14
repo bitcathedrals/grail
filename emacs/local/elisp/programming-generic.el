@@ -1,10 +1,22 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(require 'hideshow)
+
+(require 'buffer-ring)
 (require 'custom-key)
 (require 'utilities)
 (require 'subr-x)
 
 (require 'pysh)
+
+(require 'eglot)
+
+(require 'puni)
+
+(require 'syntax-move)
+
+(setq indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
 ;;
 ;; some generic code editing stuff
@@ -35,25 +47,72 @@
 (defvar configure-programming-hook nil
   "hook so other programming tools can run after programming-mode-generic")
 
-(defun programming-mode-generic ( &optional fn-search )
+(defun search-buffer-functions ()
+  "search-buffer-functions
+
+   search the buffer for functions
+  "
+  (interactive)
+
+  (if (boundp 'programming-generic/buffer-functions)
+    (if (commandp 'programming-generic/buffer-functions)
+      (call-interactively 'programming-generic/buffer-functions)
+      (funcall programming-generic/buffer-functions))
+    (message "no programming-generic/buffer-functions defined in buffer.")) )
+
+(defun programming-mode-generic (lang &optional fn-search mode-name)
   "Enable my programming customizations for the buffer"
 
-  ;; whitespace
-  (setq indent-tabs-mode nil)
   (whitespace-mode)
 
   ;; run hooks for programming configuration
   (run-custom-hooks configure-programming-hook)
 
   ;; better return key for programming
-  (local-set-key (kbd "<return>") 'newline-and-indent)
+  (keymap-local-set "<return>" 'newline-and-indent)
 
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p t)
 
   ;; turn on flyspell
   (flyspell-prog-mode)
 
-  (ruler-mode))
+  (ruler-mode)
+
+  (display-line-numbers-mode)
+
+  (syntax-move/bind-lang lang)
+
+  (when fn-search
+    (set (make-local-variable 'programming-generic/buffer-functions) fn-search))
+
+  (custom-key-group "syntax" "k" nil
+    ("<right>" . puni-forward-kill-word)
+    ("<left>"  . puni-backward-kill-word)
+    ("<up>"    . puni-kill-line)
+    ("<down>"  . puni-backward-kill-line)
+    ("b"       . puni-beginning-of-sexp)
+    ("e"       . puni-end-of-sexp) )
+
+  (custom-key-group "coding" "x" nil
+    ("c" . toggle-comment-region)
+    ("f" . xref-find-definitions)
+    ("a" . xref-find-apropos)
+    ("w" . xref-find-definitions-other-window)
+    ("p" . xref-go-back)
+    ("n" . xref-go-forward)
+    ("g" . search-buffer-functions) )
+
+  (buffer-ring/add (or mode-name (symbol-name major-mode)))
+  (buffer-ring/local-keybindings)
+
+  (hs-minor-mode)
+
+  (custom-key-group "folding" "f" nil
+    ("a" . hs-hide-all)
+    ("s" . hs-show-all)
+    ("f" . hs-toggle-hiding)
+    ("b" . hs-hide-block-at-point)
+    ("c" . hs-show-block)) )
 
 (defun get-clean-report-buffer ()
   (let
@@ -66,7 +125,17 @@
 (defun get-report-buffer ()
   (get-buffer-create "*report output*"))
 
-(defconst delta-conventional '("feat" "fix" "bug" "issue" "sync" "merge" "alpha" "beta" "release" "refactor" "doc"))
+(defconst delta-conventional '("feat"
+                               "fix"
+                               "bug"
+                               "issue"
+                               "sync"
+                               "merge"
+                               "alpha"
+                               "beta"
+                               "release"
+                               "refactor"
+                               "doc"))
 
 (defun delta-sync-string (module)
   (interactive "senter syncd module: ")
@@ -80,7 +149,6 @@
                   (magit-staged-files)) ))
 
     (string-join file-list ",") ))
-
 
 (defun delta-repo-dir ()
   (let
@@ -124,6 +192,7 @@
 (defun delta-insert (type)
   "delta-insert
 
+   insert a conventional commit.
   "
   (interactive (list (completing-read
                        "commit type|fix: " ;; prompt
@@ -152,8 +221,15 @@
                     (concat "(" type "): " message "\n[" (delta-staged-files) "]") ) ))))
     (insert content)) )
 
-(custom-key-group "code insert" "i"  t
-  ("c" . comment-region)
-  ("d" . delta-insert))
+(defun setup-magit-for-delta ()
+  "setup-magit-for-delta
+
+   setup delta-insert keybindings for magit mode
+  "
+  (interactive)
+
+  (keymap-local-set "C-c i" 'delta-insert))
+
+(add-hook 'magit-mode-hook 'setup-magit-for-delta)
 
 (provide 'programming-generic)

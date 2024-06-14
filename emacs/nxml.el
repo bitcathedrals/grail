@@ -2,9 +2,9 @@
 
 (require 'nxml-mode)
 
-(setq auto-mode-alist (append '( ("\\.html$"    . nxml-mode)
-                                 ("\\.xhtml$"   . nxml-mode)
-                                 ("\\.xml$"     . nxml-mode)
+(setq auto-mode-alist (append '( ("\\.html\\'"    . nxml-mode)
+                                 ("\\.xhtml\\'"   . nxml-mode)
+                                 ("\\.xml\\'"     . nxml-mode)
                                  ) auto-mode-alist ))
 
 (defun nxml-configure-for-mode ()
@@ -12,10 +12,10 @@
   (buffer-ring/local-keybindings)
 
   (dwim-tab-localize-context (dwim-tab-make-expander
-                               'dwim-tab-stem-trigger
+                               'dwim-tab/after-word
                                'nxml-complete))
 
-  (turn-on-dwim-tab 'nxml-indent-line) )
+  (turn-on-dwim-tab 'nxml-indent-line))
 
 (add-hook 'nxml-mode-hook 'nxml-configure-for-mode t)
 

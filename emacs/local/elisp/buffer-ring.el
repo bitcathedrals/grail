@@ -1,12 +1,4 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; buffer-ring.el
-;;
-;; A torus for buffer navigation. A ring of buffers, and a ring of buffer
-;; rings.
-;;----------------------------------------------------------------------
-
-(defconst buffer-ring-version "0.1.1" "buffer-ring version")
 
 (require 'dynamic-ring)
 (require 'buffer-status)
@@ -94,7 +86,7 @@
    Search the buffer torus for a ring NAME and return it if found
    or nil otherwise.
   "
-  (lexical-let*
+  (let*
     ((search-name name)
      (found (dyn-ring-find buffer-ring-torus
               (lambda ( found-name )
@@ -156,7 +148,7 @@
 
 (defun buffer-ring/buffer-id ( &optional buffer )
   (buffer-ring/with-buffer (buffer-ring/buffer-name buffer)
-    (if (boundp 'buffer-ring-id)
+    (if (local-or-nil 'buffer-ring-id (current-buffer))
       buffer-ring-id
       nil) ))
 
@@ -205,7 +197,10 @@
 
     ;; create the buffer variables and markers
     (set (make-local-variable 'buffer-ring) (buffer-torus/get-ring ring-name))
-    (set (make-local-variable 'buffer-ring-name) ring-name)
+
+    (when (not (local-or-nil 'buffer-ring-name (current-buffer)))
+      (set (make-local-variable 'buffer-ring-name) ring-name))
+
     (set (make-local-variable 'buffer-ring-id) (buffer-ring/mk-id buffer-ring))
     (set (make-local-variable 'buffer-ring-modeline) (concat "(" ring-name ")"))
 
@@ -243,6 +238,7 @@
       nil)
     (progn
       (buffer-ring/insert-buffer ring-name (buffer-ring/buffer-name))
+      (setq-local buffer-ring-name ring-name)
       (add-hook 'kill-buffer-hook 'buffer-ring/delete t t)
       t) ))
 
@@ -325,6 +321,10 @@
       (buffer-ring/info "buffer to switch to not found .. very bad")) ))
 
 (defun buffer-ring/rotate ( direction &optional other-ring )
+  "buffer-ring/rotate
+
+   rotate rings.
+  "
   (let
     (( with-ring (or other-ring buffer-ring) ))
 
@@ -464,26 +464,18 @@
 
    set the global keybindings"
 
-  (global-set-key (kbd "<M-up>")   'buffer-torus/next)
-  (global-set-key (kbd "<M-down>") 'buffer-torus/prev)
-
-  (global-set-key (kbd "<M-right>")  'buffer-ring/next)
-  (global-set-key (kbd "<M-left>")   'buffer-ring/prev)
-
   (custom-key-group "buffer ring" "b" t
     ("b" . buffer-ring/list-buffers)
     ("r" . buffer-torus/list-rings)
     ("a" . buffer-ring/add)
     ("d" . buffer-ring/delete)
     ("f" . buffer-ring/fix)
-    ("k" . buffer-torus/delete) ) )
+    ("k" . buffer-torus/delete) ))
 
 (defun buffer-ring/local-keybindings ()
-  (local-unset-key (kbd "<M-right>"))
-  (local-unset-key (kbd "<M-left>"))
-
-  (local-unset-key (kbd "<M-up>"))
-  (local-unset-key (kbd "<M-down>")) )
+  (keymap-local-set "M-<right>" #'buffer-ring/prev)
+  (keymap-local-set "M-<left>"  #'buffer-ring/next)
+  (keymap-local-set "M-<up>"    #'buffer-ring/rotate))
 
 (buffer-ring/global-keybindings)
 

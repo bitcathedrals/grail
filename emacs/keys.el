@@ -1,42 +1,37 @@
 ;; -*-no-byte-compile: t; -*-
-;;----------------------------------------------------------------------
-;; keys.el
-;;
-;; keybinding tools and configuration.
-;;----------------------------------------------------------------------
+
 (require 'custom-key)
 (require 'user-commands)
 (require 'ucase-word)
 
 ;; remove keybindings
-(global-unset-key (kbd "<S-tab>"))
+;; (global-unset-key "S-<tab>")
 
 ;; this used to be minimize window, now it exits recursive editing
 ;; which is handy and safer.
-(global-set-key (kbd "C-z")     'top-level)
+(keymap-global-set "C-z"   'top-level)
 
 ;; reverse the regex/regular isearch
 
-(global-set-key (kbd "C-s")     'isearch-forward-regexp)
-(global-set-key (kbd "C-r")     'isearch-backward-regexp)
+(keymap-global-set "C-s"   'isearch-forward-regexp)
+(keymap-global-set "C-r"   'isearch-backward-regexp)
 
-(global-set-key (kbd "M-r")     'query-replace-regexp)
+(keymap-global-set "M-r"   'query-replace-regexp)
 
 ;; standard emacs prompt for a interactive command
-(global-set-key (kbd "<escape>") 'execute-extended-command)
+(keymap-global-set "<escape>"  'execute-extended-command)
 
 ;; other window is more useful. there is no really good way
 ;; for buffer switching outside of buffer ring
 
-(global-set-key (kbd "<prior>") 'beginning-of-buffer)
-(global-set-key (kbd "<next>")  'end-of-buffer)
+(keymap-global-set "<prior>" 'beginning-of-buffer)
+(keymap-global-set "<next>"  'end-of-buffer)
 
-(global-set-key (kbd "M-g")  'goto-line)
+(keymap-global-set "M-g"     'goto-line)
 
-(global-set-key (kbd "<M-tab>") 'other-window-forward)
+(keymap-global-set "M-<tab>" 'other-window-forward)
 
-;; line number mode
-(global-set-key (kbd "C-c C-l")  'linum-mode)
+(keymap-global-set "C-c u"   'toggle-ucase-word)
 
 (defvar user-keys/tree-browser nil)
 
@@ -64,13 +59,6 @@
   (interactive)
   (dired-other-window (file-name-directory buffer-file-name)) )
 
-(custom-key-group "files" "f" t
-    ("d" . dired)
-    ("c" . pop-dired-in-file)
-    ("n" . user-keys/start-tree-browser)
-    ("s" . save-some-buffers)
-    ("b" . hexl-find-file))
-
 (custom-key-group "mark" "m" t
   ("x" . exchange-point-and-mark)
   ("p" . push-mark-command)
@@ -84,7 +72,7 @@
 (defun bind-swap-parens ()
   (interactive)
 
-  (mapc (lambda (key-pair) (global-set-key (kbd (car key-pair))
+  (mapc (lambda (key-pair) (keymap-global-set (kbd (car key-pair))
                              `(lambda ()
                                 (interactive)
                                 (insert-char ,(aref (cdr key-pair) 0)) )) )

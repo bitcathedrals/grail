@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
 (require 'subr-x)
+(require 'vc)
 
 (defun get-clean-pysh-buffer ()
   (let
@@ -184,16 +185,16 @@
     (let*
       ((default-directory (pysh-repo-dir))
         (status (apply 'call-process
-                  (concat default-directory "py.sh") ;; program
-                  nil                                ;; infile
-                  (get-clean-pysh-buffer)            ;; output buffer
-                  nil                                ;; don't display
-                  (pysh-args command)) ))            ;; pysh command and sometimes args
+                  (concat default-directory "/py.sh") ;; program
+                  nil                                 ;; infile
+                  (get-clean-pysh-buffer)             ;; output buffer
+                  nil                                 ;; don't display
+                  (pysh-args command)) ))             ;; pysh command and sometimes args
 
       (if (equal status 0)
         (progn
           (with-current-buffer (get-pysh-buffer)
-            (local-set-key (kbd "q") 'pysh-quit))
+            (keymap-local-set "q" 'pysh-quit))
 
           (pop-to-buffer (get-pysh-buffer)) )
         (message "py.sh failed with: %d" status)) ) ))

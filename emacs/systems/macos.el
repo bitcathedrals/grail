@@ -11,10 +11,13 @@
 
 (setq
  user-brew (concat (getenv "HOME") "/homebrew/")
+
+ user-tools (concat (getenv "HOME") "/tools/local/")
+
  local-brew "/usr/local/"
  opt-brew "/opt/"
 
- bin-dirs '("bin" "sbin")
+ bin-dirs '("bin" "sbin" "libexec")
  man-dirs '("/share/man")
 
  helper-buffer-name "*macos-helper*")
@@ -58,66 +61,51 @@
   "
   (interactive)
 
-  (setq
-    exec-path '()
-    woman-path '())
-
   (exec-path-from-shell-initialize)
 
-  (let*
+  (let
     ((helper-paths (macos-path-helper))
-     (mac-exec-paths (car helper-paths))
-     (mac-man-paths  (cadr helper-paths)))
 
-;;    (message "helper-paths: %s" (pp helper-paths))
-;;    (message "exec paths: %s" (pp mac-exec-paths))
-;;    (message "man paths: %s" (pp mac-man-paths))
+     (new-exec-path exec-path)
+     (new-woman-path woman-path) )
 
     (mapc
       (lambda (mac-path)
-        (when (not (member mac-path exec-path))
-          (add-to-list 'exec-path mac-path)))
-      mac-exec-paths)
+        (maybe-add-path mac-path 'new-exec-path))
+      (car helper-paths))
 
     (mapc
       (lambda (man-path)
-        (when (not (member man-path woman-path))
-          (add-to-list 'woman-path man-path)))
-      mac-man-paths) )
+        (maybe-add-path man-path 'new-woman-path))
+      (cadr helper-paths))
 
-  (maybe-add-path "/Applications/Emacs.app/Contents/MacOS/bin" 'exec-path)
+    (when (file-directory-p user-brew)
+      (map-paths user-brew bin-dirs 'new-exec-path)
+      (map-paths user-brew man-dirs 'new-woman-path))
 
-  (when (file-directory-p user-brew)
-    (map-paths user-brew bin-dirs 'exec-path)
-    (map-paths user-brew man-dirs 'woman-path))
+    (when (file-directory-p local-brew)
+      (map-paths local-brew bin-dirs 'new-exec-path)
+      (map-paths local-brew man-dirs 'new-woman-path))
 
-  (when (file-directory-p local-brew)
-    (map-paths local-brew bin-dirs 'exec-path)
-    (map-paths local-brew man-dirs 'woman-path))
+    (when (file-directory-p opt-brew)
+      (map-paths opt-brew bin-dirs 'new-exec-path)
+      (map-paths opt-brew man-dirs 'new-woman-path))
 
-  (when (file-directory-p opt-brew)
-    (map-paths opt-brew bin-dirs 'exec-path)
-    (map-paths opt-brew man-dirs 'woman-path)) )
+    (maybe-add-path "/Applications/Emacs.app/Contents/MacOS/bin" 'new-exec-path)
+
+    (map-paths user-tools bin-dirs 'new-exec-path)
+
+    (setq
+      exec-path (make-unique new-exec-path)
+      woman-path (make-unique new-woman-path)) ))
 
 (setup-macos-paths)
-
-(defun print-macos-paths ()
-  (interactive)
-  (mapc
-    (lambda (path)
-      (message "exec: %s" path))
-    exec-path)
-
-  (mapc
-    (lambda (path)
-      (message "woman: %s" path))
-    woman-path))
-
 
 ;; emacs gets trashed if there is no font specified through
 ;; the grail system. Im on big displays so crank up the font size.
 
 (setq
   grail-font-family '("Cousine" "Hack" "Spleen" "DejaVu Sans Mono" "Courier New")
-  grail-font-size 22
-  grail-transparency 90)
+  grail-font-size 22)
+
+

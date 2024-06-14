@@ -1,14 +1,15 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; enhanced terminal
-;;----------------------------------------------------------------------
-
+(require 'eat)
 (require 'term)
 (require 'buffer-ring)
 (require 'custom-key)
 
 (defconst user-terminal-name "shell")
+
+(setq grail-terminal "vt100")
+
+(setenv "TERM" grail-terminal)
 
 ;;----------------------------------------------------------------------
 ;;                 IPC shell:  comint/term mode
@@ -24,7 +25,7 @@
 
 (defun user-terminal-ring ()
   (buffer-ring/add user-terminal-name)
-  (buffer-ring/local-keybindings) )
+  (buffer-ring/local-keybindings))
 
 (defadvice term (after terminal-profile/term-bindings)
   (user-terminal-ring))
@@ -57,11 +58,29 @@
       command
       terminal-profile-local-shell)) )
 
-(custom-key-group "execute" "x" t
-    ("t" . full-term)
-    ("s" . shell-term)
-    ("c" . shell-command))
-
 ;; setup shell-mode in case I use it
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+;; tmux
+
+(defun tmux ()
+  "tmux
+
+   start a tmux session
+  "
+  (interactive)
+
+  (eat "tmux"))
+
+;; eat
+
+(setq eat-term-name grail-terminal)
+
+(defun setup-eat-general ()
+  (interactive)
+
+  (setq-local process-adaptive-read-buffering nil))
+
+(add-hook 'eat-mode-hook 'setup-eat-general)
+

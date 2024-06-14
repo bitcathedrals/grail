@@ -1,5 +1,7 @@
 ;; -*-no-byte-compile: t; -*-
 
+(require 'vc-git)
+
 (which-function-mode)
 
 (defun get-battery-buffer ()
@@ -14,7 +16,7 @@
 
     battery-buffer))
 
-(defun mattie-modeline-battery-apm ()
+(defun mega-modeline-battery-apm ()
   (call-process "apm" nil (get-battery-buffer-for-output) nil "-l")
 
   (with-current-buffer (get-battery-buffer)
@@ -22,9 +24,9 @@
       ((percentage (extract-string-with-regex "[0-9]+")))
 
       (when percentage
-        (setq mattie-modeline-battery-level (concat percentage "%"))) )) )
+        (setq mega-modeline-battery-level (concat percentage "%"))) )) )
 
-(defun mattie-modeline-battery-pmset ()
+(defun mega-modeline-battery-pmset ()
   (call-process "pmset" nil (get-battery-buffer-for-output) nil "-g" "batt")
 
   (with-current-buffer (get-battery-buffer)
@@ -32,9 +34,9 @@
       ((percentage (extract-string-with-regex "[0-9]+%")))
 
       (when percentage
-        (setq mattie-modeline-battery-level percentage)) )) )
+        (setq mega-modeline-battery-level percentage)) )) )
 
-(defun mattie-modeline-battery-acpi ()
+(defun mega-modeline-battery-acpi ()
   (call-process "acpi" nil (get-battery-buffer-for-output) nil)
 
   (with-current-buffer (get-battery-buffer)
@@ -42,46 +44,46 @@
       ((percentage (extract-string-with-regex "[0-9]+%")))
 
       (when percentage
-        (setq mattie-modeline-battery-level percentage)) )) )
+        (setq mega-modeline-battery-level percentage)) )) )
 
-(defun mattie-modeline-battery-dummy ()
+(defun mega-modeline-battery-dummy ()
   nil)
 
-(defvar mattie-modeline-battery-command 'mattie-modeline-battery-dummy)
+(defvar mega-modeline-battery-command 'mega-modeline-battery-dummy)
 
-(defvar mattie-modeline-battery-level "")
+(defvar mega-modeline-battery-level "")
 
-(defun mattie-modeline-find-battery-command ()
+(defun mega-modeline-find-battery-command ()
   (mapcar
     (lambda (prog)
       (when (executable-find (car prog))
-        (setq mattie-modeline-battery-command (cdr prog))) )
+        (setq mega-modeline-battery-command (cdr prog))) )
 
-    '(("apm" . mattie-modeline-battery-apm)
-      ("pmset" . mattie-modeline-battery-pmset)
-      ("acpi" . mattie-modeline-battery-acpi)) ))
+    '(("apm" . mega-modeline-battery-apm)
+      ("pmset" . mega-modeline-battery-pmset)
+      ("acpi" . mega-modeline-battery-acpi)) ))
 
-(defun mattie-modeline-update-battery-level ()
-  (funcall mattie-modeline-battery-command))
+(defun mega-modeline-update-battery-level ()
+  (funcall mega-modeline-battery-command))
 
-(defconst mattie-modeline-battery-update-minutes 5)
-(defconst mattie-modeline-battery-update-seconds (* mattie-modeline-battery-update-minutes
+(defconst mega-modeline-battery-update-minutes 5)
+(defconst mega-modeline-battery-update-seconds (* mega-modeline-battery-update-minutes
                                                     60))
 
-(defun mattie-modeline-battery-set-timer ()
-  (run-with-timer 0 mattie-modeline-battery-update-seconds 'mattie-modeline-update-battery-level))
+(defun mega-modeline-battery-set-timer ()
+  (run-with-timer 0 mega-modeline-battery-update-seconds 'mega-modeline-update-battery-level))
 
 ;;----------------------------------------------------------------------
-;; mattie-modeline
+;; mega-modeline
 ;;----------------------------------------------------------------------
-(defun mattie-modeline-branch-null ()
+(defun mega-modeline-branch-null ()
   "")
 
-(defvar mattie-modeline-branch 'mattie-modeline-branch-null)
-(defvar mattie-modeline-battery "?")
+(defvar mega-modeline-branch 'mega-modeline-branch-null)
+(defvar mega-modeline-battery "?")
 
-(defun mattie-modeline-modified ()
-  "mattie-modeline-modified
+(defun mega-modeline-modified ()
+  "mega-modeline-modified
 
    Construct a modified string for the modeline.
   "
@@ -101,12 +103,12 @@
       ((and buffer-file-name (recent-auto-save-p)) "!BKP")
       (t "-"))
     "/"
-    (if (and (boundp 'mattie-modeline-vcs) (functionp mattie-modeline-vcs))
-      (funcall mattie-modeline-vcs)
+    (if (and (boundp 'mega-modeline-vcs) (functionp mega-modeline-vcs))
+      (funcall mega-modeline-vcs)
       "")
     "]"))
 
-(defun setup-mattie-modeline ()
+(defun setup-mega-modeline ()
   (setq-default mode-line-format
     '(" "
       "[" (:eval (buffer-name)) "]"
@@ -119,7 +121,7 @@
 
       " "
 
-      (:eval (mattie-modeline-modified))
+      (:eval (mega-modeline-modified))
 
       " "
 
@@ -129,17 +131,20 @@
 
        " <"
 
-       mattie-modeline-battery-level
+       mega-modeline-battery-level
 
        "> /"
 
        (:eval (car (vc-git-branches)))
-       ))
 
-  (mattie-modeline-find-battery-command)
-  (mattie-modeline-battery-set-timer)
+       " :"
 
-  (mattie-modeline-update-battery-level)
+       (:eval (which-function)) ))
+
+  (mega-modeline-find-battery-command)
+  (mega-modeline-battery-set-timer)
+
+  (mega-modeline-update-battery-level)
   (force-mode-line-update) )
 
-(provide 'mattie-modeline)
+(provide 'mega-modeline)

@@ -14,14 +14,11 @@
 (require 'lisp-mode)
 
 (setq
-  auto-mode-alist (append '(("\\.cl$" . lisp-mode)
-                            ("\\.lisp$" . lisp-mode)) auto-mode-alist))
+  auto-mode-alist (append '(("\\.cl\\'" . lisp-mode)
+                            ("\\.lisp\\'" . lisp-mode)) auto-mode-alist))
 
 (defun profile/cl-mode-setup ()
-  (programming-mode-generic 'cl-list-functions)
-
-  (buffer-ring/add cl-lisp-name)
-  (buffer-ring/local-keybindings)
+  (programming-mode-generic 'cl 'cl-list-functions)
 
   (turn-on-dwim-tab 'lisp-indent-line))
 
