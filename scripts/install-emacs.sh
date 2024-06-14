@@ -172,7 +172,7 @@ doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline
   ;;
   "macos-compile")
     brew tap d12frosted/emacs-plus
-    brew install emacs-plus@29 --with-native-comp=$NATIVE --with-tree-sitter=$SITTER || exit 1
+    brew install emacs-plus@29 || exit 1
   ;;
   "macos-link")
     brew_emacs="emacs-plus@29"
