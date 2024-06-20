@@ -147,7 +147,11 @@
 ;; python
 ;;
 
-(setq auto-mode-alist (append '(("\\.py\\'" . python-mode)) auto-mode-alist))
+(setq auto-mode-alist (append
+                        (if (treesit-language-available-p 'python)
+                          '(("\\.py\\'" . python-ts-mode))
+                          '(("\\.py\\'" . python-mode)))
+                        auto-mode-alist))
 
 (defun python/mode-functions ()
   "python-mode-functions
