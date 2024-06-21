@@ -125,18 +125,16 @@
   (setq org-latex-classes
     (list
       (latex-core "book" "Mr. Mattie"
-        ("\\part{%s}" . "\\part*{%s}")
-        ("\\chapter{%s}" . "\\chapter*{%s}")
-        ("\\section{%s}" . "\\section*{%s}")
-        ("\\subsection{%s}" . "\\subsection*{%s}")
-        ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+        '("\\part{%s}" . "\\part*{%s}")
+        '("\\chapter{%s}" . "\\chapter*{%s}")
+        '("\\section{%s}" . "\\section*{%s}")
+        '("\\subsection{%s}" . "\\subsection*{%s}")
+        '("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
 
       (latex-core "article" "Mr. Mattie"
-        ("\\part{%s}" . "\\part*{%s}")
-        ("\\chapter{%s}" . "\\chapter*{%s}")
-        ("\\section{%s}" . "\\section*{%s}")
-        ("\\subsection{%s}" . "\\subsection*{%s}")
-        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")) )) )
+        '("\\section{%s}" . "\\section*{%s}")
+        '("\\subsection{%s}" . "\\subsection*{%s}")
+        '("\\subsubsection{%s}" . "\\subsubsection*{%s}")) )) )
 
 (defun org/cite ()
   "org/cite
