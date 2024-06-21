@@ -12,7 +12,7 @@
   (buffer-ring/local-keybindings)
 
   (dwim-tab-localize-context (dwim-tab-make-expander
-                               'dwim-tab-stem-trigger
+                               'dwim-tab/after-word
                                'nxml-complete))
 
   (turn-on-dwim-tab 'nxml-indent-line))

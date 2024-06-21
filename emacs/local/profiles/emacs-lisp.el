@@ -49,7 +49,7 @@
   (programming-mode-generic 'elisp 'emacs-lisp/buffer-functions elisp/mode-name)
 
   (borg-repl/bind-repl
-    'elisp/repl-new
+    'eshell
     'eval-last-sexp
     'eval-region
     'eval-buffer
@@ -57,9 +57,6 @@
     nil)
 
   (borg-repl/bind-macro-expand 'pp-macroexpand-last-sexp)
-
-  (custom-key-group "elisp-debug" "d" nil
-     ("d" . eval-defun))
 
   (dwim-complete/setup-for-buffer elisp/mode-name (emacs-lisp-helm-generator))
 

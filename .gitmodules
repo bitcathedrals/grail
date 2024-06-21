@@ -286,4 +286,9 @@
 	url = https://github.com/Malabarba/spinner.el.git
 	branch = master
 	ignore = dirty
+[submodule "emacs/dist/tree-sitter/python"]
+	path = emacs/dist/tree-sitter/python
+	url = https://github.com/tree-sitter/tree-sitter-python.git
+	branch = master
+	ignore = dirty
 

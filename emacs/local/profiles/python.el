@@ -210,6 +210,11 @@
   (dwim-tab-localize-context
     (dwim-tab-make-expander 'dwim-tab/after-word 'python-completion-at-point)) )
 
-(add-hook 'python-mode-hook 'python/setup-python-profile)
+(add-hook
+  (if (treesit-language-available-p 'python)
+    'python-ts-mode-hook
+    'python-mode-hook)
+
+  'python/setup-python-profile)
 
 (provide 'profile/python)
