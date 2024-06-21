@@ -199,7 +199,12 @@
 
   (programming-mode-generic 'python 'python/mode-functions))
 
-(add-hook 'python-mode-hook 'python/mode-setup)
+(add-hook
+  (if (treesit-language-available-p 'python)
+    'python-ts-mode-hook
+    'python-mode-hook)
+
+  'python/mode-setup)
 
 ;;
 ;; scheme

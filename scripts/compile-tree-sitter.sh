@@ -6,7 +6,7 @@ LANG=$1
 
 test -d $INSTALL_TO || mkdir -p $INSTALL_TO
 
-cd emacs/dist/git/tree-sitter/$LANG
+cd emacs/dist/tree-sitter/$LANG
 
 make
 
