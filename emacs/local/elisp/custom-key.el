@@ -52,7 +52,7 @@
   (interactive)
 
   (other-window 1)
-  (delete-other-windows)
+  (delete-window)
 
   (kill-buffer (get-buffer keybindings-help-buffer-name)) )
 
