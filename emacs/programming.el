@@ -206,6 +206,16 @@
 
   'python/mode-setup)
 
+
+;;
+;; java
+;;
+
+(setq auto-mode-alist (append
+                        (if (treesit-language-available-p 'java)
+                          '(("\\.java\\'" . java-ts-mode))
+                          '(("\\.java\\'" . java-mode)))
+                        auto-mode-alist))
 ;;
 ;; scheme
 ;;
