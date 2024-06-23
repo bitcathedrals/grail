@@ -1,9 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-;;----------------------------------------------------------------------
-;; code-formatting.el
-;;----------------------------------------------------------------------
-
 ;; adaptive fill for maintaining indentation inside comments
 
 (require 'filladapt)

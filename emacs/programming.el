@@ -44,7 +44,7 @@
 
 ;; programming packages not dependent on third party support
 
-(use-grail-profiles 0 "code-highlighting")
+(use-grail-profiles 0 "code-highlighting" "code-formatting")
 
 ;; higher level functionality
 
@@ -87,6 +87,8 @@
   ("r" . magit-ediff-resolve-all)
   ("p" . magit-push))
 
+(require 'cc-mode)
+
 ;;
 ;; C/C++
 ;;
@@ -125,7 +127,7 @@
 ;; bash mode
 ;;
 
-(require 'bash-mode)
+(require 'sh-script)
 
 (setq auto-mode-alist (append
                         (if (treesit-language-available-p 'bash)
@@ -218,7 +220,6 @@
 ;;
 ;; java
 ;;
-(require 'java-mode)
 
 (setq auto-mode-alist (append
                         (if (treesit-language-available-p 'java)
