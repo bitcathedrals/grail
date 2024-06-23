@@ -210,6 +210,7 @@
 ;;
 ;; java
 ;;
+(require 'java-mode)
 
 (setq auto-mode-alist (append
                         (if (treesit-language-available-p 'java)
