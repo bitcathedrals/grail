@@ -95,4 +95,17 @@
       variable)
     nil))
 
+(defun sitter-available-p (language)
+  (if (treesit-language-available-p language)
+    t
+    nil))
 
+(defun sitter-in-buffer-p ()
+  "sitter-in-buffer-p
+
+   return true if sitter is active in the buffer
+  "
+  (interactive)
+  (if (treesit-parser-list)
+    t
+    nil))

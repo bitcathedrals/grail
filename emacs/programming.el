@@ -181,21 +181,7 @@
 
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
 
-(defun tree-sitter-install-python ()
-  (interactive)
-  (call-interactively 'treesit-install-language-grammar
-    "python"
-    (concat (getenv "HOME") "/tools/local/libexec")))
-
 (defconst python/mode-name "python")
-
-(defun tree-sitter-for-python ()
-  (interactive)
-
-  (message
-    (if (treesit-language-available-p 'python)
-    "treesit for python is available"
-    "treesit for python is unavailable")) )
 
 (defun python/mode-setup ()
   "python-mode-setup
