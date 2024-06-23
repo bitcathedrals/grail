@@ -122,8 +122,16 @@
 (add-hook 'c++-mode-hook 'c++mode-setup t)
 
 ;;
-;; shell mode
+;; bash mode
 ;;
+
+(require 'bash-mode)
+
+(setq auto-mode-alist (append
+                        (if (treesit-language-available-p 'bash)
+                          '(("\\.sh\\'" . bash-ts-mode))
+                          '(("\\.sh\\'" . bash-mode)))
+                        auto-mode-alist))
 
 (defun shell-mode-functions ()
   "shell-mode-functions
@@ -139,7 +147,7 @@
    setup shell mode with enhanced features
   "
   (interactive)
-  (programming-mode-generic 'shell 'shell-mode-functions) )
+  (programming-mode-generic 'shell 'shell-mode-functions))
 
 (add-hook 'shell-mode-hook 'shell-mode-setup)
 
