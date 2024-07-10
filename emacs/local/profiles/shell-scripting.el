@@ -17,6 +17,11 @@
     sh-indentation 2
     sh-basic-offset 2))
 
-(add-hook 'sh-mode-hook 'profile/shell-mode-setup)
+(add-hook
+  (if (treesit-language-available-p 'bash)
+    'bash-ts-mode-hook
+    'bash-mode-hook)
+
+  'profile/shell-mode-setup)
 
 (provide 'profile/shell-scripting)

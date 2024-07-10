@@ -28,18 +28,20 @@
 
     (if (not after)
       t
-      (string-match "[\r\n\t\v\f ]" (string after))) ))
+      (if (equal nil (string-match "[\r\n\t\v\f ]" (char-to-string after)))
+        nil
+        t)) ))
 
 (defun dwim-tab/in-word ()
   (interactive)
 
-  (thing-at-point 'word))
+  (thing-at-point 'symbol t))
 
 (defun dwim-tab/after-word ()
   (interactive)
 
   (and
-    (thing-at-point 'symbol)
+    (thing-at-point 'symbol t)
     (dwim-tab/at-whitespace)) )
 
 (defun dwim-tab/prefix ()

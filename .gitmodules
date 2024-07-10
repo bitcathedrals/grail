@@ -292,3 +292,18 @@
 	branch = master
 	ignore = dirty
 
+[submodule "emacs/dist/tree-sitter/html"]
+	path = emacs/dist/tree-sitter/html
+	url = https://github.com/tree-sitter/tree-sitter-html.git
+	branch = master
+	ignore = dirty
+
+[submodule "emacs/dist/tree-sitter/java"]
+	path = emacs/dist/tree-sitter/java
+	url = https://github.com/tree-sitter/tree-sitter-java.git
+	branch = master
+	ignore = dirty
+[submodule "emacs/dist/tree-sitter/bash"]
+	path = emacs/dist/tree-sitter/bash
+	url = https://github.com/tree-sitter/tree-sitter-bash.git
+	branch = master

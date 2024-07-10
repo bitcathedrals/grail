@@ -139,7 +139,7 @@
 
 (custom-key-group "window" "w" t
   ("v" . split-window-horizontally)
-  ("t" . split-window-vertically)
+  ("s" . split-window-vertically)
   ("n" . make-frame-command)
   ("x" . delete-frame)
   ("1" . delete-other-windows)

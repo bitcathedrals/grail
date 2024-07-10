@@ -44,7 +44,7 @@
 
 ;; programming packages not dependent on third party support
 
-(use-grail-profiles 0 "code-highlighting")
+(use-grail-profiles 0 "code-highlighting" "code-formatting")
 
 ;; higher level functionality
 
@@ -87,6 +87,8 @@
   ("r" . magit-ediff-resolve-all)
   ("p" . magit-push))
 
+(require 'cc-mode)
+
 ;;
 ;; C/C++
 ;;
@@ -122,8 +124,16 @@
 (add-hook 'c++-mode-hook 'c++mode-setup t)
 
 ;;
-;; shell mode
+;; bash mode
 ;;
+
+(require 'sh-script)
+
+(setq auto-mode-alist (append
+                        (if (treesit-language-available-p 'bash)
+                          '(("\\.sh\\'" . bash-ts-mode))
+                          '(("\\.sh\\'" . bash-mode)))
+                        auto-mode-alist))
 
 (defun shell-mode-functions ()
   "shell-mode-functions
@@ -139,7 +149,7 @@
    setup shell mode with enhanced features
   "
   (interactive)
-  (programming-mode-generic 'shell 'shell-mode-functions) )
+  (programming-mode-generic 'shell 'shell-mode-functions))
 
 (add-hook 'shell-mode-hook 'shell-mode-setup)
 
@@ -171,21 +181,7 @@
 
 (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
 
-(defun tree-sitter-install-python ()
-  (interactive)
-  (call-interactively 'treesit-install-language-grammar
-    "python"
-    (concat (getenv "HOME") "/tools/local/libexec")))
-
 (defconst python/mode-name "python")
-
-(defun tree-sitter-for-python ()
-  (interactive)
-
-  (message
-    (if (treesit-language-available-p 'python)
-    "treesit for python is available"
-    "treesit for python is unavailable")) )
 
 (defun python/mode-setup ()
   "python-mode-setup
@@ -206,6 +202,16 @@
 
   'python/mode-setup)
 
+
+;;
+;; java
+;;
+
+(setq auto-mode-alist (append
+                        (if (treesit-language-available-p 'java)
+                          '(("\\.java\\'" . java-ts-mode))
+                          '(("\\.java\\'" . java-mode)))
+                        auto-mode-alist))
 ;;
 ;; scheme
 ;;
