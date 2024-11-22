@@ -90,14 +90,15 @@ doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline
     cp desktop/emacs-icon.png $HOME/tools/
   ;;
   "macos-arm64")
-    test -d /opt/Homebrew || mkdir -p /opt/Homebrew
+    test -d /opt/emacs || sudo mkdir -p /opt/emacs
     curl -L https://github.com/Homebrew/brew/tarball/master >/tmp/brew.xz
-    sudo tar xJf /tmp/brew.xz --strip 1 -C /opt/Homebrew/
-    sudo chown -R mattie /opt/Homebrew
+    sudo tar xJf /tmp/brew.xz --strip 1 -C /opt/emacs/
+    sudo chown -R mattie /opt/emacs
     ;;
   "macos-deps")
-    eval "$(/opt/Homebrew/bin/brew shellenv)" && arch -arm64 brew reinstall --build-from-source pkg-config gnutls libpng tree-sitter little-cms2
-
+# gnutls  --ignore-dependencies python
+    eval "$(/opt/emacs/bin/brew shellenv)" && \
+      arch -arm64 brew install nettle rust gnutls pkg-config libpng tree-sitter little-cms2
     ;;
    "macos-git")
     TOOLS=$HOME/tools/local/
@@ -133,7 +134,7 @@ doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline
       exit 1
     fi
 
-    if (cd $GIT && eval "$(/opt/Homebrew/bin/brew shellenv)" && \
+    if (cd $GIT && eval "$(/opt/emacs/bin/brew shellenv)" && \
           arch -arm64 make extraclean && \
           ./autogen.sh && \
           arch -arm64 ./configure \
