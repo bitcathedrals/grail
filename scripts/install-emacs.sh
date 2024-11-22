@@ -96,7 +96,6 @@ doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline
     sudo chown -R mattie /opt/emacs
     ;;
   "macos-deps")
-# gnutls  --ignore-dependencies python
     eval "$(/opt/emacs/bin/brew shellenv)" && \
       arch -arm64 brew install nettle rust gnutls pkg-config libpng tree-sitter little-cms2
     ;;
