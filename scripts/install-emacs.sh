@@ -97,12 +97,14 @@ doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline
     ;;
   "macos-deps")
     eval "$(/opt/emacs/bin/brew shellenv)" && \
-      arch -arm64 brew install nettle rust gnutls pkg-config libpng tree-sitter little-cms2
+      arch -arm64 brew install autoconf automake texinfo nettle rust gnutls pkg-config libpng tree-sitter little-cms2
     ;;
    "macos-git")
     TOOLS=$HOME/tools/local/
 
     test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
+
+    eval "$(/opt/emacs/bin/brew shellenv)"
 
     command -v autoconf >/dev/null 2>&1
     if [[ $? -ne 0 ]]
