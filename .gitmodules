@@ -327,3 +327,9 @@
 	ignore = dirty
 	branch = master
 
+[submodule "emacs/dist/git/sequences.el"]
+	path = emacs/dist/git/sequences.el
+	url = https://github.com/timvisher/sequences.el.git
+	ignore = dirty
+	branch = master
+
