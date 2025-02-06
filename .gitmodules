@@ -319,4 +319,11 @@
 	path = emacs/dist/git/llama
 	url = https://github.com/tarsius/llama.git
 	branch = main
+	ignore = dirty
+
+[submodule "emacs/dist/git/sensitive"]
+	path = emacs/dist/git/sensitive
+	url = https://github.com/timvisher/sensitive.el.git
+	ignore = dirty
+	branch = master
 
