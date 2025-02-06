@@ -87,11 +87,11 @@
   ("r" . magit-ediff-resolve-all)
   ("p" . magit-push))
 
-(require 'cc-mode)
-
 ;;
 ;; C/C++
 ;;
+
+(require 'cc-mode)
 
 (setq auto-mode-alist (append '(("\\.c\\'"       . c-mode)
                                 ("\\.cc\\'"      . c++-mode)
