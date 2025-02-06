@@ -315,8 +315,8 @@
 	path = emacs/dist/git/casual-lib
 	url = https://github.com/kickingvegas/casual-lib.git
 	branch = main
-[submodule "emacs/dist/git/llma"]
-	path = emacs/dist/git/llma
+[submodule "emacs/dist/git/llama"]
+	path = emacs/dist/git/llama
 	url = https://github.com/tarsius/llama.git
 	branch = main
 
