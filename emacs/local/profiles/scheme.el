@@ -50,7 +50,6 @@
   (occur cl-function-decl))
 
 (defun profile/scheme-setup ()
-  (geiser-mode)
   (lsp-scheme)
 
   (borg-repl/bind-repl

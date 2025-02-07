@@ -8,4 +8,11 @@ fi
 
 find emacs/dist/git -name '*.elc' -print | xargs rm
 
-emacsclient -e '(compile-dist)'
+if [[ -x emacsclient ]]
+then
+  CLIENT=emacsclient
+else  
+  CLIENT=$EDITOR
+fi
+
+eval $CLIENT -e '"(compile-dist)"'

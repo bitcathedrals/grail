@@ -307,3 +307,29 @@
 	path = emacs/dist/tree-sitter/bash
 	url = https://github.com/tree-sitter/tree-sitter-bash.git
 	branch = master
+[submodule "emacs/dist/git/casual"]
+	path = emacs/dist/git/casual
+	url = https://github.com/kickingvegas/casual-calc.git
+	branch = main
+[submodule "emacs/dist/git/casual-lib"]
+	path = emacs/dist/git/casual-lib
+	url = https://github.com/kickingvegas/casual-lib.git
+	branch = main
+[submodule "emacs/dist/git/llama"]
+	path = emacs/dist/git/llama
+	url = https://github.com/tarsius/llama.git
+	branch = main
+	ignore = dirty
+
+[submodule "emacs/dist/git/sensitive"]
+	path = emacs/dist/git/sensitive
+	url = https://github.com/timvisher/sensitive.el.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/git/sequences.el"]
+	path = emacs/dist/git/sequences.el
+	url = https://github.com/timvisher/sequences.el.git
+	ignore = dirty
+	branch = master
+
