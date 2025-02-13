@@ -42,10 +42,10 @@
                           "builder"
                           "devil"))
 
-(defun ssh-dired (host)
-  (interactive (list (completing-read "ssh [dired]: " ssh-host-list)))
+(defun ssh-tramp (host)
+  (interactive (list (completing-read "ssh [tramp]: " ssh-host-list)))
   (message "attempting to connect to host: %s" host)
-  (call-interactively 'find-file (format "/ssh:%s:~/" host)) )
+  (call-interactively 'find-file (format "/ssh:%s:~" host)) )
 
 (defun ssh-host (host)
   (interactive (list (completing-read "ssh [shell]: " ssh-host-list)))
