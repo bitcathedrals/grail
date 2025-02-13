@@ -1,8 +1,6 @@
 ;; -*-no-byte-compile: t; -*-
 
 ;;----------------------------------------------------------------------
-;; tramp profile
-;;
 ;; tramp setup for emacs.
 ;;----------------------------------------------------------------------
 
@@ -12,12 +10,15 @@
 ; to large of chunks
 
 (setq-default
-  tramp-default-remote-shell "/bin/bash"
-  tramp-shell-prompt-pattern  ".*$")
-
-(setq
+  tramp-shell-prompt-pattern  ".*>"
   tramp-default-method "ssh"
   tramp-chunksize 500)
+
+(setq
+ tramp-ssh-controlmaster-options
+ (concat
+   "-o ControlPath=~/.ssh/%%r@%%h:%%p "
+   "-o ControlMaster=auto -o ControlPersist=yes "))
 
 (defun doas (dir)
   (interactive "Ddoas directory? ")
@@ -32,30 +33,24 @@
 ;;----------------------------------------------------------------------
 ;; tramping around
 ;;----------------------------------------------------------------------
-(defun ssh-dired (host)
-  (interactive "sEnter Host: ")
-  (message "attempting to connect to host %s" host)
-  (find-file (format "/ssh:%s:~/" host)) )
 
-(defconst ssh-host-list '("gatekeeper-wifi"
-                           "git-wifi"
-                           "pypi-wifi"
-                           "hades-wifi"
-                           "redbox-wifi"
-                           "spartan-wifi"
-                           "work-wifi"
+(defconst ssh-host-list '("work"
+                          "personal"
+                          "gatekeeper"
+                          "git"
+                          "pypi"
+                          "builder"
+                          "devil"))
 
-                           "gatekeeper-eth"
-                           "hades-eth"
-                           "redbox-eth"
-                           "spartan-eth"
-                           "work-eth"
-                           "gatekeeper-remote"))
+(defun ssh-tramp (host)
+  (interactive (list (completing-read "ssh [tramp]: " ssh-host-list)))
+  (message "attempting to connect to host: %s" host)
+  (call-interactively 'find-file (format "/ssh:%s:~" host)) )
 
 (defun ssh-host (host)
-  (interactive (list (completing-read "ssh: " ssh-host-list)))
+  (interactive (list (completing-read "ssh [shell]: " ssh-host-list)))
   (let
-    ((name (concat "ssh " host)))
+    ((command (concat "ssh " host)))
 
-    (with-current-buffer (eat name t)
-      (rename-buffer host)) ))
+    (with-current-buffer (eat command)
+      (rename-buffer host))) )
