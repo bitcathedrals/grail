@@ -10,12 +10,15 @@
 ; to large of chunks
 
 (setq-default
-;;  tramp-default-remote-shell "/usr/bin/zsh"
-  tramp-shell-prompt-pattern  ".*>")
-
-(setq
+  tramp-shell-prompt-pattern  ".*>"
   tramp-default-method "ssh"
   tramp-chunksize 500)
+
+(setq
+ tramp-ssh-controlmaster-options
+ (concat
+   "-o ControlPath=~/.ssh/%%r@%%h:%%p "
+   "-o ControlMaster=auto -o ControlPersist=yes "))
 
 (defun doas (dir)
   (interactive "Ddoas directory? ")
