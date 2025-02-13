@@ -52,5 +52,5 @@
   (let
     ((command (concat "ssh " host)))
 
-    (with-current-buffer (call-interactively 'eat command)
-      (rename-buffer host)) ))
+    (with-current-buffer (eat command)
+      (rename-buffer host))) )
