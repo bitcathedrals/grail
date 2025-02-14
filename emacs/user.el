@@ -20,6 +20,8 @@
 ;;                    General Modifications
 ;;----------------------------------------------------------------------
 
+(require 'proced)
+
 ;; disable customization, automatic persistence of configuration changes.
 ;; I personally don't like customize as I prefer emacs to start with
 ;; a state I have personally defined and reviewed.
@@ -31,11 +33,11 @@
 
 ;; basic settings
 
-;;----------------------------------------------------------------------
+;;
 ;; buffer coding and line ending handling
 ;;
 ;; unix eol, utf-8 coding, and tab character insertion
-;;----------------------------------------------------------------------
+;;
 (setq
   buffer-file-coding-system 'utf-8-unix
   set-language-environment "UTF-8"
@@ -77,14 +79,14 @@
   ;; file is loaded. My paranoia says hell no.
   enable-local-eval nil)
 
-;;----------------------------------------------------------------------
+;;
 ;; associate major modes with file extensions.
-;;----------------------------------------------------------------------
+;;
 (setq auto-mode-alist (append '(("\\.txt\\'"     . text-mode)) auto-mode-alist))
 
-;;----------------------------------------------------------------------
+;;
 ;;                    ERC
-;;----------------------------------------------------------------------
+;;
 (require 'erc)
 (require 'erc-truncate)
 
@@ -153,14 +155,14 @@
 (setq auto-mode-alist
   (cons '("\\.firewall\\'" . conf-mode) auto-mode-alist))
 
-;;----------------------------------------------------------------------
+;;
 ;; dpaste
-;;----------------------------------------------------------------------
+;;
 (require 'dpaste)
 (setq dpaste-poster "Anonymous")
 
-;;----------------------------------------------------------------------
+;;
 ;; force spaces over tabs
-;;----------------------------------------------------------------------
+;;
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
