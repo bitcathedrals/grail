@@ -93,10 +93,10 @@
 
 (require 'cc-mode)
 
-(setq auto-mode-alist (append '(("\\.c\\'"       . c-mode)
-                                ("\\.cc\\'"      . c++-mode)
-                                ("\\.cpp\\'"     . c++-mode)
-                                ("\\.h\\'"       . c++-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.c\\'"       . c-ts-mode)
+                                ("\\.cc\\'"      . c++-ts-mode)
+                                ("\\.cpp\\'"     . c++-ts-mode)
+                                ("\\.h\\'"       . c++-ts-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
   (c-set-style "linux")                 ;; base off of linux style
