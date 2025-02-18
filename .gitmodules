@@ -345,3 +345,27 @@
 	ignore = dirty
 	branch = master
 
+[submodule "emacs/dist/git/dap-mode"]
+	path = emacs/dist/git/dap-mode
+	url = https://github.com/emacs-lsp/dap-mode.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/git/posframe"]
+	path = emacs/dist/git/posframe
+	url = https://github.com/tumashu/posframe.git
+	ignore = dirty
+        branch = master
+
+[submodule "emacs/dist/git/lsp-docker"]
+	path = emacs/dist/git/lsp-docker
+	url = https://github.com/emacs-lsp/lsp-docker.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/git/yaml"]
+	path = emacs/dist/git/yaml
+	url = https://github.com/zkry/yaml.el.git
+	ignore = dirty
+	branch = master
+
