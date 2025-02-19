@@ -1,4 +1,4 @@
-;; -*-no-byte-compile: t; -*-
+;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
 (require 'buffer-ring)
 
@@ -166,3 +166,25 @@
 ;;
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
+
+;; (mapcar 'buffer-name (buffer-list))
+
+(defun eat-insert-buffer (buffer-name)
+  "insert-buffer-clean
+
+   insert the buffer clean of text properties
+  "
+  (interactive (list
+                 (completing-read
+                   "insert buffer: "
+                   (mapcar 'buffer-name (buffer-list)) )))
+
+  (let
+    ((extracted ""))
+
+    (with-current-buffer (get-buffer buffer-name)
+      (setq extracted (buffer-substring-no-properties (point-min) (point-max))) )
+
+    (eat-term-send-string eat-terminal extracted) ))
+
+
