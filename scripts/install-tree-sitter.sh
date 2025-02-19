@@ -21,7 +21,7 @@ case $system in
    ;;
 esac
 
-for lang in $(find $GRAIL_TREE_SITTER -type d -depth 1 -print)
+for lang in $(find $GRAIL_TREE_SITTER -depth 1 -type d -print)
 do
   echo "installing language: $lang"
 
