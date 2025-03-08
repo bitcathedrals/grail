@@ -88,17 +88,17 @@
 ;;                    ERC
 ;;
 (require 'erc)
-(require 'erc-truncate)
+(require 'erc-sasl)
 
 (require 'sensitive)
 
 (setq
+  erc-default-server "irc.libera.chat"
   erc-default-port "6667"
   erc-prompt-for-nickserv-password nil
   erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")) )
 
-;; turn on truncate mode before erc eats all available RAM.
-(erc-truncate-mode 1)
+(add-to-list 'erc-modules 'sasl)
 
 (defun erc-mode-customization ()
   (buffer-ring/add "erc")
@@ -108,12 +108,37 @@
 
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
 
+(defun erc-sasl-connect ()
+  "ERC-SASL-CONNECT
+   make a SASL erc-tls connection
+  "
+  (interactive)
+
+  (with-temp-buffer
+    (let*
+      ((serv-info (auth-source-search
+                    :host "sasl.libera.chat"
+                    :require '(:user :secret)))
+       (auth-info (auth-source-search
+                    :host "irc.libera.chat"
+                    :require '(:user :secret)))
+       (server-id (plist-get (car serv-info) :user))
+
+       (erc-id    (plist-get (car auth-info) :user))
+       (erc-pass  (funcall (plist-get (car auth-info) :secret))) )
+
+    (erc-tls :server   erc-default-server
+             :user     server-id
+             :nick     erc-id
+             :password erc-pass
+             :full-name "John Galt") )) )
+
 (require 'erc-services)
 (erc-services-mode 1)
 
-;;----------------------------------------------------------------------
+;;
 ;; helm completion
-;;----------------------------------------------------------------------
+;;
 (require 'helm-mode)
 
 (require 'helm-files)
