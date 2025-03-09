@@ -307,3 +307,65 @@
 	path = emacs/dist/tree-sitter/bash
 	url = https://github.com/tree-sitter/tree-sitter-bash.git
 	branch = master
+[submodule "emacs/dist/git/casual"]
+	path = emacs/dist/git/casual
+	url = https://github.com/kickingvegas/casual-calc.git
+	branch = main
+[submodule "emacs/dist/git/casual-lib"]
+	path = emacs/dist/git/casual-lib
+	url = https://github.com/kickingvegas/casual-lib.git
+	branch = main
+[submodule "emacs/dist/git/llama"]
+	path = emacs/dist/git/llama
+	url = https://github.com/tarsius/llama.git
+	branch = main
+	ignore = dirty
+
+[submodule "emacs/dist/git/sensitive"]
+	path = emacs/dist/git/sensitive
+	url = https://github.com/timvisher/sensitive.el.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/git/sequences.el"]
+	path = emacs/dist/git/sequences.el
+	url = https://github.com/timvisher/sequences.el.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/tree-sitter/c"]
+	path = emacs/dist/tree-sitter/c
+	url = https://github.com/tree-sitter/tree-sitter-c.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/tree-sitter/cpp"]
+	path = emacs/dist/tree-sitter/cpp
+	url = https://github.com/tree-sitter/tree-sitter-cpp.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/git/dap-mode"]
+	path = emacs/dist/git/dap-mode
+	url = https://github.com/emacs-lsp/dap-mode.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/git/posframe"]
+	path = emacs/dist/git/posframe
+	url = https://github.com/tumashu/posframe.git
+	ignore = dirty
+        branch = master
+
+[submodule "emacs/dist/git/lsp-docker"]
+	path = emacs/dist/git/lsp-docker
+	url = https://github.com/emacs-lsp/lsp-docker.git
+	ignore = dirty
+	branch = master
+
+[submodule "emacs/dist/git/yaml"]
+	path = emacs/dist/git/yaml
+	url = https://github.com/zkry/yaml.el.git
+	ignore = dirty
+	branch = master
+

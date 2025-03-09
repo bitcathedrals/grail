@@ -1,4 +1,4 @@
-;; -*-no-byte-compile: t; -*-
+;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
 (require 'buffer-ring)
 
@@ -20,6 +20,8 @@
 ;;                    General Modifications
 ;;----------------------------------------------------------------------
 
+(require 'proced)
+
 ;; disable customization, automatic persistence of configuration changes.
 ;; I personally don't like customize as I prefer emacs to start with
 ;; a state I have personally defined and reviewed.
@@ -31,11 +33,11 @@
 
 ;; basic settings
 
-;;----------------------------------------------------------------------
+;;
 ;; buffer coding and line ending handling
 ;;
 ;; unix eol, utf-8 coding, and tab character insertion
-;;----------------------------------------------------------------------
+;;
 (setq
   buffer-file-coding-system 'utf-8-unix
   set-language-environment "UTF-8"
@@ -77,26 +79,26 @@
   ;; file is loaded. My paranoia says hell no.
   enable-local-eval nil)
 
-;;----------------------------------------------------------------------
+;;
 ;; associate major modes with file extensions.
-;;----------------------------------------------------------------------
+;;
 (setq auto-mode-alist (append '(("\\.txt\\'"     . text-mode)) auto-mode-alist))
 
-;;----------------------------------------------------------------------
+;;
 ;;                    ERC
-;;----------------------------------------------------------------------
+;;
 (require 'erc)
-(require 'erc-truncate)
+(require 'erc-sasl)
 
 (require 'sensitive)
 
 (setq
+  erc-default-server "irc.libera.chat"
   erc-default-port "6667"
   erc-prompt-for-nickserv-password nil
   erc-network-hide-list '(("Libera.Chat" "JOIN" "PART" "QUIT")) )
 
-;; turn on truncate mode before erc eats all available RAM.
-(erc-truncate-mode 1)
+(add-to-list 'erc-modules 'sasl)
 
 (defun erc-mode-customization ()
   (buffer-ring/add "erc")
@@ -106,12 +108,37 @@
 
 (add-hook 'erc-mode-hook 'erc-mode-customization t)
 
+(defun erc-sasl-connect ()
+  "ERC-SASL-CONNECT
+   make a SASL erc-tls connection
+  "
+  (interactive)
+
+  (with-temp-buffer
+    (let*
+      ((serv-info (auth-source-search
+                    :host "sasl.libera.chat"
+                    :require '(:user :secret)))
+       (auth-info (auth-source-search
+                    :host "irc.libera.chat"
+                    :require '(:user :secret)))
+       (server-id (plist-get (car serv-info) :user))
+
+       (erc-id    (plist-get (car auth-info) :user))
+       (erc-pass  (funcall (plist-get (car auth-info) :secret))) )
+
+    (erc-tls :server   erc-default-server
+             :user     server-id
+             :nick     erc-id
+             :password erc-pass
+             :full-name "John Galt") )) )
+
 (require 'erc-services)
 (erc-services-mode 1)
 
-;;----------------------------------------------------------------------
+;;
 ;; helm completion
-;;----------------------------------------------------------------------
+;;
 (require 'helm-mode)
 
 (require 'helm-files)
@@ -122,6 +149,8 @@
 (require 'helm-man)
 (require 'helm-ring)
 (require 'helm-frame)
+
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 (custom-key-group "complete" "c" t
   ("f" . helm-find-files)
@@ -151,14 +180,36 @@
 (setq auto-mode-alist
   (cons '("\\.firewall\\'" . conf-mode) auto-mode-alist))
 
-;;----------------------------------------------------------------------
+;;
 ;; dpaste
-;;----------------------------------------------------------------------
+;;
 (require 'dpaste)
 (setq dpaste-poster "Anonymous")
 
-;;----------------------------------------------------------------------
+;;
 ;; force spaces over tabs
-;;----------------------------------------------------------------------
+;;
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
+
+;; (mapcar 'buffer-name (buffer-list))
+
+(defun eat-insert-buffer (buffer-name)
+  "insert-buffer-clean
+
+   insert the buffer clean of text properties
+  "
+  (interactive (list
+                 (completing-read
+                   "insert buffer: "
+                   (mapcar 'buffer-name (buffer-list)) )))
+
+  (let
+    ((extracted ""))
+
+    (with-current-buffer (get-buffer buffer-name)
+      (setq extracted (buffer-substring-no-properties (point-min) (point-max))) )
+
+    (eat-term-send-string eat-terminal extracted) ))
+
+

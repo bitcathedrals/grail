@@ -10,4 +10,4 @@ else
   exit 1
 fi
 
-exec emacsclient -e "(tangle-non-interactive \"$IN_FILE\")"
+exec $EDITOR -e "(tangle-non-interactive \"$IN_FILE\")"

@@ -14,7 +14,10 @@ case $1 in
   "linux")
     TOOLS=$HOME/tools/local/
 
-doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev libtree-sitter-dev libgnutls28-dev
+doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
+libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils \
+libffi-dev liblzma-dev libtree-sitter-dev libgnutls28-dev autoconf texinfo \
+libgtk-3-dev
 
     test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
 
@@ -86,23 +89,25 @@ doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline
     LOCAL_DESKTOP=$HOME/.local/share/applications/
     test -d $LOCAL_DESKTOP || mkdir -p $LOCAL_DESKTOP
 
-    cp desktop/emacs.desktop $LOCAL_DESKTOP/
+    sed <desktop/emacs.desktop "s,@HOME@,$HOME,g" >$LOCAL_DESKTOP/emacs.desktop
     cp desktop/emacs-icon.png $HOME/tools/
   ;;
   "macos-arm64")
-    test -d /opt/Homebrew || mkdir -p /opt/Homebrew
+    test -d /opt/emacs || sudo mkdir -p /opt/emacs
     curl -L https://github.com/Homebrew/brew/tarball/master >/tmp/brew.xz
-    sudo tar xJf /tmp/brew.xz --strip 1 -C /opt/Homebrew/
-    sudo chown -R mattie /opt/Homebrew
+    sudo tar xJf /tmp/brew.xz --strip 1 -C /opt/emacs/
+    sudo chown -R mattie /opt/emacs
     ;;
   "macos-deps")
-    eval "$(/opt/Homebrew/bin/brew shellenv)" && arch -arm64 brew reinstall --build-from-source pkg-config gnutls libpng tree-sitter little-cms2
-
+    eval "$(/opt/emacs/bin/brew shellenv)" && \
+      arch -arm64 brew install autoconf automake texinfo nettle rust gnutls pkg-config libpng tree-sitter little-cms2
     ;;
    "macos-git")
     TOOLS=$HOME/tools/local/
 
     test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
+
+    eval "$(/opt/emacs/bin/brew shellenv)"
 
     command -v autoconf >/dev/null 2>&1
     if [[ $? -ne 0 ]]
@@ -133,7 +138,7 @@ doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline
       exit 1
     fi
 
-    if (cd $GIT && eval "$(/opt/Homebrew/bin/brew shellenv)" && \
+    if (cd $GIT && eval "$(/opt/emacs/bin/brew shellenv)" && \
           arch -arm64 make extraclean && \
           ./autogen.sh && \
           arch -arm64 ./configure \
