@@ -1,3 +1,3 @@
 #! /usr/bin/env bash
 
-brew instal basictex latex2html latex2rtf
+brew install mactex latex2html latex2rtf texlive tex-live-utility
