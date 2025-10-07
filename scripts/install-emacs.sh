@@ -10,6 +10,8 @@ MODULES=yes
 MAIL=yes
 PNG=yes
 
+EMACS_BREW_VERSION="emacs-plus@31"
+
 case $1 in
   "linux")
     TOOLS=$HOME/tools/local/
@@ -100,8 +102,15 @@ libgtk-3-dev
     ;;
   "macos-deps")
     eval "$(/opt/emacs/bin/brew shellenv)" && \
-      arch -arm64 brew install autoconf automake texinfo nettle rust gnutls pkg-config libpng tree-sitter little-cms2
+      arch -arm64 brew install autoconf automake texinfo nettle rust gnutls pkg-config libpng tree-sitter little-cms2 ctags
     ;;
+  "macos-update")
+    eval "$(/opt/emacs/bin/brew shellenv)" && arch -arm64 brew update && brew ugprade
+    ;;
+   "macos-exec")
+     shift
+     eval "$(/opt/emacs/bin/brew shellenv)" && eval "arch -arm64 brew $*"
+     ;;
    "macos-git")
     TOOLS=$HOME/tools/local/
 
@@ -139,7 +148,7 @@ libgtk-3-dev
     fi
 
     if (cd $GIT && eval "$(/opt/emacs/bin/brew shellenv)" && \
-          arch -arm64 make extraclean && \
+          arch -arm64 make extraclean && git clean -fdx && \
           ./autogen.sh && \
           arch -arm64 ./configure \
                          --prefix=$TOOLS \
@@ -175,12 +184,14 @@ libgtk-3-dev
 
     (cd $GIT && make install)
   ;;
-  "macos-compile")
-    brew tap d12frosted/emacs-plus
-    brew install emacs-plus@29 || exit 1
+  "macos-brew")
+    brew tap d12frosted/emacs-plus || exit 1
+    brew install $EMACS_BREW_VERSION || exit 1
   ;;
   "macos-link")
-    brew_emacs="emacs-plus@29"
+    # this kinda works, but it doesn't detect a brew emacs-plus or a git version to link properly
+    # TODO: detect wether it's a emacs-plus from brew, or a git location
+    brew_emacs="$EMACS_BREW_VERSION"
 
     brew unlink $brew_emacs
     brew link $brew_emacs
@@ -203,10 +214,15 @@ libgtk-3-dev
   ;;
   *|"help")
     cat <<HELP
-comile-emacs.sh
+install-emacs-emacs.sh
 
-macos-compile  = compile emacs from homebrew source and install into /Applications
-macos-link     = link the app into /Applications
+linux          = on Linux install from git
+macos-arm64    = on macos install homebrew into /opt/emacs
+macos-deps     = install homebrew dependencies into /opt/emacs
+macos-update   = update homebrew dependencies in /opt/emacs
+macos-git      = compile emacs from git source in ~/code/emacs
+macos-brew     = install macos from d12frosted emacs-plus
+macos-link     = link the app into a app bundle in /Applications
 linux          = compile emacs for linux and install into ~/tools/local
 HELP
   ;;
