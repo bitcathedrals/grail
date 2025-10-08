@@ -148,7 +148,6 @@
 (require 'helm-regexp)
 (require 'helm-man)
 (require 'helm-ring)
-(require 'helm-frame)
 
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
