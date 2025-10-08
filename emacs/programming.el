@@ -27,20 +27,15 @@
 
 (require 'helm-lsp)
 
-;; (require 'company-tabnine)
-;; (add-to-list 'company-backends #'company-tabnine)
-
 ;; Trigger completion immediately.
-(setq
-  company-idle-delay 0)
+(setq company-idle-delay 0)
 
 ;; disable electric stuff to avoid problems with my more sophisticated
 ;; modes
 
 (electric-indent-mode 0)
 
-(setq-default
-  tab-width 2)
+(setq-default tab-width 2)
 
 ;; programming packages not dependent on third party support
 
@@ -58,34 +53,34 @@
 ;; magit
 ;;
 
-(require 'magit)
+;; (require 'magit)
 
 (setq vc-follow-symlinks t)
 
 ;; refresh after edit
-(add-hook 'after-save-hook 'magit-after-save-refresh-status t)
+;; (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
 
-(setq git-commit-style-convention-checks
-      (remove 'non-empty-second-line git-commit-style-convention-checks))
+;; (setq git-commit-style-convention-checks
+;;       (remove 'non-empty-second-line git-commit-style-convention-checks))
 
-(custom-key-group "magit git" "v" t
-  ("v" . magit-status)
-  ("l" . magit-log)
+;; (custom-key-group "magit git" "v" t
+;;   ("v" . magit-status)
+;;   ("l" . magit-log)
 
-  ("e" . magit-ediff-dwim)
+;;  ("e" . magit-ediff-dwim)
 
-  ("a" . magit-stage)
-  ("u" . magit-unstage)
-  ("c" . magit-commit)
-  ("&" . magit-commit-squash)
-  ("x" . magit-commit-amend)
+;;  ("a" . magit-stage)
+;;  ("u" . magit-unstage)
+;;  ("c" . magit-commit)
+;;  ("&" . magit-commit-squash)
+;;  ("x" . magit-commit-amend)
 
-  ("+" . magit-ediff-show-staged)
-  ("*" . magit-ediff-show-unstaged)
-  ("s" . magit-ediff-show-stash)
+;;  ("+" . magit-ediff-show-staged)
+;;  ("*" . magit-ediff-show-unstaged)
+;;  ("s" . magit-ediff-show-stash)
 
-  ("r" . magit-ediff-resolve-all)
-  ("p" . magit-push))
+;;  ("r" . magit-ediff-resolve-all)
+;;  ("p" . magit-push))
 
 ;;
 ;; C/C++
