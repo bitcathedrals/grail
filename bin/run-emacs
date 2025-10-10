@@ -1,0 +1,66 @@
+#! /usr/bin/env bash
+
+system_name=$(uname)
+
+function find_macos_emacs {
+  # Emacs.app from FSF distributed or source build
+  emacs="/Applications/Emacs.app/Contents/MacOS"
+
+  emacs_launch="/Applications/Emacs.app/Contents/MacOS/Emacs"
+  emacs_bin="${emacs}/bin/"
+  emacsclient="${emacs_bin}emacsclient"
+
+  if [[ -x $emacsclient ]]
+  then
+ #   ecaho >/dev/stderr"run-emacs: emacs is $emacs emacsclient is $emacsclient"
+    return 0
+  fi
+
+  emacs="/opt/homebrew/Cellar"
+  found=`find /opt/homebrew/Cellar -name Emacs.app -print`
+
+  echo $found
+
+  if [[ -n $found ]]
+  then
+    emacs=$found
+    emacs_base=`dirname $emacs`
+
+    emacs_launch="${emacs}/Contents/MacOS/Emacs"
+
+    emacs_bin="${emacs_base}/bin/"
+    emacsclient="${emacs_bin}emacsclient"
+
+      echo >/dev/stderr "run-emacs (debug): emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
+
+    if [[ -f $emacsclient ]]
+    then
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+case $system_name in
+  "Darwin")
+    shift
+
+    if find_macos_emacs
+    then
+      echo >/dev/stderr "run-emacs: emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
+       if [[ $# -gt 0 ]]
+       then
+         $emacsclient $@
+       else
+         $emacs_launch >/dev/null &
+         disown %1
+       fi
+      exit 0
+    fi
+
+    exit 1
+  ;;
+esac
+
+
