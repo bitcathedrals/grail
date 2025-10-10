@@ -357,3 +357,9 @@
 	ignore = dirty
 	branch = master
 
+[submodule "emacs/dist/git/cond-let"]
+	path = emacs/dist/git/cond-let
+	url = https://github.com/tarsius/cond-let.git
+	ignore = dirty
+ 	branch = main
+
