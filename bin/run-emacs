@@ -44,11 +44,10 @@ function find_macos_emacs {
 
 case $system_name in
   "Darwin")
-    shift
-
     if find_macos_emacs
     then
       echo >/dev/stderr "run-emacs: emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
+
        if [[ $# -gt 0 ]]
        then
          $emacsclient $@
