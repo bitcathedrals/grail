@@ -12,7 +12,6 @@ function find_macos_emacs {
 
   if [[ -x $emacsclient ]]
   then
- #   ecaho >/dev/stderr"run-emacs: emacs is $emacs emacsclient is $emacsclient"
     return 0
   fi
 
@@ -42,24 +41,34 @@ function find_macos_emacs {
   return 1
 }
 
+function emacs_invoke {
+  if [[ $# -gt 0 ]]
+  then
+    echo >/dev/stderr "run-emacs: [emacsclient] args = \"$*\"" 
+    exec $emacsclient $@
+    exit $?
+  fi
+
+  $emacs_launch >/dev/null &
+    
+  launch_code=$?
+
+  if [[ $launch_code -ne 0 ]]
+  then
+    return $launch_code
+  fi
+
+  disown %1
+  return 0
+}
+
 case $system_name in
   "Darwin")
     if find_macos_emacs
     then
       echo >/dev/stderr "run-emacs: emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
-
-       if [[ $# -gt 0 ]]
-       then
-         $emacsclient $@
-       else
-         $emacs_launch >/dev/null &
-         disown %1
-       fi
-      exit 0
     fi
 
-    exit 1
+    emacs_invoke $@
   ;;
 esac
-
-
