@@ -45,7 +45,8 @@ function emacs_invoke {
   if [[ $# -gt 0 ]]
   then
     echo >/dev/stderr "run-emacs: [emacsclient] args = \"$*\"" 
-    exec $emacsclient $@
+    
+    $emacsclient $@
     exit $?
   fi
 
