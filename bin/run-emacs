@@ -1,5 +1,8 @@
 #! /usr/bin/env bash
 
+VERBOSE=""
+DEBUG=""
+
 system_name=$(uname)
 
 function find_macos_emacs {
@@ -18,8 +21,6 @@ function find_macos_emacs {
   emacs="/opt/homebrew/Cellar"
   found=`find /opt/homebrew/Cellar -name Emacs.app -print`
 
-  echo $found
-
   if [[ -n $found ]]
   then
     emacs=$found
@@ -29,8 +30,6 @@ function find_macos_emacs {
 
     emacs_bin="${emacs_base}/bin/"
     emacsclient="${emacs_bin}emacsclient"
-
-      echo >/dev/stderr "run-emacs (debug): emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
 
     if [[ -f $emacsclient ]]
     then
@@ -42,16 +41,24 @@ function find_macos_emacs {
 }
 
 function emacs_invoke {
+  if [[ -n $VERBOSE ]]
+  then
+    echo >/dev/stderr "run-emacs (verbose): emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
+  fi
+
+  if [[ -n $DEBUG ]]
+  then
+    echo >/dev/stderr "run-emacs (debug): (skip) emacs/emacslient ${@}"
+    exit 1
+  fi
+
   if [[ $# -gt 0 ]]
   then
-    echo >/dev/stderr "run-emacs: [emacsclient] args = \"$*\"" 
-    
     $emacsclient $@
     exit $?
   fi
 
   $emacs_launch >/dev/null &
-    
   launch_code=$?
 
   if [[ $launch_code -ne 0 ]]
@@ -63,13 +70,49 @@ function emacs_invoke {
   return 0
 }
 
+arguments=()
+
+for arg in $@
+do
+  case $arg in
+    "-v")
+      VERBOSE='true'
+
+      if [[ -n $VERBOSE ]]
+      then
+         echo >/dev/stderr "switch> -v (verbose)"
+      fi
+    ;;
+    "-d")
+      DEBUG='true'
+
+      if [[ -n $VERBOSE ]]
+      then
+         echo >/dev/stderr "switch> -d (debug)"
+      fi
+    ;;
+    *)
+      if [[ -n $VERBOSE ]]
+      then
+         echo >/dev/stderr "arg> $arg"
+      fi
+
+      arguments+=($arg)
+    ;;
+  esac
+done
+
 case $system_name in
   "Darwin")
     if find_macos_emacs
     then
-      echo >/dev/stderr "run-emacs: emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
+      if [[ -n $VERBOSE ]]
+      then
+        echo >/dev/stderr "run-emacs: found Emacs on Darwin: $emacs"
+      fi
     fi
-
-    emacs_invoke $@
   ;;
 esac
+
+emacs_invoke ${arguments[@]}
+
