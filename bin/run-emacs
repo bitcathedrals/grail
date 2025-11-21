@@ -5,39 +5,54 @@ DEBUG=""
 
 system_name=$(uname)
 
-function find_macos_emacs {
-  # Emacs.app from FSF distributed or source build
-  emacs="/Applications/Emacs.app/Contents/MacOS"
-
-  emacs_launch="/Applications/Emacs.app/Contents/MacOS/Emacs"
-  emacs_bin="${emacs}/bin/"
-  emacsclient="${emacs_bin}emacsclient"
-
-  if [[ -x $emacsclient ]]
-  then
-    return 0
-  fi
-
-  emacs="/opt/homebrew/Cellar"
-  found=`find /opt/homebrew/Cellar -name Emacs.app -print`
-
-  if [[ -n $found ]]
-  then
-    emacs=$found
-    emacs_base=`dirname $emacs`
-
-    emacs_launch="${emacs}/Contents/MacOS/Emacs"
-
-    emacs_bin="${emacs_base}/bin/"
-    emacsclient="${emacs_bin}emacsclient"
-
+function verify_emacs {
     if [[ -f $emacsclient ]]
     then
-      return 0
+        return 0
     fi
-  fi
 
-  return 1
+    if [[ -f $emacs_bin ]]
+    then
+        return 0
+    fi
+
+    echo >/dev/stderr "run-emacs: $emacs doesnt set usable paths: $emacsclient $emacs_bin" 
+    exit 1
+}
+
+function find_macos_emacs {
+    # Emacs.app from FSF distributed or source build
+    emacs="/Applications/Emacs.app/Contents/MacOS"
+
+    emacs_launch="/Applications/Emacs.app/Contents/MacOS/Emacs"
+    emacs_bin="${emacs}/bin/"
+    emacsclient="${emacs_bin}emacsclient"
+
+    if verify_emacs
+    then
+       return 0
+    fi    
+
+    emacs="/opt/homebrew/Cellar"
+    found=`find $emacs -name Emacs.app -print`
+
+    if [[ -n $found ]]
+    then
+        emacs=$found
+        emacs_base=`dirname $emacs`
+
+        emacs_launch="${emacs}/Contents/MacOS/Emacs"
+
+        emacs_bin="${emacs_base}/bin/"
+        emacsclient="${emacs_bin}emacsclient"
+
+        if verify_emacs $emacs
+        then
+            return 0
+        fi
+    fi
+
+    return 1
 }
 
 function emacs_invoke {

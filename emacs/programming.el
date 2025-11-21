@@ -15,7 +15,6 @@
 (require 'treesit)
 
 (require 'eglot)
-(require 'company)
 
 (require 'lsp-mode)
 (require 'lsp-lens)

@@ -58,12 +58,6 @@
 	branch = master
 	ignore = dirty
 
-[submodule "emacs/dist/git/transient"]
-	path = emacs/dist/git/transient
-	url = https://github.com/magit/transient.git
-	branch = main
-	ignore = dirty
-
 [submodule "emacs/dist/git/with-editor"]
 	path = emacs/dist/git/with-editor
 	url = https://github.com/magit/with-editor.git
