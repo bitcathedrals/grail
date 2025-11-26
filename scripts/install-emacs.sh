@@ -2,7 +2,7 @@
 
 GIT=$HOME/code/emacs
 
-NATIVE=no
+NATIVE=yes
 SITTER=yes
 # ifavailable
 TLS=yes
@@ -102,7 +102,7 @@ libgtk-3-dev
     ;;
   "macos-deps")
     eval "$(/opt/emacs/bin/brew shellenv)" && \
-      arch -arm64 brew install autoconf automake texinfo nettle rust gnutls pkg-config libpng tree-sitter little-cms2 ctags
+      arch -arm64 brew install autoconf automake texinfo nettle rust gnutls pkg-config libpng tree-sitter little-cms2 ctags libgccjit
     ;;
   "macos-update")
     eval "$(/opt/emacs/bin/brew shellenv)" && arch -arm64 brew update && brew ugprade
