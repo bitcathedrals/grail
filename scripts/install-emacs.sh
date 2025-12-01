@@ -13,13 +13,25 @@ PNG=yes
 EMACS_BREW_VERSION="emacs-plus@31"
 
 case $1 in
-  "linux")
+  "ubuntu")
+    # haven't figured out jit autoconf
+    NATIVE="no"
+
     TOOLS=$HOME/tools/local/
 
-doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
-libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils \
-libffi-dev liblzma-dev libtree-sitter-dev libgnutls28-dev autoconf texinfo \
-libgtk-3-dev
+    doas apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
+                        libreadline-dev libsqlite3-dev wget curl llvm \
+                        libncurses5-dev libncursesw5-dev xz-utils \
+                        libffi-dev liblzma-dev libtree-sitter-dev \
+                        libgnutls28-dev autoconf texinfo \
+                        libgtk-3-dev
+
+    if [[ $NATIVE == "yes" ]]
+    then
+      latest_jit=`doas apt-cache search libgccjit | grep -E '^libgccjit-[0-9][0-9].*dev' | sort -k 2 -r | cut -d ' ' -f 1 | head -n 1`
+
+      doas apt install -y "$latest_jit"
+    fi
 
     test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
 
@@ -216,14 +228,14 @@ libgtk-3-dev
     cat <<HELP
 install-emacs-emacs.sh
 
-linux          = on Linux install from git
+ubuntu         = src Ubuntu Linux install GIT
+
 macos-arm64    = on macos install homebrew into /opt/emacs
 macos-deps     = install homebrew dependencies into /opt/emacs
 macos-update   = update homebrew dependencies in /opt/emacs
 macos-git      = compile emacs from git source in ~/code/emacs
 macos-brew     = install macos from d12frosted emacs-plus
 macos-link     = link the app into a app bundle in /Applications
-linux          = compile emacs for linux and install into ~/tools/local
 HELP
   ;;
 esac
