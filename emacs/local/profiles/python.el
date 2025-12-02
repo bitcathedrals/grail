@@ -208,7 +208,10 @@
     'python/environment-default)
 
   (dwim-tab-localize-context
-    (dwim-tab-make-expander 'dwim-tab/after-word 'python-completion-at-point)) )
+    (dwim-tab-make-expander 'dwim-tab/after-word 'python-completion-at-point))
+
+  ;; should work without this , but python doesn't. Too tired to track down the real issue.
+  (font-lock-mode 1))
 
 (add-hook
   (if (treesit-language-available-p 'python)
