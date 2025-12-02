@@ -176,7 +176,7 @@
                     "status-report"))
       (default-directory (delta-repo-dir))
       (status (call-process
-                (concat default-directory "py.sh") ;; program
+                "py.sh"                            ;; exec py.sh
                 nil                                ;; infile
                 (get-clean-report-buffer)          ;; output buffer
                 nil                                ;; don't display
