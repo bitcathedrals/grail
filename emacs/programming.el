@@ -15,7 +15,6 @@
 (require 'treesit)
 
 (require 'eglot)
-(require 'company)
 
 (require 'lsp-mode)
 (require 'lsp-lens)
@@ -27,20 +26,15 @@
 
 (require 'helm-lsp)
 
-;; (require 'company-tabnine)
-;; (add-to-list 'company-backends #'company-tabnine)
-
 ;; Trigger completion immediately.
-(setq
-  company-idle-delay 0)
+(setq company-idle-delay 0)
 
 ;; disable electric stuff to avoid problems with my more sophisticated
 ;; modes
 
 (electric-indent-mode 0)
 
-(setq-default
-  tab-width 2)
+(setq-default tab-width 2)
 
 ;; programming packages not dependent on third party support
 
@@ -93,10 +87,10 @@
 
 (require 'cc-mode)
 
-(setq auto-mode-alist (append '(("\\.c\\'"       . c-mode)
-                                ("\\.cc\\'"      . c++-mode)
-                                ("\\.cpp\\'"     . c++-mode)
-                                ("\\.h\\'"       . c++-mode)) auto-mode-alist))
+(setq auto-mode-alist (append '(("\\.c\\'"       . c-ts-mode)
+                                ("\\.cc\\'"      . c++-ts-mode)
+                                ("\\.cpp\\'"     . c++-ts-mode)
+                                ("\\.h\\'"       . c++-ts-mode)) auto-mode-alist))
 
 (defun c-mode-generic-setup ()
   (c-set-style "linux")                 ;; base off of linux style
