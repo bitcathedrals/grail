@@ -186,10 +186,7 @@
     (set-face-foreground 'ediff-fine-diff-B diff-fine-fg)
 
     (set-face-background 'ediff-fine-diff-C diff-merge-bg)
-    (set-face-foreground 'ediff-fine-diff-C diff-merge-fg)
-
-    (setq-default ediff-split-window-function 'split-window-vertically)
-    (setq-default ediff-merge-split-window-function 'split-window-vertically) ))
+    (set-face-foreground 'ediff-fine-diff-C diff-merge-fg) ))
 
 (defun display-faces-for-whitespace-mode ()
   (set-face-background 'whitespace-tab "red")

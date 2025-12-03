@@ -1,5 +1,8 @@
 ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 
+(require 'grail-diff)
+(grail-configure-ediff)
+
 (require 'hideshow)
 
 (require 'buffer-ring)

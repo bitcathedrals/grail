@@ -71,13 +71,58 @@ function emacs_invoke {
 
   if [[ ${#arguments[@]} -gt 0 ]]
   then
+     echo "non-zero args $ELISP"
+
+     echo "arg zero \"${arguments[0]}\" $ELISP"
+
     if [[ $ELISP == 'true' ]]
     then
-      exec $emacsclient "${arguments[@]}" "$code"
-    else
-      exec $emacsclient "${arguments[@]}"
+      echo $emacsclient "${arguments[@]}" "$code"
     fi
+
+    echo "testing: ${arguments[0]}"
+
+    if [[ ${arguments[0]} == "^" ]]
+    then
+      # assign arguments to positional
+      set -- "${arguments[@]}"
+      shift
+
+      base_file=$1
+      shift
+
+      changed_file=$1
+
+      if [[ ${#arguments[@]} -gt 0 ]]
+      then
+        shift
+        ancestor_file=$1
+
+        left_file=$base_file
+        right_file=$changed_file
+
+        if [[ $VERBOSE == 'true' ]]
+        then
+          echo exec $emacsclient -c -e "(ext-diff-ancestor \"$left_file\" \"${right_file}\" \"$ancestor_file\")"
+        fi
+
+        exec $emacsclient -n -c -e "(ext-diff-ancestor \"$left_file\" \"${right_file}\" \"$ancestor_file\")"
+
+        exit 1
+      else
+        if [[ $VERBOSE == 'true' ]]
+        then
+          echo exec $emacsclient -c -e "(ext-diff \"$base_file\" \"${changed_file}\")"
+        fi
+
+        exec $emacsclient -n -c -e "(ext-diff \"$base_file\" \"${changed_file}\")"
+      fi
+    fi
+
+    exec $emacsclient "${arguments[@]}"
   fi
+
+  exit 0
 
   $emacs_launch "{$arguments[@]}" >/dev/null &
   launch_code=$?
