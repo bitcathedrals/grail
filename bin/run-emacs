@@ -21,62 +21,68 @@ function verify_emacs {
 }
 
 function find_macos_emacs {
-    # Emacs.app from FSF distributed or source build
-    emacs="/Applications/Emacs.app/Contents/MacOS"
+  # Emacs.app from FSF distributed or source build
+  emacs="/Applications/Emacs.app/Contents/MacOS"
 
-    emacs_launch="/Applications/Emacs.app/Contents/MacOS/Emacs"
-    emacs_bin="${emacs}/bin/"
+  emacs_launch="/Applications/Emacs.app/Contents/MacOS/Emacs"
+  emacs_bin="${emacs}/bin/"
+  emacsclient="${emacs_bin}emacsclient"
+
+  if verify_emacs
+  then
+     return 0
+  fi    
+
+  emacs="/opt/homebrew/Cellar"
+  found=`find $emacs -name Emacs.app -print`
+
+  if [[ -n $found ]]
+  then
+    emacs=$found
+    emacs_base=`dirname $emacs`
+
+    emacs_launch="${emacs}/Contents/MacOS/Emacs"
+
+    emacs_bin="${emacs_base}/bin/"
     emacsclient="${emacs_bin}emacsclient"
 
-    if verify_emacs
+    if verify_emacs $emacs
     then
-       return 0
-    fi    
-
-    emacs="/opt/homebrew/Cellar"
-    found=`find $emacs -name Emacs.app -print`
-
-    if [[ -n $found ]]
-    then
-        emacs=$found
-        emacs_base=`dirname $emacs`
-
-        emacs_launch="${emacs}/Contents/MacOS/Emacs"
-
-        emacs_bin="${emacs_base}/bin/"
-        emacsclient="${emacs_bin}emacsclient"
-
-        if verify_emacs $emacs
-        then
-            return 0
-        fi
+      return 0
     fi
+  fi
 
-    return 1
+  return 1
 }
 
+arguments=()
+code=""
+
 function emacs_invoke {
-  if [[ -n $VERBOSE ]]
+  if [[ $VERBOSE == 'true' ]]
   then
     echo >/dev/stderr "run-emacs (verbose): emacs = \"${emacs}\" emacslaunch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
+
+    for arg in "${arguments[@]}"
+    do
+      echo >/dev/stderr "emacs argument> $arg"
+    done
   fi
 
-  if [[ -n $DEBUG ]]
+  if [[ ${#arguments[@]} -gt 0 ]]
   then
-    echo >/dev/stderr "run-emacs (debug): (skip) emacs/emacslient ${@}"
-    exit 1
+    if [[ $ELISP == 'true' ]]
+    then
+      exec $emacsclient "${arguments[@]}" "$code"
+    else
+      exec $emacsclient "${arguments[@]}"
+    fi
   fi
 
-  if [[ $# -gt 0 ]]
-  then
-    $emacsclient $@
-    exit $?
-  fi
-
-  $emacs_launch >/dev/null &
+  $emacs_launch "{$arguments[@]}" >/dev/null &
   launch_code=$?
 
-  if [[ $launch_code -ne 0 ]]
+  if [[ $launch_code -gt 0 ]]
   then
     return $launch_code
   fi
@@ -85,36 +91,36 @@ function emacs_invoke {
   return 0
 }
 
-arguments=()
-
 for arg in $@
 do
   case $arg in
-    "-v")
+    "-vv")
       VERBOSE='true'
-
-      if [[ -n $VERBOSE ]]
-      then
-         echo >/dev/stderr "switch> -v (verbose)"
-      fi
+      continue
     ;;
-    "-d")
-      DEBUG='true'
-
-      if [[ -n $VERBOSE ]]
-      then
-         echo >/dev/stderr "switch> -d (debug)"
-      fi
-    ;;
-    *)
-      if [[ -n $VERBOSE ]]
-      then
-         echo >/dev/stderr "arg> $arg"
-      fi
-
-      arguments+=($arg)
+    ":")
+     ELISP='true'
+     arguments+=("-e")
+     continue
     ;;
   esac
+
+  if [[ $ELISP == 'true' ]]
+  then
+    code="${code} ${arg}"
+
+    if [[ -n $VERBOSE ]]
+    then
+      echo >/dev/stderr "code> $code"
+    fi
+  else
+    if [[ -n $VERBOSE ]]
+    then
+      echo >/dev/stderr "shell arg> $arg"
+    fi
+
+    arguments+=($arg)
+  fi
 done
 
 case $system_name in
@@ -129,5 +135,4 @@ case $system_name in
   ;;
 esac
 
-emacs_invoke ${arguments[@]}
-
+emacs_invoke
