@@ -23,3 +23,5 @@
   (setq-default ediff-keep-variants nil)
 
   (add-hook 'ediff-quit-hook 'ediff-close-buffer-and-frame) )
+
+(provide 'grail-diff)
