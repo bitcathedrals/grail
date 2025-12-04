@@ -5,14 +5,19 @@ DEBUG=""
 
 system_name=$(uname)
 
+function verbosity {
+  if [[ "$VERBOSE" == 'true' ]]
+  then
+    echo >/dev/stderr "run-emacs: $*"
+  fi
+}
+
 function print_paths {
-    echo >/dev/stderr "run-emacs (verbose): emacs = \"${emacs}\" emacs_launch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
+  verbosity "emacs = \"${emacs}\" emacs_launch = \"${emacs_launch}\" emacsclient = \"${emacsclient}\""
 }
 
 function verify_emacs {
   test -e $emacsclient || return 1
-
-  echo "made it to bin"
   test -e $emacs_bin || return 1
 
   return 0
@@ -104,19 +109,11 @@ function emacs_invoke {
 
   if [[ ${#arguments[@]} -gt 0 ]]
   then
-    if [[ "$VERBOSE" == 'true' ]]
-    then
-      echo >/dev/stderr "run-emacs: non-zero args $ELISP"
-      echo >/dev/stderr "run-emacs: arg zero \"${arguments[0]}\" $ELISP"
-    fi
+    verbosity "arguments given" ${arguments[0]} $ELISP
 
     if [[ "$ELISP" == 'true' ]]
     then
-      if [[ "$VERBOSE" == 'true' ]]
-      then
-        echo >/dev/stderr "run-emacs: code exec = $emacsclient \"$code\""
-      fi
-
+      verbosity "executing code = " $code
       exec $emacsclient -e "$code"
     fi
 
@@ -139,20 +136,12 @@ function emacs_invoke {
         left_file=$base_file
         right_file=$changed_file
 
-        if [[ "$VERBOSE" == 'true' ]]
-        then
-          echo >/dev/stderr "run-emacs: " exec $emacsclient -c -e "(ext-diff-ancestor \"$left_file\" \"${right_file}\" \"$ancestor_file\")"
-        fi
-
+        verbosity exec $emacsclient -c -e "(ext-diff-ancestor \"$left_file\" \"${right_file}\" \"$ancestor_file\")"
         exec $emacsclient -n -c -e "(ext-diff-ancestor \"$left_file\" \"${right_file}\" \"$ancestor_file\")"
 
         exit 1
       else
-        if [[ "$VERBOSE" == 'true' ]]
-        then
-          echo exec $emacsclient -c -e "(ext-diff \"$base_file\" \"${changed_file}\")"
-        fi
-
+        verbosity exec $emacsclient -c -e "(ext-diff \"$base_file\" \"${changed_file}\")"
         exec $emacsclient -n -c -e "(ext-diff \"$base_file\" \"${changed_file}\")"
       fi
     fi
@@ -194,19 +183,11 @@ do
   then
     code="${code} ${arg}"
 
-    if [[ "$VERBOSE" == 'true' ]]
-    then
-      echo >/dev/stderr "code> $code"
-    fi
-
+    verbosity "code> $code"
     continue
   fi
 
-  if [[ ""$VERBOSE"" == 'true' ]]
-  then
-    echo >/dev/stderr "shell arg> $arg"
-  fi
-
+  verbosity "shell arg> $arg"
   arguments+=($arg)
 done
 
@@ -214,19 +195,13 @@ case $system_name in
   "Darwin")
     if find_macos_emacs
     then
-      if [[ -n "$VERBOSE" ]]
-      then
-        echo >/dev/stderr "run-emacs: found Emacs on Darwin: $emacs"
-      fi
+      verbosity "found Emacs on Darwin: " $emacs
     fi
   ;;
   *)
     if find_tools_emacs
     then
-      if [[ -n "$VERBOSE" ]]
-      then
-        echo >/dev/stderr "run-emacs: found Emacs in: tools"
-      fi
+      verbosity "found Emacs in: tools"
 
       emacs_invoke
       exit 0
@@ -234,10 +209,7 @@ case $system_name in
 
     if find_default_emacs
     then
-      if [[ -n "$VERBOSE" ]]
-      then
-        echo >/dev/stderr "run-emacs: found Emacs in: generic"
-      fi
+      verbosity "run-emacs: found Emacs in: generic"
     fi
   ;;
 esac
