@@ -149,7 +149,7 @@ function emacs_invoke {
     eval exec $emacsclient ${arguments[@]}
   fi
 
-  $emacs_launch "{$arguments[@]}" >/dev/null &
+  $emacs_launch {$arguments[@]} >/dev/null &
   launch_code=$?
 
   if [[ $launch_code -gt 0 ]]
