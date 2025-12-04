@@ -1,5 +1,7 @@
 (require 'gnus)
-(require 'bbdb)
+
+;; it tries to pull bbdb-site which I will fix later
+;; (require 'bbdb)
 
 (require 'sensitive)
 
