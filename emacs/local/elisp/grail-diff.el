@@ -29,18 +29,16 @@
   (when ediff-buffer-B
     (with-current-buffer ediff-buffer-B
       (when (not (boundp 'grail-diff-B-modeline))
-        (setq
-          ediff-diff-status (append "upstream:" ediff-diff-status))
-        (set (make-local-variable 'grail-diff-B-modeline) t))
-      (force-mode-line-update)) )
+        (setq ediff-diff-status (append "upstream:" ediff-diff-status))
+        (set (make-local-variable 'grail-diff-B-modeline) t)
+        (force-mode-line-update)) ))
 
   (when ediff-buffer-C
     (with-current-buffer ediff-buffer-C
       (when (not (boundp 'grail-diff-C-modeline))
-        (setq
-          ediff-diff-status (append "merge:" ediff-diff-status))
-        (set (make-local-variable 'grail-diff-C-modeline) t))
-      (force-mode-line-update)) ) )
+        (setq ediff-diff-status (append "merge:" ediff-diff-status))
+        (set (make-local-variable 'grail-diff-C-modeline) t)
+        (force-mode-line-update)) )) )
 
 (defun grail-configure-ediff ()
   "configure-ediff
