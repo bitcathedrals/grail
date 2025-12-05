@@ -45,6 +45,12 @@
 ;;
 ;; frame parameters
 ;;
+(defun grail-graphical-frame-defaults ()
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)) )
+
+(defun grail-graphical-frame-initial-settings (initial-frame)
+  (with-selected-frame initial-frame
+    (set-frame-parameter initial-frame 'fullscreen 'maximized)) )
 
 (defun grail-graphical-frame-configuration ( frame )
   (list
@@ -54,9 +60,7 @@
     '(strike-through . nil)
     '(overline . nil)
     '(mouse-color . "red")
-    '(cursor-color . "yellow")
-    `(width . ,grail-frame-width)
-    `(height . ,grail-frame-height)) )
+    '(cursor-color . "yellow") ))
 
 (defconst personal-bg-color "black")
 
@@ -258,6 +262,9 @@
    load/reload the graphical display configuration
   "
   (when (is-frame-gui frame)
+    (add-hook 'before-make-frame-hook 'grail-graphical-frame-defaults)
+    (grail-graphical-frame-initial-settings frame)
+
     (setq-default
       use-dialog-box nil
       cursor-type 'hollow)
