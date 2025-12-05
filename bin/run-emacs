@@ -123,26 +123,23 @@ function emacs_invoke {
       set -- "${arguments[@]}"
       shift
 
-      base_file=$1
+      local_file=$1
       shift
 
-      changed_file=$1
+      upstream_file=$1
+      shift
 
       if [[ ${#arguments[@]} -gt 0 ]]
       then
-        shift
         ancestor_file=$1
 
-        left_file=$base_file
-        right_file=$changed_file
-
-        verbosity exec $emacsclient -c -e "(ext-diff-ancestor \"$left_file\" \"${right_file}\" \"$ancestor_file\")"
-        exec $emacsclient -n -c -e "(ext-diff-ancestor \"$left_file\" \"${right_file}\" \"$ancestor_file\")"
+        verbosity exec $emacsclient -c -e "(ext-diff3 \"$local_file\" \"${upstream_file}\" \"$ancestor_file\")"
+        exec $emacsclient -n -c -e "(ext-diff3 \"$local_file\" \"${upstream_file}\" \"$ancestor_file\")"
 
         exit 1
       else
-        verbosity exec $emacsclient -c -e "(ext-diff \"$base_file\" \"${changed_file}\")"
-        exec $emacsclient -n -c -e "(ext-diff \"$base_file\" \"${changed_file}\")"
+        verbosity exec $emacsclient -c -e "(ext-diff \"$local_file\" \"${upstream_file}\")"
+        exec $emacsclient -n -c -e "(ext-diff \"$local_file\" \"${upstream_file}\")"
       fi
     fi
 
