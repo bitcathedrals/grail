@@ -1,21 +1,25 @@
 ;; -*-no-byte-compile: t; -*-
 
-(defun ext-merge-with-ancestor (current-file changed-file ancestor-file merge-file)
-  (ediff-merge-files-with-ancestor remote-file local-file ancestor-file))
+(defun ext-merge (local-file upstream-file ancestor-file merge-file)
+  ;; broken, figure out the entry point for merge and fix this
+  (ediff-merge-files-with-ancestor local-file upstream-file ancestor-file))
 
-(defun ext-diff (base-file changed-file)
+(defun ext-diff (local-file upstream-file)
   "ext-diff BASE-FILE CHANGED-FILE
 
    diff CHANGED-FILE against changes in CHANGE-FILE
   "
-  (ediff-files base-file changed-file))
+  (interactive "fLocal :\nfUpstream: ")
+  (interactive)
+  (ediff-files local-file upstream-file))
 
-(defun ext-diff-ancestor (left-file right-file ancestor-file)
+(defun ext-diff3 (local-file upstream-file ancestor-file)
   "ext-diff LEFT-FILE RIGHT-FILE ANCESTOR-FILE
 
    diff LEFT-FILE and RIGHT-FILE against ANCESTOR-FILE
   "
-  (ediff-files3 left-file right-file ancestor-file))
+  (interactive "fLocal: \nfUpstream: \nAncestor: ")
+  (ediff-diff3 local-file upstream-file ancestor-file))
 
 
 (provide 'ext-merging)
