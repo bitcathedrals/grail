@@ -39,11 +39,28 @@
       (when (not (boundp 'grail-diff-C-modeline))
         (insert-ediff-label-into-modeline "{merge}") )) ) )
 
+;;
+;; nifty post that showed me a lot of things like save/restore
+;; http://yummymelon.com/devnull/using-ediff-in-2023.html
+;;
+
+;; taken from ediff-2023, use imoji so the configuration doesn't get stepped on.
+
+(defun grail-diff-save-window-state ()
+  (window-configuration-to-register ?🧊))
+
+(defun grail-diff-restore-window-state ()
+  "Restore window configuration from register 🧊."
+  (jump-to-register ?🧊))
+
 (defun grail-configure-ediff ()
   "configure-ediff
 
    configure the ediff tool"
   (interactive)
+
+  (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
+  (add-hook 'ediff-after-quit-hook-internal 'grail-diff-restore-window-state)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
@@ -52,7 +69,6 @@
   (setq-default ediff-keep-variants nil)
 
   (add-hook 'ediff-quit-hook 'ediff-close-buffer-and-frame)
-
   (add-hook 'ediff-after-setup-windows-hook 'grail-configure-ediff-change-window-names) )
 
 (provide 'grail-diff)
