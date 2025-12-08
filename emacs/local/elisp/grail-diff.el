@@ -58,15 +58,21 @@
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)) )
 
-(defun grail-diff-vertical-if-ancestor ()
-  (set (make-local-variable 'ediff-split-window-function) 'split-window-vertically))
+(defun grail-diff-windows-before-ancestor ()
+  (setq-default ediff-split-window-function 'split-window-vertically))
+
+(defun grail-diff-windows-after-ancestor ()
+  (setq-default ediff-split-window-function 'split-window-horizontally))
 
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
-  (grail-diff-vertical-if-ancestor)
+  (grail-diff-windows-before-ancestor)
+
   (ediff-buffers3
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    (find-file-noselect file-ancestor) ))
+    (find-file-noselect file-ancestor))
+
+  (grail-diff-windows-after-ancestor) )
 
 (defun grail-diff-merge-elisp (file-local file-upstream file-ancestor)
   (ediff-merge-buffers-with-ancestor
