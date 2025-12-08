@@ -44,9 +44,11 @@
      (upstream-stripped (file-name-sans-extension upstream-base)) )
 
     (concat
+      "ediff-merge-"
       local-stripped "-"
       upstream-stripped "-"
-      (format-time-string "%H:%M") "." extension)) )
+      "[" extension "]-"
+      (format-time-string "%H:%M"))) )
 
 (defun grail-diff-get-merge-buffer (local-file upstream-file)
   (get-buffer-create (grail-diff-merge-file-name local-file upstream-file)) )
