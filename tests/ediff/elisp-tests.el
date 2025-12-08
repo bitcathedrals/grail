@@ -29,3 +29,11 @@
 
   (grail-diff-elisp "local.c" "upstream.c"))
 
+(let
+  ((default-directory "~/code/grail/tests/ediff/"))
+
+  (grail-diff-ancestor-elisp "local.c" "upstream.c" "ancestor.c"))
+
+
+
+
