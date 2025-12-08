@@ -6,16 +6,12 @@
   (kill-buffer (current-buffer))
 
   (when (> (length (frame-list)) 1)
-    (delete-frame (current-frame))
-;;    (delete-frame (selected-frame))
-
-    )
-  )
+    (delete-frame (current-frame)) ))
 
 (defun grail-diff-insert-label-into-modeline (buffer guard label)
   (when (bufferp buffer)
     (with-current-buffer buffer
-      (when (boundp guard)
+      (when (not (boundp guard))
         (let
           ((first-elm (car mode-line-format))
            (rest-elm  (cdr mode-line-format)))
@@ -23,7 +19,7 @@
           (setq mode-line-format (append first-elm (list label) rest-elm))
           (force-mode-line-update)
 
-          (set (make-buffer-local guard) t) )) )) )
+          (set (make-local-variable guard) t)) ))))
 
 (defun grail-diff-relabel-window-names ()
   "grail-configure-ediff-change-window-names
