@@ -57,7 +57,7 @@
     (find-file-noselect file-upstream)) )
 
 (defun grail-diff-vertical-if-ancestor ()
-  (set (make-local-variable 'ediff-merge-split-window-function) 'split-window-vertically))
+  (set (make-local-variable 'ediff-split-window-function) 'split-window-vertically))
 
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-vertical-if-ancestor)
