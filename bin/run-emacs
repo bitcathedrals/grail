@@ -97,6 +97,8 @@ arguments=()
 code=""
 
 function emacs_invoke {
+  verbosity "arguments given" ${arguments[0]} $ELISP
+
   if [[ "$VERBOSE" == 'true' ]]
   then
     print_paths
@@ -107,43 +109,41 @@ function emacs_invoke {
     done
   fi
 
-  if [[ ${#arguments[@]} -gt 0 ]]
+  if [[ "$ELISP" == 'true' ]]
   then
-    verbosity "arguments given" ${arguments[0]} $ELISP
+    verbosity "executing code = " $code
+    exec $emacsclient -e "$code"
+  fi
 
-    if [[ "$ELISP" == 'true' ]]
+  if [[ "$DIFF" == 'true' ]]
+  then
+    # assign arguments to positional
+    set -- "${arguments[@]}"
+
+    local_file=$1
+    shift
+
+    upstream_file=$1
+    shift
+
+    ancestor_file=$1
+
+    if [[ -n $ancestor_file ]]
     then
-      verbosity "executing code = " $code
-      exec $emacsclient -e "$code"
+      verbosity "diff of local: $local_file and upstream: $upstream_file and $ancestor_file"
+      verbosity exec $emacsclient -c -e "(ext-diff3 \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
+
+      exec $emacsclient -n -c -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
+    else
+      verbosity "diff of local: $local_file and upstream: $upstream_file"
+      verbosity exec $emacsclient -c -e "(grail-diff-elisp \"$local_file\" \"$upstream_file\")"
+
+      exec $emacsclient -n -c -e "(grail-diff-elisp \"$local_file\" \"$upstream_file\")"
     fi
+  fi
 
-    if [[ "$DIFF" == 'true' ]]
-    then
-      # assign arguments to positional
-      set -- "${arguments[@]}"
-
-      local_file=$1
-      shift
-
-      upstream_file=$1
-      shift
-
-      ancestor_file=$1
-
-      if [[ -n $ancestor_file ]]
-      then
-        verbosity "diff of local: $local_file and upstream: $upstream_file and $ancestor_file"
-        verbosity exec $emacsclient -c -e "(ext-diff3 \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
-
-        exec $emacsclient -n -c -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
-      else
-        verbosity "diff of local: $local_file and upstream: $upstream_file"
-        verbosity exec $emacsclient -c -e "(grail-diff-elisp \"$local_file\" \"$upstream_file\")"
-
-        exec $emacsclient -n -c -e "(grail-diff-elisp \"$local_file\" \"$upstream_file\")"
-      fi
-    fi
-
+  if [[ -n $1 ]]
+  then
     eval exec $emacsclient ${arguments[@]}
   fi
 
@@ -168,7 +168,10 @@ do
     ;;
     ":")
       ELISP='true'
-      arguments+=("-e")
+      continue
+    ;;
+    "-e")
+      ELISP='true'
       continue
     ;;
     "^")
