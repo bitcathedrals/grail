@@ -29,6 +29,19 @@
 
   (grail-diff-elisp "local.c" "upstream.c"))
 
+;;
+;; test auto refine
+;;
+
+(let
+  ((default-directory "~/code/grail/tests/ediff/"))
+
+  (grail-diff-elisp "local.c" "refine.c"))
+
+;;
+;; test with ancestor for diff
+;;
+
 (let
   ((default-directory "~/code/grail/tests/ediff/"))
 

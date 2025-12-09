@@ -120,7 +120,7 @@
   (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
   (setq-default ediff-keep-variants nil)
-  (setq-default ediff-auto-refine t)
+  (setq-default ediff-auto-refine 'on)
 
   (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame)
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names))
