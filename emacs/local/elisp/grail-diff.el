@@ -6,7 +6,7 @@
   (kill-buffer (current-buffer))
 
   (when (> (length (frame-list)) 1)
-    (delete-frame (current-frame)) ))
+    (delete-frame (selected-frame)) ))
 
 (defun grail-diff-insert-label-into-modeline (buffer guard label)
   (when (bufferp buffer)
@@ -29,9 +29,6 @@
   (grail-diff-insert-label-into-modeline ediff-buffer-A 'grail-diff-A-guard "{local}")
   (grail-diff-insert-label-into-modeline ediff-buffer-B 'grail-diff-B-guard "{upstream}")
   (grail-diff-insert-label-into-modeline ediff-buffer-C 'grail-diff-C-guard "{merge}") )
-
-;; I haven't figured out what or how the ancestor buffer works
-;;  (grail-diff-insert-label-into-modeline ediff-buffer-ancestor 'grail-diff-ancestor-guard "{ancestor}") )
 
 (defun grail-diff-merge-file-name (local-file upstream-file)
   (let*
@@ -56,7 +53,8 @@
 (defun grail-diff-elisp (file-local file-upstream)
   (ediff-buffers
     (find-file-noselect file-local)
-    (find-file-noselect file-upstream)) )
+    (find-file-noselect file-upstream)
+    '(grail-diff-enable-readonly)) )
 
 (defun grail-diff-windows-before-ancestor ()
   (setq-default ediff-split-window-function 'split-window-vertically))
@@ -70,7 +68,8 @@
   (ediff-buffers3
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    (find-file-noselect file-ancestor))
+    (find-file-noselect file-ancestor)
+    '(grail-diff-enable-readonly))
 
   (grail-diff-windows-after-ancestor) )
 
