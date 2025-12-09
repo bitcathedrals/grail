@@ -58,12 +58,24 @@ int main(void)
   // instead of something like "struct Student ...".
   Student students[TOTAL_STUDENTS];
   
+  // Initialize the members of the first Student struct in the array
+  students[0].type = 'U';
+  strcpy(monkeys[0].name, "Nageeb");
+  students[0].age = 20;
+  monkeys[1].average = 90;
+
   // Initialize the members of the second Student struct in the array
   students[1].type = 'U';
   strcpy(students[1].name, "Mary");
   students[1].age = 19;
   students[1].average = 95;
 
+  // Initialize the members of the third Student struct in the array
+  students[2].type = 'G';
+  strcpy(students[2].name, "Kulvinder");
+  students[2].age = 21;
+  students[2].average = 85;
+  
   // This loop will output each Struct to the CSV file as a record of comma 
   // separated values.  We use a counter variable i going from 0 to the number
   // of student records to access each array element (Student struct).
@@ -80,15 +92,6 @@ int main(void)
             students[i].name,
             students[i].age,
             students[i].average);
-    
-    // If there is an error writing to the file we identify that it has 
-    // occurred using ferror(file) and exit with an error message and status 
-    // if so.
-    if (ferror(file))
-    {
-      printf("Error writing to file.\n");
-      return 1;
-    }
   }
   
   // close the file since we are done working with it

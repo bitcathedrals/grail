@@ -1,12 +1,12 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'merging)
-(require 'ext-merging)
-
 (require 'buffer-ring)
 
 (require 'programming-generic)
 (require 'borg-repl)
+
+(require 'grail-diff)
+(grail-diff-configure)
 
 ;;
 ;; language support
