@@ -74,11 +74,13 @@
 
   (grail-diff-windows-after-ancestor) )
 
-(defun grail-diff-merge-elisp (file-local file-upstream file-ancestor)
-  (ediff-merge-buffers-with-ancestor
+(defun grail-diff-merge-elisp (file-local file-upstream)
+  (ediff-merge-buffers
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    (grail-diff-get-merge-file-name file-local)) )
+    nil
+    'ediff-merge-buffers
+    (grail-diff-merge-file-name file-local file-upstream)) )
 
 (defun grail-diff-merge-ancestor-elisp (file-local file-upstream file-ancestor)
   (ediff-files)
@@ -86,6 +88,10 @@
   (ediff-merge-buffers-with-ancestor
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)) )
+
+;;
+;; This will not work, need to make a helm buffer of found merges.
+;;
 
 (defun grail-resume-merge (file-local file-upstream)
   ;; make a list of merges to resume and make a helm buffer out of it
