@@ -83,11 +83,13 @@
     (grail-diff-merge-file-name file-local file-upstream)) )
 
 (defun grail-diff-merge-ancestor-elisp (file-local file-upstream file-ancestor)
-  (ediff-files)
-
   (ediff-merge-buffers-with-ancestor
     (find-file-noselect file-local)
-    (find-file-noselect file-upstream)) )
+    (find-file-noselect file-upstream)
+    (find-file-noselect file-ancestor)
+    nil
+    'ediff-merge-buffers-with-ancestor
+    (grail-diff-merge-file-name file-local file-upstream)) )
 
 ;;
 ;; This will not work, need to make a helm buffer of found merges.

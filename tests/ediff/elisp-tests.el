@@ -52,3 +52,7 @@
 
   (grail-diff-merge-elisp "local.c" "upstream.c"))
 
+(let
+  ((default-directory "~/code/grail/tests/ediff/"))
+
+  (grail-diff-merge-ancestor-elisp "local.c" "upstream.c" "ancestor.c"))
