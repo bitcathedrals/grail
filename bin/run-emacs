@@ -142,9 +142,12 @@ function emacs_invoke {
     fi
   fi
 
-  if [[ -n $1 ]]
+  set -- "${arguments[@]}"
+
+  if [[ $# -gt 0 ]]
   then
-    eval exec $emacsclient ${arguments[@]}
+    verbosity "remaining arguments - exec emacsclient: ${arguments[@]}"
+    exec $emacsclient $@
   fi
 
   $emacs_launch {$arguments[@]} >/dev/null &
