@@ -74,11 +74,18 @@
 
   (grail-diff-windows-after-ancestor) )
 
+(defun grail-diff-enable-readonly ()
+  (with-current-buffer ediff-buffer-A
+    (setq buffer-read-only t))
+
+  (with-current-buffer ediff-buffer-B
+    (setq buffer-read-only t)) )
+
 (defun grail-diff-merge-elisp (file-local file-upstream)
   (ediff-merge-buffers
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    nil
+    '(grail-diff-enable-readonly)
     'ediff-merge-buffers
     (grail-diff-merge-file-name file-local file-upstream)) )
 
@@ -87,7 +94,7 @@
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
     (find-file-noselect file-ancestor)
-    nil
+    '(grail-diff-enable-readonly)
     'ediff-merge-buffers-with-ancestor
     (grail-diff-merge-file-name file-local file-upstream)) )
 
