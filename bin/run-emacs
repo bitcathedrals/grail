@@ -131,7 +131,7 @@ function emacs_invoke {
     if [[ -n $ancestor_file ]]
     then
       verbosity "diff of local: $local_file and upstream: $upstream_file and $ancestor_file"
-      verbosity exec $emacsclient -n -c -e "(ext-diff3 \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
+      verbosity exec $emacsclient -n -c -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
 
       exec $emacsclient -n -c -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
     else
