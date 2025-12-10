@@ -112,7 +112,7 @@
   (ediff-merge-buffers
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    '()
+    nil
     'ediff-merge-buffers
     (grail-diff-merge-file-name file-local file-upstream)) )
 
