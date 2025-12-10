@@ -51,7 +51,7 @@
   (with-current-buffer ediff-buffer-B
     (setq buffer-read-only t)) )
 
-(defun grail-diff-readonly-ancestor ()
+(defun grail-diff-readonly-C ()
   (with-current-buffer ediff-buffer-C
     (setq buffer-read-only t)))
 
@@ -86,7 +86,7 @@
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
     (find-file-noselect file-ancestor)
-    '(grail-diff-readonly-ancestor)) )
+    '(grail-diff-readonly-C)) )
 
 (defun grail-diff-get-merge-buffer (local-file upstream-file)
   (get-buffer-create (grail-diff-merge-file-name local-file upstream-file)) )
