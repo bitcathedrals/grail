@@ -152,7 +152,7 @@
    configure the grail extensions and customization of the ediff tool"
   (interactive)
 
-  (add-hook 'ediff-prepare-buffers-hook 'grail-diff-readonly)
+  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-readonly)
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names)
 
   (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
