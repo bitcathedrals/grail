@@ -160,7 +160,7 @@
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
-  (setq-default ediff-window-setup-function 'ediff-setup-windows-multiframe)
+  (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
   (setq-default ediff-keep-variants nil)
   (setq-default ediff-auto-refine 'on)
