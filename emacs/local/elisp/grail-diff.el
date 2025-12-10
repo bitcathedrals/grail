@@ -1,3 +1,13 @@
+;;
+;; grail-ediff.el
+;;
+;; customization of ediff to make it more functional, intuitive and robust.
+;;
+
+;;
+;; handle windows labeling and management
+;;
+
 (defun grail-diff-close-buffer-and-frame ()
   "ediff-close-buffer-and-frame
 
@@ -30,6 +40,57 @@
   (grail-diff-insert-label-into-modeline ediff-buffer-B 'grail-diff-B-guard "{upstream}")
   (grail-diff-insert-label-into-modeline ediff-buffer-C 'grail-diff-C-guard "{merge}") )
 
+;;
+;; turn source buffers into readonly
+;;
+
+(defun grail-diff-readonly ()
+  (with-current-buffer ediff-buffer-A
+    (setq buffer-read-only t))
+
+  (with-current-buffer ediff-buffer-B
+    (setq buffer-read-only t)) )
+
+(defun grail-diff-readonly-ancestor ()
+  (with-current-buffer ediff-buffer-C
+    (setq buffer-read-only t)))
+
+;;
+;; handle 3way merge/diff which is vertical instead of horizontally to better manage screen real estate.
+;;
+
+(defun grail-diff-3way-frame-before ()
+  (setq-default ediff-split-window-function 'split-window-vertically))
+
+(defun grail-diff-3way-frame-after ()
+  (setq-default ediff-split-window-function 'split-window-horizontally))
+
+(defun grail-diff-3way-teardown ()
+  (remove-hook 'ediff-before-setup-hook 'grail-diff-3way-frame-before)
+  (remove-hook 'ediff-quit-hook 'grail-diff-3way-frame-after) )
+
+(defun grail-diff-3way-setup ()
+  (add-hook 'ediff-before-setup-hook 'grail-diff-3way-frame-before)
+  (add-hook 'ediff-after-quit-hook-internal 'grail-diff-3way-frame-after)
+  (add-hook 'ediff-after-quit-hook-internal 'grail-diff-3way-teardown) )
+
+(defun grail-diff-elisp (file-local file-upstream)
+  (ediff-buffers
+    (find-file-noselect file-local)
+    (find-file-noselect file-upstream)) )
+
+(defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
+  (grail-diff-3way-setup)
+
+  (ediff-buffers3
+    (find-file-noselect file-local)
+    (find-file-noselect file-upstream)
+    (find-file-noselect file-ancestor)
+    '(grail-diff-readonly-ancestor)) )
+
+(defun grail-diff-get-merge-buffer (local-file upstream-file)
+  (get-buffer-create (grail-diff-merge-file-name local-file upstream-file)) )
+
 (defun grail-diff-merge-file-name (local-file upstream-file)
   (let*
     ((local-base (file-name-nondirectory local-file))
@@ -44,51 +105,14 @@
       "ediff-merge-"
       local-stripped "-"
       upstream-stripped "-"
-      "[" extension "]-"
-      (format-time-string "%H:%M"))) )
-
-(defun grail-diff-readonly ()
-  (with-current-buffer ediff-buffer-A
-    (setq buffer-read-only t))
-
-  (with-current-buffer ediff-buffer-B
-    (setq buffer-read-only t)) )
-
-(defun grail-diff-readonly-ancestor ()
-  (with-current-buffer ediff-buffer-C
-    (setq buffer-read-only t)))
-
-(defun grail-diff-windows-before-ancestor ()
-  (setq-default ediff-split-window-function 'split-window-vertically))
-
-(defun grail-diff-windows-after-ancestor ()
-  (setq-default ediff-split-window-function 'split-window-horizontally))
-
-(defun grail-diff-elisp (file-local file-upstream)
-  (ediff-buffers
-    (find-file-noselect file-local)
-    (find-file-noselect file-upstream)
-    '(grail-diff-enable-readonly)) )
-
-(defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
-  (grail-diff-windows-before-ancestor)
-
-  (ediff-buffers3
-    (find-file-noselect file-local)
-    (find-file-noselect file-upstream)
-    (find-file-noselect file-ancestor)
-    '(grail-diff-readonly grail-diff-readonly-ancestor))
-
-  (grail-diff-windows-after-ancestor) )
-
-(defun grail-diff-get-merge-buffer (local-file upstream-file)
-  (get-buffer-create (grail-diff-merge-file-name local-file upstream-file)) )
+      (format-time-string "%H:%M")
+      "." extension)))
 
 (defun grail-diff-merge-elisp (file-local file-upstream)
   (ediff-merge-buffers
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    '(grail-diff-readonly)
+    '()
     'ediff-merge-buffers
     (grail-diff-merge-file-name file-local file-upstream)) )
 
@@ -97,7 +121,6 @@
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
     (find-file-noselect file-ancestor)
-    '(grail-diff-readonly)
     'ediff-merge-buffers-with-ancestor
     (grail-diff-merge-file-name file-local file-upstream)) )
 
@@ -129,18 +152,19 @@
    configure the grail extensions and customization of the ediff tool"
   (interactive)
 
-  (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
+  (add-hook 'ediff-prepare-buffers-hook 'grail-diff-readonly)
+  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names)
 
+  (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
   (add-hook 'ediff-after-quit-hook-internal 'grail-diff-restore-window-state)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
-  (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq-default ediff-window-setup-function 'ediff-setup-windows-multiframe)
 
   (setq-default ediff-keep-variants nil)
   (setq-default ediff-auto-refine 'on)
 
-  (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame)
-  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names))
+  (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame) )
 
 (provide 'grail-diff)
