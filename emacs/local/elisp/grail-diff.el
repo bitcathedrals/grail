@@ -36,9 +36,24 @@
 
    re-label the ediff windows
   "
-  (grail-diff-insert-label-into-modeline ediff-buffer-A 'grail-diff-A-guard "{local}")
-  (grail-diff-insert-label-into-modeline ediff-buffer-B 'grail-diff-B-guard "{upstream}")
+  (grail-diff-insert-label-into-modeline ediff-buffer-A 'grail-diff-A-guard "{upstream}")
+  (grail-diff-insert-label-into-modeline ediff-buffer-B 'grail-diff-B-guard "{local}")
   (grail-diff-insert-label-into-modeline ediff-buffer-C 'grail-diff-C-guard "{merge}") )
+
+;;
+;; line-number-mode
+;;
+
+(defun grail-line-numbers ()
+  (with-current-buffer ediff-buffer-A
+    (line-number-mode))
+
+  (with-current-buffer ediff-buffer-B
+    (line-number-mode)) )
+
+(defun grail-line-numbers-C ()
+  (with-current-buffer ediff-buffer-C
+    (line-number-mode)) )
 
 ;;
 ;; turn source buffers into readonly
@@ -74,19 +89,23 @@
   (add-hook 'ediff-after-quit-hook-internal 'grail-diff-3way-frame-after)
   (add-hook 'ediff-after-quit-hook-internal 'grail-diff-3way-teardown) )
 
+;;
+;; NOTE: the files are swapped around for ediff because for some bizarre
+;;       reason ediff puts the upstream in A, and the local in B by default
+
 (defun grail-diff-elisp (file-local file-upstream)
   (ediff-buffers
-    (find-file-noselect file-local)
-    (find-file-noselect file-upstream)) )
+    (find-file-noselect file-upstream)
+    (find-file-noselect file-local)) )
 
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-3way-setup)
 
   (ediff-buffers3
-    (find-file-noselect file-local)
     (find-file-noselect file-upstream)
+    (find-file-noselect file-local)
     (find-file-noselect file-ancestor)
-    '(grail-diff-readonly-C)) )
+    '(grail-line-numbers-C grail-diff-readonly-C)) )
 
 (defun grail-diff-get-merge-buffer (local-file upstream-file)
   (get-buffer-create (grail-diff-merge-file-name local-file upstream-file)) )
@@ -110,17 +129,18 @@
 
 (defun grail-diff-merge-elisp (file-local file-upstream)
   (ediff-merge-buffers
-    (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    nil
+    (find-file-noselect file-local)
+    (grail-line-numbers-C)
     'ediff-merge-buffers
     (grail-diff-merge-file-name file-local file-upstream)) )
 
 (defun grail-diff-merge-ancestor-elisp (file-local file-upstream file-ancestor)
   (ediff-merge-buffers-with-ancestor
-    (find-file-noselect file-local)
     (find-file-noselect file-upstream)
+    (find-file-noselect file-local)
     (find-file-noselect file-ancestor)
+    '(grail-line-numbers-C)
     'ediff-merge-buffers-with-ancestor
     (grail-diff-merge-file-name file-local file-upstream)) )
 
@@ -152,7 +172,11 @@
    configure the grail extensions and customization of the ediff tool"
   (interactive)
 
+  ;; this goes in reverse to the natural order since add-hook adds to the
+  ;; front
+
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-readonly)
+  (add-hook 'ediff-after-setup-windows-hook 'grail-line-numbers)
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names)
 
   (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
