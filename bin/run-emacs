@@ -150,7 +150,7 @@ function emacs_invoke {
     exec $emacsclient $@
   fi
 
-  $emacs_launch {$arguments[@]} >/dev/null &
+  $emacs_launch >/dev/null &
   launch_code=$?
 
   if [[ $launch_code -gt 0 ]]
