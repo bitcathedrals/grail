@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (defun toggle-ucase-word ()
   "ucase-word
 

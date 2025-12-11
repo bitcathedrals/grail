@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 ;; how many idle seconds for the idle hook runs.
 (defconst idle-queue-delay 4)
 

@@ -1,8 +1,6 @@
-;; -*-no-byte-compile: t; -*-
-
-;;----------------------------------------------------------------------
+;;
 ;; async-exec
-;;----------------------------------------------------------------------
+;;
 
 (defun async-exec-chain ( start-process-fn doesnt-start-fn proc-fail-fn
                                    do-after-fn next-fn)

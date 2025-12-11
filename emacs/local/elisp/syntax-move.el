@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (require 'puni)
 
 (make-variable-buffer-local 'syntax-move/configured)

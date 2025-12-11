@@ -1,11 +1,10 @@
-;; -*-no-byte-compile: t; -*-
-
-;;----------------------------------------------------------------------
+;;
 ;; accumulate buffer status
 ;;
 ;; when multiple status messages are needed accumulate the status messes
 ;; and display the list at the end.
-;;----------------------------------------------------------------------
+;;
+
 (defvar-local buffer-status-list nil)
 
 (defun buffer-display-status ()

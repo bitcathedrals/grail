@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (defun macros-anon-symbol ()
   (make-symbol (format "anonymous-symbol-%s" (random 100000))))
 

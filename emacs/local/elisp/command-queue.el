@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (require 'async-command-builders)
 (require 'idle-queue)
 

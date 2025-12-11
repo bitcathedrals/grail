@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (make-variable-buffer-local 'borg-repl/repl-name)
 (make-variable-buffer-local 'borg-repl/create-repl)
 (make-variable-buffer-local 'borg-repl/eval-line)
