@@ -95,15 +95,15 @@
 
 (defun grail-diff-elisp (file-local file-upstream)
   (ediff-buffers
-    (find-file-noselect file-upstream)
-    (find-file-noselect file-local)) )
+    (find-file-noselect file-local)
+    (find-file-noselect file-upstream)) )
 
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-3way-setup)
 
   (ediff-buffers3
-    (find-file-noselect file-upstream)
     (find-file-noselect file-local)
+    (find-file-noselect file-upstream)
     (find-file-noselect file-ancestor)
     '(grail-line-numbers-C grail-diff-readonly-C)) )
 
@@ -129,16 +129,16 @@
 
 (defun grail-diff-merge-elisp (file-local file-upstream)
   (ediff-merge-buffers
-    (find-file-noselect file-upstream)
     (find-file-noselect file-local)
+    (find-file-noselect file-upstream)
     (grail-line-numbers-C)
     'ediff-merge-buffers
     (grail-diff-merge-file-name file-local file-upstream)) )
 
 (defun grail-diff-merge-ancestor-elisp (file-local file-upstream file-ancestor)
   (ediff-merge-buffers-with-ancestor
-    (find-file-noselect file-upstream)
     (find-file-noselect file-local)
+    (find-file-noselect file-upstream)
     (find-file-noselect file-ancestor)
     '(grail-line-numbers-C)
     'ediff-merge-buffers-with-ancestor
@@ -174,21 +174,22 @@
 
   ;; this goes in reverse to the natural order since add-hook adds to the
   ;; front
-
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-readonly)
   (add-hook 'ediff-after-setup-windows-hook 'grail-line-numbers)
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names)
 
   (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
-  (add-hook 'ediff-after-quit-hook-internal 'grail-diff-restore-window-state)
+
+  ;; the quit-internal runs after every file, make sure we don't run
+  ;; this stuff until the whole set has run
+  (add-hook 'ediff-quit-hook 'grail-diff-restore-window-state)
+  (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
   (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
   (setq-default ediff-keep-variants nil)
-  (setq-default ediff-auto-refine 'on)
-
-  (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame) )
+  (setq-default ediff-auto-refine 'on) )
 
 (provide 'grail-diff)
