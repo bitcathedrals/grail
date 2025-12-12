@@ -182,8 +182,8 @@
 
   ;; the quit-internal runs after every file, make sure we don't run
   ;; this stuff until the whole set has run
-  (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame)
   (add-hook 'ediff-quit-hook 'grail-diff-restore-window-state)
+  (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
