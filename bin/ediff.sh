@@ -8,10 +8,10 @@ case $1 in
   "^^")
     exec git difftool "--" "staged"
   ;;
-  "*")
+  "@")
     exec git difftool "@{u}..HEAD"
   ;;
-  "**")
+  "*@@")
     shift
     left=$1
 
