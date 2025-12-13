@@ -2,8 +2,17 @@
 
 (defconst npaste-default-name user-login-name)
 
-;; (require 'webpaste)
-;; (setq webpaste-provider-priority '(dpaste.org))
+;;
+;; webpaste package
+;;
+
+(require 'webpaste)
+
+(setq webpaste-provider-priority '("bpa.st"))
+
+;;
+;; low level
+;;
 
 (require 'request)
 
@@ -34,12 +43,20 @@
       (npaste-default-title)
       (concat (npaste-default-title) "-" paste-title)) ))
 
-(defun npaste-region ()
-  (interactive)
-  (bpa.st-post (buffer-substring-no-properties (point) (mark))))
+;; (defun npaste-region ()
+;;   (interactive)
+;;   (bpa.st-post (buffer-substring-no-properties (point) (mark))))
 
-(defun npaste-buffer ()
+;; (defun npaste-buffer ()
+;;   (interactive)
+;;   (bpa.st-post (buffer-substring-no-properties (point-min) (point-max))))
+
+(defun paste-region ()
   (interactive)
-  (bpa.st-post (buffer-substring-no-properties (point-min) (point-max))))
+  (webpaste-paste-region))
+
+(defun paste-buffer ()
+  (interactive)
+  (webpaste-paste-buffer))
 
 (provide 'profile/paste)
