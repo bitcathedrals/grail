@@ -1,14 +1,30 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'dpaste)
-
 (defconst npaste-default-name user-login-name)
+
+;; (require 'webpaste)
+;; (setq webpaste-provider-priority '(dpaste.org))
+
+(require 'request)
+
+(defun bpa.st-post (data)
+  (request "http://bpa.st:8000"
+    :type "POST"
+    :data data
+    :success (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (message "I sent: %S" data)))
+    :error (cl-function
+             (lambda (&key status-code &allow-other-keys)
+               (error "HTTP Error: %s" status-code)))) )
+
+;;
+;; net-paste interface
+;;
 
 (defun npaste-default-title ()
   (concat npaste-default-name "/"
           (format-time-string "%a(%H:%M:%S)" (current-time))) )
-
-;; dpaste
 
 (defun npaste-title ()
   (let
@@ -20,12 +36,10 @@
 
 (defun npaste-region ()
   (interactive)
-  (dpaste-region (mark) (point) (npaste-dpaste-title)))
+  (bpa.st-post (buffer-substring-no-properties (point) (mark))))
 
 (defun npaste-buffer ()
   (interactive)
-  (save-exursion
-    (mark-whole-buffer)
-    (dpaste-buffer (npaste-dpaste-title)) ))
+  (bpa.st-post (buffer-substring-no-properties (point-min) (point-max))))
 
 (provide 'profile/paste)
