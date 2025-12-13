@@ -5,6 +5,25 @@
 ;;
 
 ;;
+;; error checking
+;;
+
+(defun grail-diff-is-arg-ok (argument)
+  (ignore-errors
+    (if (and (stringp argument)
+             (not (string-equal argument "")))
+      t
+      nil)) )
+
+(defun grail-diff-check-diff-args (local-file upstream-file &optional ancestor-file)
+  (if (and (grail-diff-is-arg-ok local-file)
+           (grail-diff-is-arg-ok upstream-file))
+    (if ancestor-file
+      (grail-diff-is-arg-ok ancestor-file)
+      t)
+    nil))
+
+;;
 ;; handle windows labeling and management
 ;;
 
@@ -59,16 +78,43 @@
 ;; turn source buffers into readonly
 ;;
 
-(defun grail-diff-readonly ()
-  (with-current-buffer ediff-buffer-A
-    (setq buffer-read-only t))
+(defvar grail-diff-buffer-toggle-list nil
+  "list of buffers that were toggled RO to toggle back to RW on quit")
 
-  (with-current-buffer ediff-buffer-B
-    (setq buffer-read-only t)) )
+(defun grail-diff-clear-toggle-list ()
+  (setq grail-diff-buffer-toggle-list nil))
 
-(defun grail-diff-readonly-C ()
-  (with-current-buffer ediff-buffer-C
-    (setq buffer-read-only t)))
+(defun grail-diff-readonly ( A B &optional C)
+  (when A
+    (with-current-buffer A
+      (setq buffer-read-only t)
+      (setq grail-diff-buffer-toggle-list
+        (append (list A) grail-diff-buffer-toggle-list))) )
+
+  (when B
+    (with-current-buffer B
+      (setq buffer-read-only t)
+      (setq grail-diff-buffer-toggle-list
+        (append (list B) grail-diff-buffer-toggle-list))) )
+
+  (when C
+    (with-current-buffer C
+      (setq buffer-read-only t)
+      (setq grail-diff-buffer-toggle-list
+        (append (list C) grail-diff-buffer-toggle-list))) ) )
+
+;;
+;; turn them back to read/write
+;;
+
+(defun grail-diff-toggle-rw (buffer)
+  (ignore-errors
+    (with-current-buffer buffer
+      (setq buffer-read-only nil))) )
+
+(defun grail-diff-toggle-rw-all ()
+  (when grail-diff-buffer-toggle-list
+    (mapcar 'grail-diff-toggle-rw grail-diff-buffer-toggle-list)))
 
 ;;
 ;; handle 3way merge/diff which is vertical instead of horizontally to better manage screen real estate.
@@ -94,18 +140,27 @@
 ;;       reason ediff puts the upstream in A, and the local in B by default
 
 (defun grail-diff-elisp (file-local file-upstream)
-  (ediff-buffers
-    (find-file-noselect file-local)
-    (find-file-noselect file-upstream)) )
+  (if (grail-diff-check-diff-args file-local file-upstream)
+    (ediff-buffers
+      (find-file-noselect file-local)
+      (find-file-noselect file-upstream))
+    (message "grail-diff-elisp: arguments 2way %s %s not valid"
+             file-local file-upstream)) )
 
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-3way-setup)
 
-  (ediff-buffers3
-    (find-file-noselect file-local)
-    (find-file-noselect file-upstream)
-    (find-file-noselect file-ancestor)
-    '(grail-line-numbers-C grail-diff-readonly-C)) )
+  (if (grail-diff-check-diff-args file-local file-upstream file-ancestor)
+    (ediff-buffers3
+      (find-file-noselect file-local)
+      (find-file-noselect file-upstream)
+      (find-file-noselect file-ancestor))
+    (message "grail-diff-elisp: arguments 3way %s %s %s not valid"
+             file-local file-upstream file-ancestor)) )
+
+;;
+;; merging
+;;
 
 (defun grail-diff-get-merge-buffer (local-file upstream-file)
   (get-buffer-create (grail-diff-merge-file-name local-file upstream-file)) )
@@ -174,14 +229,21 @@
 
   ;; this goes in reverse to the natural order since add-hook adds to the
   ;; front
-  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-readonly)
   (add-hook 'ediff-after-setup-windows-hook 'grail-line-numbers)
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names)
 
   (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
+  (add-hook 'ediff-before-setup-hook 'grail-diff-clear-toggle-list)
+
+  (advice-add 'ediff-buffers :after 'grail-diff-readonly)
+  (advice-add 'ediff-buffers3 :after 'grail-diff-readonly)
+
+  (advice-add 'ediff-merge-buffers :after 'grail-diff-readonly)
+  (advice-add 'ediff-merge-buffers-with-ancestor :after 'grail-diff-readonly)
 
   ;; the quit-internal runs after every file, make sure we don't run
   ;; this stuff until the whole set has run
+  (add-hook 'ediff-quit-hook 'grail-diff-toggle-rw-all)
   (add-hook 'ediff-quit-hook 'grail-diff-restore-window-state)
   (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame)
 
