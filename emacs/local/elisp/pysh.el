@@ -185,7 +185,7 @@
     (let*
       ((default-directory (pysh-repo-dir))
         (status (apply 'call-process
-                  (concat default-directory "/py.sh") ;; program
+                  "py.sh"                             ;; program
                   nil                                 ;; infile
                   (get-clean-pysh-buffer)             ;; output buffer
                   nil                                 ;; don't display
