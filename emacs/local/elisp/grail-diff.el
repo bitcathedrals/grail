@@ -241,9 +241,6 @@
   (advice-add 'ediff-merge-buffers :after 'grail-diff-readonly)
   (advice-add 'ediff-merge-buffers-with-ancestor :after 'grail-diff-readonly)
 
-  (advice-add 'ediff-merge-buffers :after 'grail-diff-readonly)
-  (advice-add 'ediff-merge-buffers-with-ancestor :after 'grail-diff-readonly)
-
   ;; the quit-internal runs after every file, make sure we don't run
   ;; this stuff until the whole set has run
   (add-hook 'ediff-quit-hook 'grail-diff-toggle-rw-all)
