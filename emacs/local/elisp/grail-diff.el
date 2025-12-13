@@ -5,6 +5,26 @@
 ;;
 
 ;;
+;; error checking
+;;
+
+(defun grail-diff-is-arg-ok (argument)
+  (ignore-errors
+    (if (and (stringp argument)
+             (not (string-equal argument "")))
+      t
+      nil)) )
+
+(defun grail-diff-check-diff-args (local-file upstream-file)
+  (if (and (grail-diff-is-arg-ok local-file)
+           (grail-diff-is-arg-ok upstream-file))
+    t
+    nil))
+
+(defun grail-diff-check-ancestor-arg (ancestor-file)
+  (grail-diff-is-arg-ok ancestor-file))
+
+;;
 ;; handle windows labeling and management
 ;;
 
@@ -94,9 +114,11 @@
 ;;       reason ediff puts the upstream in A, and the local in B by default
 
 (defun grail-diff-elisp (file-local file-upstream)
-  (ediff-buffers
-    (find-file-noselect file-local)
-    (find-file-noselect file-upstream)) )
+  (if (grail-diff-check-diff-args local-file file-upstream)
+    (ediff-buffers
+      (find-file-noselect file-local)
+      (find-file-noselect file-upstream))
+    (message "grail-diff-elisp: arguments %s %s not valid" file-local file-upstream)
 
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-3way-setup)

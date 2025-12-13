@@ -2,6 +2,28 @@
 ;; tests for creating a merge file name from the local
 ;;
 
+(grail-diff-is-arg-ok nil)
+
+(grail-diff-is-arg-ok t)
+
+(grail-diff-is-arg-ok "")
+
+(grail-diff-is-arg-ok "ok")
+
+(grail-diff-check-diff-args nil nil)
+
+(grail-diff-check-diff-args "test ok" ni)
+
+(grail-diff-check-diff-args nil "test ok")
+
+(grail-diff-check-diff-args "" "test ok")
+
+(grail-diff-check-diff-args "test ok" "")
+
+(grail-diff-check-diff-args "test ok" "test ok")
+
+
+
 ;; Expected output is a filename, plus a hour and minute time in military time, and extension.
 ;; The purpose is to name a file that is temporary, so that the merged file can be edited
 ;; and reviewed without damaging a source file.
