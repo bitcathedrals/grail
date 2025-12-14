@@ -6,8 +6,9 @@ case $1 in
     exec git difftool
   ;;
   "^^")
-    echo >/dev/stderr "ediff.sh: diff3 staged"
-    exec git difftool "HEAD..."
+     echo "ediff.sh: git doesnt seem to be able to do a 3way diff of staged"
+#    echo >/dev/stderr "ediff.sh: diff3 staged"
+#    exec git difftool "..."
   ;;
   "@")
     echo >/dev/stderr "ediff.sh: diff against upstream"
