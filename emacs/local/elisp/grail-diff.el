@@ -37,7 +37,7 @@
 (defvar grail-diff-buffer-from nil "grail-diff store the buffer from")
 
 (defun grail-diff-save-buffer ()
-  (setq grail-diff-buffer-from (current-buffer)))
+  (setq grail-diff-buffer-from (window-buffer (selected-window))))
 
 (defun grail-diff-restore-buffer ()
   (switch-to-buffer grail-diff-buffer-from))
@@ -106,6 +106,9 @@
 
 (defun grail-diff-close-session ()
   (interactive)
+  (message "grail-diff: closing ediff session.")
+  
+  (ediff-quit nil)
 
   (grail-diff-delete-frame)
   (grail-diff-restore-window-state)
@@ -202,6 +205,9 @@
   "Restore window configuration from register 🧊."
   (jump-to-register ?🧊))
 
+(defun grail-diff-keys ()
+  (local-set-key (kbd "Q") 'grail-diff-close-session))
+
 (defun grail-diff-configure ()
   "grail-diff-configure
 
@@ -209,10 +215,9 @@
   (interactive)
 
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
+  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
 
-  ;; this goes in reverse to the natural order since add-hook adds to the
-  ;; front
-  (add-hook 'ediff-quit-hook 'grail-diff-close-session)
+  (add-hook 'ediff-mode-hook 'grail-diff-keys)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
