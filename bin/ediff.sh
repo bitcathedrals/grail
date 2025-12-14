@@ -2,23 +2,14 @@
 
 case $1 in
   "^")
-    echo >/dev/stderr "ediff.sh: diff staged"
-    exec git difftool
-  ;;
-  "^^")
-     echo "ediff.sh: git doesnt seem to be able to do a 3way diff of staged"
-#    echo >/dev/stderr "ediff.sh: diff3 staged"
-#    exec git difftool "..."
-  ;;
-  "@")
     echo >/dev/stderr "ediff.sh: diff against upstream"
     exec git difftool "@{u}..HEAD"
   ;;
-  "@@")
+  "^^")
     echo >/dev/stderr "ediff.sh: diff3 against upstream"
     exec git difftool "@{u}...HEAD"
   ;;
-  "-")
+  "@")
     shift
     left=$1
 
@@ -28,7 +19,7 @@ case $1 in
     echo >/dev/stderr "ediff.sh: diff (not in both) ${left} ${right}"
     exec git difftool "${left}..${right}"
   ;;
-  "--")
+  "@@")
     shift
     left=$1
 
@@ -49,21 +40,16 @@ case $1 in
 cat <<HELP
 ediff.sh - interface for using ediff with git
 
-^  (working+staged) = git diff  staged
-^^ (staged)         = git diff3 staged
+(working+staged) =  git diff staged
 
-@   (upstream)      = diff  against upstream
-@@  (upstream)      = diff3 against upstream
+^   (upstream)      = diff  against upstream
+^^  (upstream)      = diff3 against upstream
 
--   <left> <right>  = diff  left against right revision
---  <left> <right>  = diff3 left against right revision
+@   <left> <right>  = diff  left against right revision
+@@  <left> <right>  = diff3 left against right revision
 
 + merge <args>      = merge with arguments
 
 for files use run-emacs directly.
 HELP
-
 esac
-
-exit 0
-
