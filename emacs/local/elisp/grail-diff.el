@@ -107,7 +107,7 @@
 (defun grail-diff-close-session ()
   (interactive)
   (message "grail-diff: closing ediff session.")
-  
+
   (ediff-quit nil)
 
   (grail-diff-delete-frame)
@@ -206,7 +206,7 @@
   (jump-to-register ?🧊))
 
 (defun grail-diff-keys ()
-  (local-set-key (kbd "Q") 'grail-diff-close-session))
+  (local-set-key (kbd "C-c !") 'grail-diff-close-session))
 
 (defun grail-diff-configure ()
   "grail-diff-configure
@@ -217,7 +217,7 @@
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
 
-  (add-hook 'ediff-mode-hook 'grail-diff-keys)
+  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-keys)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
