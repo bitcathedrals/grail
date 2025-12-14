@@ -78,66 +78,6 @@
   (grail-diff-insert-label-into-modeline ediff-buffer-C 'grail-diff-C-guard "{merge}") )
 
 ;;
-;; line-number-mode
-;;
-
-(defun grail-line-numbers ()
-  (with-current-buffer ediff-buffer-A
-    (line-number-mode 1))
-
-  (with-current-buffer ediff-buffer-B
-    (line-number-mode 1)))
-
-(defun grail-line-numbers-C ()
-  (with-current-buffer ediff-buffer-C
-    (line-number-mode 1)))
-
-;;
-;; turn source buffers into readonly
-;;
-
-(defvar grail-diff-buffer-toggle-list nil
-  "list of buffers that were toggled RO to toggle back to RW on quit")
-
-(defun grail-diff-clear-toggle-list ()
-  (setq grail-diff-buffer-toggle-list nil))
-
-(defun grail-diff-readonly (A B &optional C)
-  (when A
-    (with-current-buffer A
-      (when (not buffer-read-only)
-        (setq buffer-read-only t)
-        (setq grail-diff-buffer-toggle-list
-          (append (list A) grail-diff-buffer-toggle-list))) ))
-
-  (when B
-    (with-current-buffer B
-      (when (not buffer-read-only)
-        (setq buffer-read-only t)
-        (setq grail-diff-buffer-toggle-list
-          (append (list B) grail-diff-buffer-toggle-list))) ))
-
-  (when C
-    (with-current-buffer C
-      (when (not buffer-read-only)
-        (setq buffer-read-only t)
-        (setq grail-diff-buffer-toggle-list
-          (append (list C) grail-diff-buffer-toggle-list))) )) )
-
-;;
-;; turn them back to read/write
-;;
-
-(defun grail-diff-toggle-rw (buffer)
-  (ignore-errors
-    (with-current-buffer buffer
-      (setq buffer-read-only nil))) )
-
-(defun grail-diff-toggle-rw-all ()
-  (when grail-diff-buffer-toggle-list
-    (mapcar 'grail-diff-toggle-rw grail-diff-buffer-toggle-list)))
-
-;;
 ;; handle 3way merge/diff which is vertical instead of horizontally to better manage screen real estate.
 ;;
 
@@ -162,13 +102,11 @@
 
 (defun grail-diff-open-session ()
   (grail-diff-save-buffer)
-  (grail-diff-save-window-state)
-  (grail-diff-clear-toggle-list))
+  (grail-diff-save-window-state))
 
 (defun grail-diff-close-session ()
   (interactive)
 
-  (grail-diff-toggle-rw-all)
   (grail-diff-delete-frame)
   (grail-diff-restore-window-state)
   (grail-diff-restore-buffer))
@@ -227,7 +165,7 @@
   (ediff-merge-buffers
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    (grail-line-numbers-C)
+    nil
     'ediff-merge-buffers
     (grail-diff-merge-file-name file-local file-upstream)) )
 
@@ -238,7 +176,7 @@
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
     (find-file-noselect file-ancestor)
-    '(grail-line-numbers-C)
+    nil
     'ediff-merge-buffers-with-ancestor
     (grail-diff-merge-file-name file-local file-upstream)) )
 
@@ -272,14 +210,7 @@
 
   ;; this goes in reverse to the natural order since add-hook adds to the
   ;; front
-  (add-hook 'ediff-after-setup-windows-hook 'grail-line-numbers)
-  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names)
-
-  (advice-add 'ediff-buffers :after 'grail-diff-readonly)
-  (advice-add 'ediff-buffers3 :after 'grail-diff-readonly)
-
-  (advice-add 'ediff-merge-buffers :after 'grail-diff-readonly)
-  (advice-add 'ediff-merge-buffers-with-ancestor :after 'grail-diff-readonly)
+  (add-hook 'ediff-quit-hook 'grail-diff-close-session)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
