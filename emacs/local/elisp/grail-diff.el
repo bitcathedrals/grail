@@ -24,18 +24,34 @@
     nil))
 
 ;;
-;; handle windows labeling and management
+;; handle windows save/restore labeling and management
 ;;
 
-(defun grail-diff-close-buffer-and-frame ()
-  "ediff-close-buffer-and-frame
+(defun grail-diff-background (color)
+  (setq buffer-face-mode-face `(:background ,color))
+  (buffer-face-mode 1))
 
-  close the frame hosting the ediff buffers"
+(defun grail-diff-mark-buffer ()
+  (grail-diff-background "grey8"))
+
+(defvar grail-diff-buffer-from nil "grail-diff store the buffer from")
+
+(defun grail-diff-save-buffer ()
+  (setq grail-diff-buffer-from (current-buffer)))
+
+(defun grail-diff-restore-buffer ()
+  (switch-to-buffer grail-diff-buffer-from))
+
+(defun grail-diff-delete-frame ()
+  "ediff-close-delete-frame
+
+  delete the frame"
   (interactive)
-  (kill-buffer (current-buffer))
-
-  (when (> (length (frame-list)) 1)
+  (when (> (length (visible-frame-list)) 1)
     (delete-frame (selected-frame)) ))
+
+(defun grail-diff-quit-message ()
+  (message "grail-diff-quit-message run"))
 
 (defun grail-diff-insert-label-into-modeline (buffer guard label)
   (when (bufferp buffer)
@@ -48,7 +64,9 @@
           (setq mode-line-format (append first-elm (list label) rest-elm))
           (force-mode-line-update)
 
-          (set (make-local-variable guard) t)) ))))
+          (set (make-local-variable guard) t))
+
+        (grail-diff-mark-buffer) ))))
 
 (defun grail-diff-relabel-window-names ()
   "grail-configure-ediff-change-window-names
@@ -65,14 +83,14 @@
 
 (defun grail-line-numbers ()
   (with-current-buffer ediff-buffer-A
-    (line-number-mode))
+    (line-number-mode 1))
 
   (with-current-buffer ediff-buffer-B
-    (line-number-mode)) )
+    (line-number-mode 1)))
 
 (defun grail-line-numbers-C ()
   (with-current-buffer ediff-buffer-C
-    (line-number-mode)) )
+    (line-number-mode 1)))
 
 ;;
 ;; turn source buffers into readonly
@@ -84,24 +102,27 @@
 (defun grail-diff-clear-toggle-list ()
   (setq grail-diff-buffer-toggle-list nil))
 
-(defun grail-diff-readonly ( A B &optional C)
+(defun grail-diff-readonly (A B &optional C)
   (when A
     (with-current-buffer A
-      (setq buffer-read-only t)
-      (setq grail-diff-buffer-toggle-list
-        (append (list A) grail-diff-buffer-toggle-list))) )
+      (when (not buffer-read-only)
+        (setq buffer-read-only t)
+        (setq grail-diff-buffer-toggle-list
+          (append (list A) grail-diff-buffer-toggle-list))) ))
 
   (when B
     (with-current-buffer B
-      (setq buffer-read-only t)
-      (setq grail-diff-buffer-toggle-list
-        (append (list B) grail-diff-buffer-toggle-list))) )
+      (when (not buffer-read-only)
+        (setq buffer-read-only t)
+        (setq grail-diff-buffer-toggle-list
+          (append (list B) grail-diff-buffer-toggle-list))) ))
 
   (when C
     (with-current-buffer C
-      (setq buffer-read-only t)
-      (setq grail-diff-buffer-toggle-list
-        (append (list C) grail-diff-buffer-toggle-list))) ) )
+      (when (not buffer-read-only)
+        (setq buffer-read-only t)
+        (setq grail-diff-buffer-toggle-list
+          (append (list C) grail-diff-buffer-toggle-list))) )) )
 
 ;;
 ;; turn them back to read/write
@@ -139,11 +160,26 @@
 ;; NOTE: the files are swapped around for ediff because for some bizarre
 ;;       reason ediff puts the upstream in A, and the local in B by default
 
+(defun grail-diff-open-session ()
+  (grail-diff-save-buffer)
+  (grail-diff-save-window-state)
+  (grail-diff-clear-toggle-list))
+
+(defun grail-diff-close-session ()
+  (interactive)
+
+  (grail-diff-toggle-rw-all)
+  (grail-diff-delete-frame)
+  (grail-diff-restore-window-state)
+  (grail-diff-restore-buffer))
+
 (defun grail-diff-elisp (file-local file-upstream)
   (if (grail-diff-check-diff-args file-local file-upstream)
-    (ediff-buffers
-      (find-file-noselect file-local)
-      (find-file-noselect file-upstream))
+    (progn
+      (grail-diff-open-session)
+      (ediff-buffers
+        (find-file-noselect file-local)
+        (find-file-noselect file-upstream)))
     (message "grail-diff-elisp: arguments 2way %s %s not valid"
              file-local file-upstream)) )
 
@@ -151,10 +187,13 @@
   (grail-diff-3way-setup)
 
   (if (grail-diff-check-diff-args file-local file-upstream file-ancestor)
-    (ediff-buffers3
-      (find-file-noselect file-local)
-      (find-file-noselect file-upstream)
-      (find-file-noselect file-ancestor))
+    (progn
+      (grail-diff-open-session)
+
+      (ediff-buffers3
+        (find-file-noselect file-local)
+        (find-file-noselect file-upstream)
+        (find-file-noselect file-ancestor)))
     (message "grail-diff-elisp: arguments 3way %s %s %s not valid"
              file-local file-upstream file-ancestor)) )
 
@@ -183,6 +222,8 @@
       "." extension)))
 
 (defun grail-diff-merge-elisp (file-local file-upstream)
+  (grail-diff-open-session)
+
   (ediff-merge-buffers
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
@@ -191,6 +232,8 @@
     (grail-diff-merge-file-name file-local file-upstream)) )
 
 (defun grail-diff-merge-ancestor-elisp (file-local file-upstream file-ancestor)
+  (grail-diff-open-session)
+
   (ediff-merge-buffers-with-ancestor
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
@@ -232,26 +275,17 @@
   (add-hook 'ediff-after-setup-windows-hook 'grail-line-numbers)
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-relabel-window-names)
 
-  (add-hook 'ediff-before-setup-hook 'grail-diff-save-window-state)
-  (add-hook 'ediff-before-setup-hook 'grail-diff-clear-toggle-list)
-
   (advice-add 'ediff-buffers :after 'grail-diff-readonly)
   (advice-add 'ediff-buffers3 :after 'grail-diff-readonly)
 
   (advice-add 'ediff-merge-buffers :after 'grail-diff-readonly)
   (advice-add 'ediff-merge-buffers-with-ancestor :after 'grail-diff-readonly)
 
-  ;; the quit-internal runs after every file, make sure we don't run
-  ;; this stuff until the whole set has run
-  (add-hook 'ediff-quit-hook 'grail-diff-toggle-rw-all)
-  (add-hook 'ediff-quit-hook 'grail-diff-restore-window-state)
-  (add-hook 'ediff-quit-hook 'grail-diff-close-buffer-and-frame)
-
   (setq-default ediff-split-window-function 'split-window-horizontally)
   (setq-default ediff-merge-split-window-function 'split-window-vertically)
   (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 
   (setq-default ediff-keep-variants nil)
-  (setq-default ediff-auto-refine 'on) )
+  (setq-default ediff-auto-refine 'on))
 
 (provide 'grail-diff)
