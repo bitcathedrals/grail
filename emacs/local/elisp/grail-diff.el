@@ -32,7 +32,7 @@
   (buffer-face-mode 1))
 
 (defun grail-diff-mark-buffer ()
-  (grail-diff-background "grey8"))
+  (grail-diff-background "grey10"))
 
 (defvar grail-diff-buffer-from nil "grail-diff store the buffer from")
 
@@ -53,7 +53,7 @@
 (defun grail-diff-quit-message ()
   (message "grail-diff-quit-message run"))
 
-(defun grail-diff-insert-label-into-modeline (buffer guard label)
+(defun grail-diff-apply-visual (buffer guard label)
   (when (bufferp buffer)
     (with-current-buffer buffer
       (when (not (boundp guard))
@@ -68,14 +68,14 @@
 
         (grail-diff-mark-buffer) ))))
 
-(defun grail-diff-relabel-window-names ()
+(defun grail-diff-visual-changes ()
   "grail-configure-ediff-change-window-names
 
    re-label the ediff windows
   "
-  (grail-diff-insert-label-into-modeline ediff-buffer-A 'grail-diff-A-guard "{upstream}")
-  (grail-diff-insert-label-into-modeline ediff-buffer-B 'grail-diff-B-guard "{local}")
-  (grail-diff-insert-label-into-modeline ediff-buffer-C 'grail-diff-C-guard "{merge}") )
+  (grail-diff-apply-visual ediff-buffer-A 'grail-diff-A-guard "{upstream}")
+  (grail-diff-apply-visual ediff-buffer-B 'grail-diff-B-guard "{local}")
+  (grail-diff-apply-visual ediff-buffer-C 'grail-diff-C-guard "{merge}") )
 
 ;;
 ;; handle 3way merge/diff which is vertical instead of horizontally to better manage screen real estate.
@@ -207,6 +207,8 @@
 
    configure the grail extensions and customization of the ediff tool"
   (interactive)
+
+  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
 
   ;; this goes in reverse to the natural order since add-hook adds to the
   ;; front
