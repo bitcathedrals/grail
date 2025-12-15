@@ -1,0 +1,8 @@
+#+STARTUP: indent 
+
+* Emacs Grail Bugs
+** ediff
+- modeline C
+In the C buffer modeline =A is duplicated twice, different from the behavior of buffer A and B
+
+
