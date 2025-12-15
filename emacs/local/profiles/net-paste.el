@@ -1,14 +1,39 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'dpaste)
-
 (defconst npaste-default-name user-login-name)
+
+;;
+;; webpaste package
+;;
+
+(require 'webpaste)
+
+(setq webpaste-provider-priority '("bpa.st"))
+
+;;
+;; low level
+;;
+
+(require 'request)
+
+(defun bpa.st-post (data)
+  (request "http://bpa.st:8000"
+    :type "POST"
+    :data data
+    :success (cl-function
+               (lambda (&key data &allow-other-keys)
+                 (message "I sent: %S" data)))
+    :error (cl-function
+             (lambda (&key status-code &allow-other-keys)
+               (error "HTTP Error: %s" status-code)))) )
+
+;;
+;; net-paste interface
+;;
 
 (defun npaste-default-title ()
   (concat npaste-default-name "/"
           (format-time-string "%a(%H:%M:%S)" (current-time))) )
-
-;; dpaste
 
 (defun npaste-title ()
   (let
@@ -18,14 +43,20 @@
       (npaste-default-title)
       (concat (npaste-default-title) "-" paste-title)) ))
 
-(defun npaste-region ()
-  (interactive)
-  (dpaste-region (mark) (point) (npaste-dpaste-title)))
+;; (defun npaste-region ()
+;;   (interactive)
+;;   (bpa.st-post (buffer-substring-no-properties (point) (mark))))
 
-(defun npaste-buffer ()
+;; (defun npaste-buffer ()
+;;   (interactive)
+;;   (bpa.st-post (buffer-substring-no-properties (point-min) (point-max))))
+
+(defun paste-region ()
   (interactive)
-  (save-exursion
-    (mark-whole-buffer)
-    (dpaste-buffer (npaste-dpaste-title)) ))
+  (webpaste-paste-region))
+
+(defun paste-buffer ()
+  (interactive)
+  (webpaste-paste-buffer))
 
 (provide 'profile/paste)

@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (require 'vc-git)
 
 (which-function-mode)

@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (defun mode-overlay-at-pos ( pos mode-symbol )
   "determine if the point is in a flyspell overlay. given a overlay list
    which may be nil, translate via predicate into boolean values which

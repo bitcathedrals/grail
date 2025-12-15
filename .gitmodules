@@ -215,12 +215,6 @@
 	branch = master
 	ignore = dirty
 
-[submodule "emacs/dist/git/company-tabnine"]
-	path = emacs/dist/git/company-tabnine
-	url = https://github.com/TommyX12/company-tabnine.git
-	branch = master
-	ignore = dirty
-
 [submodule "emacs/dist/git/yaml-mode"]
 	path = emacs/dist/git/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode.git
@@ -355,5 +349,17 @@
 	path = emacs/dist/git/cond-let
 	url = https://github.com/tarsius/cond-let.git
 	ignore = dirty
- 	branch = main
+	branch = main
+
+[submodule "emacs/dist/transient"]
+	path = emacs/dist/transient
+	url = https://github.com/magit/transient
+        ignore = dirty
+        branch = main
+
+[submodule "emacs/dist/git/webpaste"]
+	path = emacs/dist/git/webpaste
+	url = https://github.com/etu/webpaste.el.git
+        ignore = dirty
+	branch = main
 

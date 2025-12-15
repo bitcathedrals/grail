@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (require 'buffer-status)
 
 (defun warn-if-dos-eol-in-buffer ()

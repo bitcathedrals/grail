@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (require 'macro-extensions)
 
 (defun async-build-basic ( prefix command callback &optional use-buffer chained )

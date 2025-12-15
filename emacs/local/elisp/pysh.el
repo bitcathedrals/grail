@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; no-byte-compile: t; -*-
+;; -*- lexical-binding: t; -*-
 
 (require 'subr-x)
 (require 'vc)
@@ -185,7 +185,7 @@
     (let*
       ((default-directory (pysh-repo-dir))
         (status (apply 'call-process
-                  (concat default-directory "/py.sh") ;; program
+                  "py.sh"                             ;; program
                   nil                                 ;; infile
                   (get-clean-pysh-buffer)             ;; output buffer
                   nil                                 ;; don't display

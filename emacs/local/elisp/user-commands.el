@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (require 'ucase-word)
 (require 'buffer-status)
 

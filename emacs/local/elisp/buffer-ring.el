@@ -1,5 +1,3 @@
-;; -*-no-byte-compile: t; -*-
-
 (require 'dynamic-ring)
 (require 'buffer-status)
 (require 'custom-key)
