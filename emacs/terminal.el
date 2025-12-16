@@ -73,6 +73,12 @@
 
   (eat "tmux"))
 
+;; zsh shell
+
+(defun hungry ()
+  (interactive)
+  (eat "zsh"))
+
 ;; eat
 
 (setq eat-term-name grail-terminal)
