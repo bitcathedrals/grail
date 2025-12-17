@@ -464,11 +464,15 @@
       (cond
         ((string-equal "gnu/linux"      system-type)  "systems/linux")
         ((string-equal "darwin"         system-type)  "systems/macos")
-        ((string-equal "berkeley-unix"  system-type)  "systems/freebsd")
+        ((string-equal "berkeley-unix"  system-type)  "systems/BSD")
         ((string-equal "gnu/windows-nt" system-type)  "systems/windows")) )
 
-    (grail-try-user-elisp
-      (concat "hosts/" (system-name)))
+    (let*
+      ((full-hostname (system-name))
+       (host (car (split-string full-hostname "\\."))))
+
+      (grail-try-user-elisp
+        (concat "hosts/" host)))
 
     (grail-try-user-elisp
       (concat "users/" (user-login-name))) )
