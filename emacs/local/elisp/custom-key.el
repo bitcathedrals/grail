@@ -110,39 +110,40 @@
     (puthash chord (custom-key-group-new chord description table) custom-keys-table)) )
 
 (defmacro custom-key-group ( description chord global &rest body )
-  `(progn
-     ;;
-     ;; unbind everything
-     ;;
+  (ignore-errors
+    `(progn
+       ;;
+       ;; unbind everything
+       ;;
 
-     ,@(mapcar
-         (lambda ( key-fn-pair )
-           `(keymap-local-unset ,(concat custom-key-prefix " " chord " " (car key-fn-pair)) ))
-         body)
+       ,@(mapcar
+           (lambda ( key-fn-pair )
+             `(keymap-local-unset ,(concat custom-key-prefix " " chord " " (car key-fn-pair)) ))
+           body)
 
-     ;; bind the keys
+       ;; bind the keys
 
-     ,@(mapcar
-         (lambda ( key-fn-pair )
-           `(,(if global
-                 'keymap-global-set
-                 'keymap-local-set)
+       ,@(mapcar
+           (lambda ( key-fn-pair )
+             `(,(if global
+                  'keymap-global-set
+                  'keymap-local-set)
 
-              ,(concat custom-key-prefix " " chord " " (car key-fn-pair))
+                ,(concat custom-key-prefix " " chord " " (car key-fn-pair))
 
-              ,(if (symbol-function (cdr key-fn-pair))
-                 `',(cdr key-fn-pair)
-                 (cdr key-fn-pair)) ))
-         body)
+                ,(if (symbol-function (cdr key-fn-pair))
+                   `',(cdr key-fn-pair)
+                   (cdr key-fn-pair)) ))
+           body)
 
-     ;; register for global help
-     (custom-key-group-register ,chord ,description ',body)
+       ;; register for global help
+       (custom-key-group-register ,chord ,description ',body)
 
-     ;; set a help key for this group
-     (,(if global
-	'keymap-global-set
-	'keymap-local-set)
-      (concat custom-key-prefix " " ,chord " h") (keybindings-help-local ,description ',body)) ))
+       ;; set a help key for this group
+       (,(if global
+           'keymap-global-set
+           'keymap-local-set)
+         (concat custom-key-prefix " " ,chord " h") (keybindings-help-local ,description ',body)) )))
 
 (custom-key-group "help" "h" t
   ("a" . apropos)
