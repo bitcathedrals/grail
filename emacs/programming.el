@@ -38,7 +38,8 @@
 
 ;; programming packages not dependent on third party support
 
-(use-grail-profiles 0 "code-highlighting" "code-formatting")
+;; "code-formatting" - filladapt is orphaned
+(use-grail-profiles 0 "code-highlighting")
 
 ;; higher level functionality
 
