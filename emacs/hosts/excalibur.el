@@ -6,6 +6,6 @@
 ;; LGC sans mono is Latin Greek Cryllic only. prefer the full DejaVu Sans Mono
 
 (setq
-  grail-font-family '("Cousine" "Oxygen" "Hack" "DejaVu Sans Mono")
+  grail-font-family '("Cousine" "Oxygen" "Hack" "DejaVu Sans Condensed" "DejaVu Sans Mono")
   grail-transparency 90
   grail-font-size 18)

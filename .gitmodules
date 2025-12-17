@@ -363,3 +363,6 @@
         ignore = dirty
 	branch = main
 
+[submodule "emacs/dist/git/transient"]
+	path = emacs/dist/git/transient
+	url = https://github.com/magit/transient.git
