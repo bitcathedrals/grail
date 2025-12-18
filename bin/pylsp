@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 VENV="emacs"
-pyenv activate $VENV
+pyenv virtualenvs | grep $VENV >/dev/null 2>&1 || pyenv activate $VENV
 
 exec pyenv exec pylsp $@
 
