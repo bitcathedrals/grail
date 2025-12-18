@@ -2,6 +2,8 @@
 
 ;; adaptive fill for maintaining indentation inside comments
 
+;; orphaned. on emacs orphanage. Going to drop it.
+
 (require 'filladapt)
 
 (add-hook 'emacs-lisp-mode-hook 'turn-on-filladapt-mode)

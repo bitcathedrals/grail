@@ -351,12 +351,6 @@
 	ignore = dirty
 	branch = main
 
-[submodule "emacs/dist/transient"]
-	path = emacs/dist/transient
-	url = https://github.com/magit/transient
-        ignore = dirty
-        branch = main
-
 [submodule "emacs/dist/git/webpaste"]
 	path = emacs/dist/git/webpaste
 	url = https://github.com/etu/webpaste.el.git

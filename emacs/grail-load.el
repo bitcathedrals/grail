@@ -65,7 +65,7 @@
       ((final-path-list elisp-dirs))
 
       (when grail-platform-load-path
-        (setq final-path-list (append grail-platform-load-path elisp-dirs)))
+        (setq final-path-list (append elisp-dirs grail-platform-load-path)))
 
       (setq load-path final-path-list))
 

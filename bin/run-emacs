@@ -44,18 +44,39 @@ function find_tools_emacs {
 }
 
 function find_default_emacs {
-  # generic find emacs - a little wasteful, but it couples to the rest of  the script
-  emacs="/usr"
-  emacs_launch="${emacs}/bin/emacs"
-  emacs_bin="${emacs}/bin/emacs"
-  emacsclient="${emacs}/emacsclient"
+  look="/usr/local/bin/"
+
+  if [[ -x "${look}emacs" ]]
+  then
+    emacs_launch="${look}emacs"
+    emacs_bin="${look}emacs"
+    emacsclient="${look}emacsclient"
+
+    emacs="${look}emacs"
+  fi
+    
+  if verify_emacs
+  then
+    return 0
+  fi
+
+  look="/usr/bin/"
+
+  if [[ -x "${look}emacs" ]]
+  then
+    emacs_launch="${look}emacs"
+    emacs_bin="${look}emacs"
+    emacsclient="${look}emacsclient"
+
+    emacs="${look}emacs"
+  fi
 
   if verify_emacs
   then
     return 0
-  else
-    return 1
   fi
+
+  return 1
 }
 
 function find_macos_emacs {

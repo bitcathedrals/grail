@@ -13,7 +13,12 @@
   (scroll-bar-mode -1)
   (menu-bar-mode -1) )
 
-(toggle-uniquify-buffer-names)
+(require 'uniquify)
+
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t) ; Optional: rename other buffers if one is killed
+(setq uniquify-ignore-buffers-re "^\\*") ; Optional: don't muck with special buffers
 
 (require 'mega-modeline)
 (setup-mega-modeline)
