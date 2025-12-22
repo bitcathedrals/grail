@@ -77,6 +77,7 @@
 
 (defun hungry ()
   (interactive)
+  (message "C-c C-e for buffer mode, C-c M-d for character mode.")
   (eat "zsh"))
 
 ;; eat
