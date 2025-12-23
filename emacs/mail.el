@@ -17,3 +17,6 @@
   bbdb-complete-name-allow-cycling t
   bbdb-use-pop-up nil)
 
+(defun email ()
+  (interactive)
+  (term "neomutt"))
