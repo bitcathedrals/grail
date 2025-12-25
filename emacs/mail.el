@@ -19,4 +19,7 @@
 
 (defun email ()
   (interactive)
-  (term "neomutt"))
+  (let
+    ((default-directory (getenv "HOME")))
+
+    (term "neomutt")))
