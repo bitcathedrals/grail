@@ -34,7 +34,7 @@
 
 (electric-indent-mode 0)
 
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 
 ;; programming packages not dependent on third party support
 
