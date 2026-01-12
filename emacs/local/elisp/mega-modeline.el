@@ -15,7 +15,9 @@
     battery-buffer))
 
 (defun mega-modeline-battery-apm ()
-  (call-process "apm" nil (get-battery-buffer-for-output) nil "-l")
+  (let
+    ((default-directory "~"))
+    (call-process "apm" nil (get-battery-buffer-for-output) nil "-l"))
 
   (with-current-buffer (get-battery-buffer)
     (let
@@ -25,7 +27,9 @@
         (setq mega-modeline-battery-level (concat percentage "%"))) )) )
 
 (defun mega-modeline-battery-pmset ()
-  (call-process "pmset" nil (get-battery-buffer-for-output) nil "-g" "batt")
+  (let
+    ((default-directory "~"))
+    (call-process "pmset" nil (get-battery-buffer-for-output) nil "-g" "batt"))
 
   (with-current-buffer (get-battery-buffer)
     (let
@@ -35,7 +39,9 @@
         (setq mega-modeline-battery-level percentage)) )) )
 
 (defun mega-modeline-battery-acpi ()
-  (call-process "acpi" nil (get-battery-buffer-for-output) nil)
+  (let
+    ((default-directory "~"))
+    (call-process "acpi" nil (get-battery-buffer-for-output) nil))
 
   (with-current-buffer (get-battery-buffer)
     (let
