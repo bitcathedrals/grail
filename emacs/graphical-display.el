@@ -304,6 +304,7 @@
 
     (set-face-background 'default personal-bg-color)
     (set-face-foreground 'default "grey55")
+    (set-face-attribute 'default nil :extend t)
 
     (display-faces-general)
     (display-mic-paren) ))
