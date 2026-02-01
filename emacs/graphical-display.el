@@ -139,20 +139,23 @@
   (let
     ((diff-bg-color "black")
 
-     (diff-selected-bg "DeepSkyBlue")
-     (diff-selected-fg "ForestGreen")
+     (diff-selected-bg "Aquamarine4")
+     (diff-selected-fg "white")
 
-     (diff-odd-bg "DeepSkyBlue")
-     (diff-odd-fg "firebrick4")
+     (diff-odd-bg "CadetBlue4")
+     (diff-odd-fg "white")
 
-     (diff-even-bg "DeepSkyBlue")
-     (diff-even-fg "firebrick4")
+     (diff-even-bg "Khahi4")
+     (diff-even-fg "white")
 
-     (diff-fine-bg "tan1")
-     (diff-fine-fg "aquamarine4")
+     (diff-fine-bg "bisque4")
+     (diff-fine-fg "white")
 
-     (diff-merge-bg "CornFlowerBlue")
-     (diff-merge-fg "DarkOrange3"))
+     (diff-merge-bg "seashell4")
+     (diff-merge-fg "white")
+
+     (diff-ancestor-bg "ivory4")
+     (diff-ancestor-bg "OliveDrab4"))
 
     (set-face-background 'ediff-current-diff-A diff-selected-bg)
     (set-face-foreground 'ediff-current-diff-A diff-selected-fg)
@@ -163,6 +166,9 @@
     (set-face-background 'ediff-current-diff-C diff-selected-bg)
     (set-face-foreground 'ediff-current-diff-C diff-selected-fg)
 
+    (set-face-background 'ediff-current-diff-Ancestor diff-selected-bg)
+    (set-face-foreground 'ediff-current-diff-Ancestor diff-selected-fg)
+
     (set-face-background 'ediff-even-diff-A diff-even-bg)
     (set-face-foreground 'ediff-even-diff-A diff-even-fg)
 
@@ -171,6 +177,9 @@
 
     (set-face-background 'ediff-even-diff-C diff-even-bg)
     (set-face-foreground 'ediff-even-diff-C diff-even-fg)
+
+    (set-face-background 'ediff-even-diff-Ancestor diff-even-bg)
+    (set-face-foreground 'ediff-even-diff-Ancestor diff-even-fg)
 
     (set-face-background 'ediff-odd-diff-A diff-odd-bg)
     (set-face-foreground 'ediff-odd-diff-A diff-odd-fg)
@@ -181,6 +190,9 @@
     (set-face-background 'ediff-odd-diff-C diff-odd-bg)
     (set-face-foreground 'ediff-odd-diff-C diff-odd-fg)
 
+    (set-face-background 'ediff-odd-diff-Ancestor diff-odd-bg)
+    (set-face-foreground 'ediff-odd-diff-Ancestor diff-odd-fg)
+
     (set-face-background 'ediff-fine-diff-A diff-fine-bg)
     (set-face-foreground 'ediff-fine-diff-A diff-fine-fg)
 
@@ -188,7 +200,10 @@
     (set-face-foreground 'ediff-fine-diff-B diff-fine-fg)
 
     (set-face-background 'ediff-fine-diff-C diff-merge-bg)
-    (set-face-foreground 'ediff-fine-diff-C diff-merge-fg) ))
+    (set-face-foreground 'ediff-fine-diff-C diff-merge-fg)
+
+    (set-face-background 'ediff-fine-diff-Ancestor diff-merge-bg)
+    (set-face-foreground 'ediff-fine-diff-Ancestor diff-merge-fg) ))
 
 (defun display-faces-for-whitespace-mode ()
   (set-face-background 'whitespace-tab "red")
