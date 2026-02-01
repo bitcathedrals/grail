@@ -2,8 +2,6 @@
 
 (require 'subr-x)
 
-(defvar grail-frame-width 120 "default width of the frame in characters")
-(defvar grail-frame-height 80 "default height of the frame in characters")
 (defvar grail-font-size 18 "default font size")
 (defvar grail-transparency 100 "default transparency is opaque")
 
@@ -141,20 +139,20 @@
   (let
     ((diff-bg-color "black")
 
-     (diff-selected-bg "steel blue")
-     (diff-selected-fg "gold")
+     (diff-selected-bg "DeepSkyBlue")
+     (diff-selected-fg "ForestGreen")
 
-     (diff-odd-bg "dark slate grey")
-     (diff-odd-fg "black")
+     (diff-odd-bg "DeepSkyBlue")
+     (diff-odd-fg "firebrick4")
 
-     (diff-even-bg "dark slate grey")
-     (diff-even-fg "black")
+     (diff-even-bg "DeepSkyBlue")
+     (diff-even-fg "firebrick4")
 
-     (diff-fine-bg "linkColor")
-     (diff-fine-fg "black")
+     (diff-fine-bg "tan1")
+     (diff-fine-fg "aquamarine4")
 
-     (diff-merge-bg "turquoise3")
-     (diff-merge-fg "black"))
+     (diff-merge-bg "CornFlowerBlue")
+     (diff-merge-fg "DarkOrange3"))
 
     (set-face-background 'ediff-current-diff-A diff-selected-bg)
     (set-face-foreground 'ediff-current-diff-A diff-selected-fg)
