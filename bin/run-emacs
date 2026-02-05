@@ -147,7 +147,12 @@ function emacs_invoke {
     upstream_file=$1
     shift
 
-    ancestor_file=$1
+    ancestor_file=""
+
+    if [[ $# -gt 0 ]]
+    then
+      ancestor_file=$1
+    fi
 
     if [[ -n $ancestor_file ]]
     then
