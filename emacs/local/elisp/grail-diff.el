@@ -132,15 +132,12 @@
 ;; merging
 ;;
 
-(defun grail-diff-get-merge-buffer (local-file upstream-file)
-  (get-buffer-create local-file local-file upstream-file))
-
 (defun grail-diff-merge-elisp (file-local file-upstream)
   (grail-diff-open-session)
 
   (ediff-merge-files
-    (find-file-noselect file-local)
-    (find-file-noselect file-upstream) ))
+    (find-file-noselect file-upstream)
+    (find-file-noselect file-local) ))
 
 (defun grail-diff-merge-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-open-session)
