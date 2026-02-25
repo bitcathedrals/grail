@@ -3,6 +3,12 @@
 VERBOSE=""
 DEBUG=""
 
+ELISP='false'
+ELISP='false'
+DIFF='false'
+MERGE='false'
+NO_INIT='false'
+
 system_name=$(uname)
 
 function verbosity {
@@ -130,6 +136,11 @@ function emacs_invoke {
     done
   fi
 
+  if [[ "$NO_INIT" == 'true' ]]
+  then
+    exec $emacs_launch -q
+  fi
+
   if [[ "$ELISP" == 'true' ]]
   then
     verbosity "executing code = " $code
@@ -138,37 +149,28 @@ function emacs_invoke {
 
   if [[ "$DIFF" == 'true' ]]
   then
-    # assign arguments to positional
-    set -- "${arguments[@]}"
 
-    local_file=$1
-    shift
-
-    upstream_file=$1
-    shift
-
-    ancestor_file=""
-
-    if [[ $# -gt 0 ]]
+    if [[ ${#arguments[@]} -lt 2 ]]
     then
-      ancestor_file=$1
+      echo "run-emacs: diff requires at least two files: upstream, and local" >/dev/stderr 2>&1
+      exit 1
     fi
 
-    if [[ -n $ancestor_file ]]
-    then
-      verbosity "diff of local: $local_file and upstream: $upstream_file and $ancestor_file"
-      verbosity exec $emacsclient -n -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
+    local_file=${arguments[0]}
+    upstream_file=${arguments[1]}
 
-      exec $emacsclient -n -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
-    else
-      verbosity "diff of local: $local_file and upstream: $upstream_file"
-      verbosity exec $emacsclient -n -e "(grail-diff-elisp \"$local_file\" \"$upstream_file\")"
+    # if [[ -n $ancestor_file ]]
+    # then
+    #   verbosity "diff of local: $local_file and upstream: $upstream_file and $ancestor_file"
+    #   verbosity exec $emacsclient -n -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
 
-      exec $emacsclient -n -e "(grail-diff-elisp \"$local_file\" \"$upstream_file\")"
-    fi
+    #   exec $emacsclient -n -e "(grail-diff-ancestor-elisp \"$upstream_file\" \"$local_file\" \"$ancestor_file\")"
+    # else
+
+    # recusive edit and the progn form makes the elisp code eval wait
+    verbosity "diff of local:  upstream: $upstream_file and $local_file"
+    exec $emacsclient -e "(progn (grail-diff-elisp \\\"$local_file\\\" \\\"$upstream_file\\\" (recursive-edit))"
   fi
-
-  set -- "${arguments[@]}"
 
   if [[ $# -gt 0 ]]
   then
@@ -182,16 +184,16 @@ function emacs_invoke {
   if [[ $launch_code -gt 0 ]]
   then
     return $launch_code
+    disown %1
   fi
 
-  disown %1
   return 0
 }
 
 for arg in $@
 do
   case $arg in
-    "-vv")
+    "-v")
       VERBOSE='true'
       continue
     ;;
@@ -203,8 +205,16 @@ do
       ELISP='true'
       continue
     ;;
+    "-q")
+      NO_INIT='true'
+      continue
+    ;;
     "^")
      DIFF='true'
+     continue
+    ;;
+    "+")
+     MERGE='true'
      continue
     ;;
   esac

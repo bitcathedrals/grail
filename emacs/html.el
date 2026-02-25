@@ -9,12 +9,11 @@
                         auto-mode-alist))
 
 (defun html-mode/configuration ()
-  (company-mode)
-  (setq company-backends (cons 'company-capf company-backends))
+;;  (company-mode)
+;;  (setq company-backends (cons 'company-capf company-backends))
 
   (programming-mode-generic 'html nil html-mode-config/name)
 
-  (dwim-tab-localize-context
-    (dwim-tab-make-expander 'dwim-tab/after-word 'company-complete)) )
+  (dwim-tab-make-expander 'dwim-tab/after-word 'company-complete))
 
 (add-hook 'html-mode-hook 'html-mode/configuration)
