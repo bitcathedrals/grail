@@ -149,7 +149,6 @@ function emacs_invoke {
 
   if [[ "$DIFF" == 'true' ]]
   then
-
     if [[ ${#arguments[@]} -lt 2 ]]
     then
       echo "run-emacs: diff requires at least two files: upstream, and local" >/dev/stderr 2>&1
