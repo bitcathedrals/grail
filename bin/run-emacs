@@ -158,17 +158,10 @@ function emacs_invoke {
     local_file=${arguments[0]}
     upstream_file=${arguments[1]}
 
-    # if [[ -n $ancestor_file ]]
-    # then
-    #   verbosity "diff of local: $local_file and upstream: $upstream_file and $ancestor_file"
-    #   verbosity exec $emacsclient -n -e "(grail-diff-ancestor-elisp \"$local_file\" \"$upstream_file\" \"$ancestor_file\")"
-
-    #   exec $emacsclient -n -e "(grail-diff-ancestor-elisp \"$upstream_file\" \"$local_file\" \"$ancestor_file\")"
-    # else
-
     # recusive edit and the progn form makes the elisp code eval wait
-    verbosity "diff of local:  upstream: $upstream_file and $local_file"
-    exec $emacsclient -e "(progn (grail-diff-elisp \\\"$local_file\\\" \\\"$upstream_file\\\" (recursive-edit))"
+    verbosity "diff of local:$local_file and upstream:$upstream_file"
+
+    exec $emacsclient -e '(progn (grail-diff-elisp "$LOCAL" "$REMOTE" (recursive-edit)))'
   fi
 
   if [[ $# -gt 0 ]]
