@@ -7,7 +7,7 @@
 (require 'utilities)
 (require 'subr-x)
 
-(require 'pysh)
+(require 'vcsh)
 
 (require 'eglot)
 

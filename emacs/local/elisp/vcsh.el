@@ -199,4 +199,4 @@
           (pop-to-buffer (get-cvsh-buffer)) )
         (message "py.sh failed with: %d" status)) ) ))
 
-(provide 'cvsh)
+(provide 'vcsh)
