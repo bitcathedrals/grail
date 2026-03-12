@@ -47,7 +47,7 @@
 (let
   ((default-directory "~/code/grail/tests/ediff/"))
 
-  (grail-diff-elisp "local.c" "upstream.c"))
+  (grail-diff-elisp "upstream.c" "local.c"))
 
 ;;
 ;; test auto refine
