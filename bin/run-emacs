@@ -164,10 +164,10 @@ function emacs_invoke {
     exec $emacsclient -e '(progn (grail-diff-elisp "$LOCAL" "$REMOTE" (recursive-edit)))'
   fi
 
-  if [[ $# -gt 0 ]]
+  if [[ ${#arguments[@]} -gt 0 ]]
   then
     verbosity "remaining arguments - exec emacsclient: ${arguments[@]}"
-    exec $emacsclient $@
+    exec $emacsclient ${arguments[@]}
   fi
 
   $emacs_launch >/dev/null &
