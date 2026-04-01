@@ -62,9 +62,9 @@
 
    re-label the ediff windows
   "
-  (grail-diff-apply-visual ediff-buffer-A 'grail-diff-A-guard "{upstream}")
-  (grail-diff-apply-visual ediff-buffer-B 'grail-diff-B-guard "{local}")
-  (grail-diff-apply-visual ediff-buffer-C 'grail-diff-C-guard "{merge}")
+  (grail-diff-apply-visual ediff-buffer-A 'grail-diff-A-guard "{upstream} ")
+  (grail-diff-apply-visual ediff-buffer-B 'grail-diff-B-guard "{local} ")
+  (grail-diff-apply-visual ediff-buffer-C 'grail-diff-C-guard "{merge} ")
   (force-mode-line-update) )
 
 ;;

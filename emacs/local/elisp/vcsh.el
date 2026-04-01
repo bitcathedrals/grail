@@ -5,14 +5,14 @@
 
 (defun get-clean-cvsh-buffer ()
   (let
-    ((py-buffer (get-buffer-create "*py.sh output*")))
+    ((py-buffer (get-buffer-create "*vc output*")))
 
     (with-current-buffer py-buffer
       (erase-buffer)
       py-buffer) ))
 
 (defun get-cvsh-buffer ()
-  (get-buffer-create "*py.sh output*"))
+  (get-buffer-create "*vc output*"))
 
 ;; repl    = execute ptpython in pyenv
 ;; global-virtual
@@ -180,12 +180,12 @@
                            :candidates cvsh-commands
                            :fuzzy-match t)
                 :preselect "info"
-                :buffer "py.sh commands")))
+                :buffer "vc commands")))
 
     (let*
       ((default-directory (cvsh-repo-dir))
         (status (apply 'call-process
-                  "py.sh"                             ;; program
+                  "vc"                             ;; program
                   nil                                 ;; infile
                   (get-clean-cvsh-buffer)             ;; output buffer
                   nil                                 ;; don't display
@@ -197,6 +197,6 @@
             (keymap-local-set "q" 'cvsh-quit))
 
           (pop-to-buffer (get-cvsh-buffer)) )
-        (message "py.sh failed with: %d" status)) ) ))
+        (message "vc failed with: %d" status)) ) ))
 
 (provide 'vcsh)
