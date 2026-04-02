@@ -63,13 +63,20 @@
 
 (require 'cc-mode)
 
-(setq auto-mode-alist (if (eq use-tree-sitter t)
-                        (append '(("\\.c\\'"       . c-ts-mode)
-                                  ("\\.cc\\'"      . c++-ts-mode)
+
+(setq auto-mode-alist (if (and
+                            (eq use-tree-sitter t)
+                            (treesit-language-available-p 'c))
+                        (append '(("\\.c\\'" . c-ts-mode)) auto-mode-alist)
+                        (append '(("\\.c\\'" . c-mode)) auto-mode-alist)))
+
+(setq auto-mode-alist (if (and
+                            (eq use-tree-sitter t)
+                            (treesit-language-available-p 'cpp))
+                        (append '(("\\.cc\\'"      . c++-ts-mode)
                                   ("\\.cpp\\'"     . c++-ts-mode)
                                   ("\\.h\\'"       . c++-ts-mode)) auto-mode-alist)
-                        (append '(("\\.c\\'"       . c-mode)
-                                  ("\\.cc\\'"      . c++-mode)
+                        (append '(("\\.cc\\'"      . c++-mode)
                                   ("\\.cpp\\'"     . c++-mode)
                                   ("\\.h\\'"       . c++-mode)) auto-mode-alist)))
 
@@ -96,7 +103,7 @@
 (defun c++-mode-setup ()
   (programming-mode-generic 'c++))
 
-(add-hook 'c++-mode-hook 'c++mode-setup t)
+(add-hook 'c++-mode-hook 'c++-mode-setup t)
 
 ;;
 ;; bash mode
