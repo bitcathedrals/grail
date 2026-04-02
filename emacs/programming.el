@@ -81,10 +81,8 @@
                                   ("\\.h\\'"       . c++-mode)) auto-mode-alist)))
 
 (defun c-mode-generic-setup ()
-  (c-set-style "linux")                 ;; base off of linux style
-  (setq c-basic-offset 2)               ;; tabs are 2 spaces
-
-  (c-set-offset 'substatement-open '0)  ;; hanging braces
+  (setq c-basic-offset 4)
+  (setq indent-tabs-mode nil)
 
   ;; auto-hungry newline and whitespace delete
   (c-toggle-auto-hungry-state 1))
