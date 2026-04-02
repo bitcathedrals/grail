@@ -6,6 +6,7 @@
 (require 'borg-repl)
 
 (require 'grail-diff)
+
 (grail-diff-configure)
 
 ;;
@@ -13,6 +14,8 @@
 ;;
 
 (require 'treesit)
+
+(setq treesit-font-lock-level 4)
 
 (require 'eglot)
 
