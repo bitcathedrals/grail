@@ -61,6 +61,11 @@
 ;; C/C++
 ;;
 
+(defun makefile-tuning ()
+  (setq indent-tabs-mode t))
+
+(add-hook 'makefile-mode-hook 'makefile-tuning)
+
 (require 'cc-mode)
 
 
@@ -81,8 +86,10 @@
                                   ("\\.h\\'"       . c++-mode)) auto-mode-alist)))
 
 (defun c-mode-generic-setup ()
-  (setq c-basic-offset 4)
-  (setq indent-tabs-mode nil)
+  (setq
+    c-default-style "linux"
+    c-basic-offset 4
+    indent-tabs-mode nil)
 
   ;; auto-hungry newline and whitespace delete
   (c-toggle-auto-hungry-state 1))
