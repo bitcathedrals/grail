@@ -94,14 +94,14 @@
   ;; auto-hungry newline and whitespace delete
   (c-toggle-auto-hungry-state 1))
 
-(add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
+ (add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
 
 (defconst c-mode-name "C")
 
 (defun c-mode-setup ()
   (programming-mode-generic 'c))
 
-(add-hook 'c-mode-hook 'c-mode-setup t)
+ (add-hook 'c-mode-hook 'c-mode-setup t)
 
 (defconst c-mode-name "C++")
 
