@@ -85,6 +85,15 @@
                                   ("\\.cpp\\'"     . c++-mode)
                                   ("\\.h\\'"       . c++-mode)) auto-mode-alist)))
 
+(defun cc-syntax-offset ()
+  (interactive)
+
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'defun-open 0)
+  )
+
+(add-hook 'c-mode-common-hook 'cc-syntax-offset)
+
 (defun c-mode-generic-setup ()
   (setq
     c-default-style "linux"
