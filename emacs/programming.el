@@ -89,8 +89,7 @@
   (interactive)
 
   (c-set-offset 'substatement-open 0)
-  (c-set-offset 'defun-open 0)
-  )
+  (c-set-offset 'defun-open 0))
 
 (add-hook 'c-mode-common-hook 'cc-syntax-offset)
 
