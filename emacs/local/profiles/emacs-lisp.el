@@ -11,7 +11,7 @@
 ;;
 
 (setq
-  lisp-indent-offset 2)
+  lisp-indent-offset 4)
 
 ;;
 ;; search functions
