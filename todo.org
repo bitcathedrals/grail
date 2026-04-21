@@ -1,0 +1,8 @@
+* critical fixes
+
+* critical feature work
+** get ediff-versions going
+
+* get commands with argument handling working in vcsh.el 
+- optional handling
+- variable length supplied argument lists
