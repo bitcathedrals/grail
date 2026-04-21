@@ -142,7 +142,7 @@
 
   (kill-buffer (get-cvsh-buffer)) )
 
-(defun cvsh ()
+(defun vcsh ()
   (interactive)
   (let
     ((command (helm
