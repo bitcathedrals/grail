@@ -116,6 +116,10 @@
     (message "grail-diff-elisp: arguments 2way %s %s not valid"
              file-local file-upstream)) )
 
+(defun grail-diff-revision (file)
+    (interactive "fFile to diff")
+    (ediff-revision file '(grail-diff-open-session)))
+
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-3way-setup)
 
@@ -172,8 +176,6 @@
   (interactive)
 
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
-  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
-
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-keys)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
