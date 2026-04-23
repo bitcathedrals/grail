@@ -96,8 +96,8 @@
                             buffer-file-name))
                     (message "cvsh: could not find a VC directory. exiting.")) )) ))
 
-(defun cvsh-args (command-name)
-    (split-string(read-from-minibuffer "vcsh parameters: " "-no-color")))
+(defun cvsh-args (command)
+    (cons command (split-string(read-from-minibuffer "vcsh parameters: " "-no-color"))))
 
 (defun cvsh-quit ()
     (interactive)
