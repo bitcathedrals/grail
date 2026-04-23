@@ -78,34 +78,7 @@
 
                                  "help"
                                  "man")))
-
-(defconst cvsh-argument-prompts
-    '(("commit"    . "LINE, LINE")
-         ("tools-brew-install" . "PACKAGES")
-         ("dependencies-install" . "PACKAGES")
-
-         ("bug" . "NAME")
-         ("begin" . "NAME")
-
-         ("bug" . "NAME")
-         ("begin" . "NAME")
-
-         ("goto" . "BRANCH")
-
-         ("beta" . "DESCRIPTION")
-         ("tag" . "VERSION, DESCRIPTION")
-
-         ("diff" . "OLDER_RANGE, NEWER_RANGE")
-         ("TAG" . "VERSION, DESCRIPTION")
          ))
-
-(defun cvsh-args-for (command)
-    (let
-        ((prompt (assoc command cvsh-argument-prompts)))
-
-        (if prompt
-            (cdr prompt)
-            nil) ))
 
 (defun cvsh-repo-dir ()
     (let
@@ -123,16 +96,8 @@
                             buffer-file-name))
                     (message "cvsh: could not find a VC directory. exiting.")) )) ))
 
-
 (defun cvsh-args (command-name)
-    (if (member command-name cvsh-with-arguments)
-        (let
-            ((args (read-from-minibuffer (concat "cvsh args [" (cvsh-args-for command-name) "]: "))))
-
-            (if args
-                (cons command-name (split-string args))
-                (error (concat "cvsh: no args given for command with args: " command-name))) )
-        (list command-name)) )
+    (split-string(read-from-minibuffer "vcsh parameters: " "-no-color")))
 
 (defun cvsh-quit ()
     (interactive)
