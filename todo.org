@@ -1,8 +1,15 @@
 * critical fixes
 
-* critical feature work
-** get ediff-versions going
+* finish reworking vcsh.el
+- some kind of support for ediff-revision; put the selected revision
+  into the kill ring, or some such thing. Just need output from commit
+  command first
 
-* get commands with argument handling working in vcsh.el 
-- optional handling
-- variable length supplied argument lists
+* enhancements
+- fix the colors in diff mode
+
+* bugs
+
+
+
+
