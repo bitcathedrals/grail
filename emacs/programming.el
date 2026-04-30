@@ -95,9 +95,12 @@
 
 (defun c-mode-generic-setup ()
   (setq
-    c-default-style "linux"
     c-basic-offset 4
     indent-tabs-mode nil)
+
+  (setq c-default-style '((c++-mode . "stroustrup")
+                          (c-mode . "linux")
+                          (other . "k&r"))) )
 
   ;; auto-hungry newline and whitespace delete
   (c-toggle-auto-hungry-state 1))
