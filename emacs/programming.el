@@ -100,9 +100,8 @@
 
   (setq c-default-style '((c++-mode . "stroustrup")
                           (c-mode . "linux")
-                          (other . "k&r"))) )
+                          (other . "k&r")))
 
-  ;; auto-hungry newline and whitespace delete
   (c-toggle-auto-hungry-state 1))
 
  (add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
