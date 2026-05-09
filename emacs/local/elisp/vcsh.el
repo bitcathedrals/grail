@@ -16,69 +16,68 @@
 
 (defconst cvsh-commands (sort
                             '("tools-zshrc"
-                                 "tools-custom"
-                                 "tools-prompt"
+                              "tools-custom"
+                              "tools-prompt"
 
-                                 "tools-brew-init"
-                                 "tools-brew-upgrade"
-                                 "tools-brew-install"
-                                 "tools-brew-rebuild"
+                              "tools-brew-init"
+                              "tools-brew-upgrade"
+                              "tools-brew-install"
+                              "tools-brew-rebuild"
 
-                                 "dependencies-init"
-                                 "dependencies-upgrade"
-                                 "dependencies-install"
-                                 "dependencies-rebuild"
+                              "dependencies-init"
+                              "dependencies-upgrade"
+                              "dependencies-install"
+                              "dependencies-rebuild"
 
-                                 "modadd"
-                                 "modinit"
-                                 "modpull"
-                                 "modrm"
+                              "modadd"
+                              "modinit"
+                              "modpull"
+                              "modrm"
 
-                                 "begin"
-                                 "end"
-                                 "bug"
-                                 "close"
+                              "begin"
+                              "end"
+                              "bug"
+                              "close"
 
-                                 "goto"
-                                 "beta"
-                                 "tag"
-                                 "diff"
+                              "goto"
+                              "beta"
+                              "tag"
+                              "diff"
+                              
+                              "report"
+                              "status"
 
-                                 "report"
-                                 "status"
+                              "goto"
 
-                                 "goto"
+                              "verify"
 
-                                 "verify"
+                              "commit"
+                              "show"
+                              "get"
+                              "rebase"
+                              "patch"
 
-                                 "commit"
-                                 "show"
-                                 "get"
-                                 "rebase"
-                                 "patch"
+                              "pending"
+                              "list"
 
-                                 "pending"
-                                 "list"
+                              "history"
+                              "ahead"
+                              "behind"
 
-                                 "history"
-                                 "ahead"
-                                 "behind"
+                              "up"
+                              "down"
+                              "merge"
+                              "integrate"
+                              "publish"
+                              "cat"
+                              "rb"
 
-                                 "up"
-                                 "down"
-                                 "merge"
-                                 "integrate"
-                                 "publish"
-                                 "cat"
-                                 "rb"
+                              "check"
+                              "start"
+                              "release"
 
-                                 "check"
-                                 "start"
-                                 "release"
-
-                                 "help"
-                                 "man")))
-         ))
+                              "help"
+                              "man")))
 
 (defun cvsh-repo-dir ()
     (let

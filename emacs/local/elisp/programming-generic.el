@@ -212,7 +212,7 @@
                               nil         ;; read - dont eval as lisp
                               nil         ;; history
                               "update"    ;; default value
-                              nil)) )    ;; inherit input method ? nope don't care.
+                              nil)) )    ;; inherit input method ? nope Don't care.
 
                   (if (string-equal type "release")
                     (concat "(release): " message "\n" (delta-status))

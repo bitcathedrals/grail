@@ -20,6 +20,11 @@
 ;; disable treesit entirely until font lock issues are resolved
 (setq use-tree-sitter nil)
 
+(defun use-tree-sitter (lang)
+  (and
+   (eq use-tree-sitter t)
+   (treesit-language-available-p lang)))
+
 (require 'eglot)
 
 (require 'lsp-mode)
@@ -69,15 +74,11 @@
 (require 'cc-mode)
 
 
-(setq auto-mode-alist (if (and
-                            (eq use-tree-sitter t)
-                            (treesit-language-available-p 'c))
+(setq auto-mode-alist (if (use-tree-sitter 'c)
                         (append '(("\\.c\\'" . c-ts-mode)) auto-mode-alist)
                         (append '(("\\.c\\'" . c-mode)) auto-mode-alist)))
 
-(setq auto-mode-alist (if (and
-                            (eq use-tree-sitter t)
-                            (treesit-language-available-p 'cpp))
+(setq auto-mode-alist (if (use-tree-sitter 'cpp)
                         (append '(("\\.cc\\'"      . c++-ts-mode)
                                   ("\\.cpp\\'"     . c++-ts-mode)
                                   ("\\.h\\'"       . c++-ts-mode)) auto-mode-alist)
@@ -104,7 +105,7 @@
 
   (c-toggle-auto-hungry-state 1))
 
- (add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
+(add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
 
 (defconst c-mode-name "C")
 
@@ -127,9 +128,7 @@
 (require 'sh-script)
 
 (setq auto-mode-alist (append
-                        (if (and
-                              (eq use-tree-sitter t)
-                              (treesit-language-available-p 'bash))
+                        (if (use-tree-sitter 'bash)
                           '(("\\.sh\\'" . bash-ts-mode))
                           '(("\\.sh\\'" . bash-mode)))
                         auto-mode-alist))
@@ -157,9 +156,7 @@
 ;;
 
 (setq auto-mode-alist (append
-                        (if (and
-                              (eq use-tree-sitter t)
-                              (treesit-language-available-p 'python))
+                        (if (use-tree-sitter 'python)
                           '(("\\.py\\'" . python-ts-mode))
                           '(("\\.py\\'" . python-mode)))
                         auto-mode-alist))
@@ -209,9 +206,7 @@
 ;;
 
 (setq auto-mode-alist (append
-                        (if (and
-                              (eq use-tree-sitter t)
-                              (treesit-language-available-p 'java))
+                        (if (use-tree-sitter 'java)
                           '(("\\.java\\'" . java-ts-mode))
                           '(("\\.java\\'" . java-mode)))
                         auto-mode-alist))
@@ -230,9 +225,7 @@
 (defconst html-mode-config/name "html")
 
 (setq auto-mode-alist (append
-                        (if (and
-                              (eq use-tree-sitter t)
-                              (treesit-language-available-p 'html))
+                        (if (use-tree-sitter 'html)
                           '(("\\.html\\'" . html-ts-mode))
                           '(("\\.html\\'" . html-mode)))
                         auto-mode-alist))
