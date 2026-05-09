@@ -4,199 +4,134 @@
 (require 'vc)
 
 (defun get-clean-cvsh-buffer ()
-  (let
-    ((py-buffer (get-buffer-create "*vc output*")))
+    (let
+        ((py-buffer (get-buffer-create "*vc output*")))
 
-    (with-current-buffer py-buffer
-      (erase-buffer)
-      py-buffer) ))
+        (with-current-buffer py-buffer
+            (erase-buffer)
+            py-buffer) ))
 
 (defun get-cvsh-buffer ()
-  (get-buffer-create "*vc output*"))
-
-;; repl    = execute ptpython in pyenv
-;; global-virtual
-;; simple     = <pkg> do a simple pyenv pip install without pipenv
-
-;; modadd <1> <2> <3>  = add a submodule where 1=repo 2=branch 3=localDir (commit after)
-;; modupdate <module>  = pull the latest version of the module
-;; modrm  <submodule>  = delete a submodule
-
-;; track <1> <2>  = set upstream tracking 1=remote 2=branch
-;; tag-alpha  <feat> <msg> = create an alpha tag with the feature branch name and message
-;; tag-beta   <feat> <msg> = create a beta tag with the devel branch feature and message
-
-;; start      = initiate an EDITOR session to update VERSION in python.sh, reload config,
+    (get-buffer-create "*vc output*"))
 
 (defconst cvsh-commands (sort
-                          '("tools-unix"
-                             "tools-zshrc"
-                             "tools-custom"
-                             "tools-prompt"
+                            '("tools-zshrc"
+                              "tools-custom"
+                              "tools-prompt"
 
-                             "python-versions"
-                             "project-virtual"
-                             "global-virtual"
-                             "virtual-destroy"
-                             "project-destroy"
-                             "global-destroy"
-                             "virtual-list"
-                             "virtual-current"
+                              "tools-brew-init"
+                              "tools-brew-upgrade"
+                              "tools-brew-install"
+                              "tools-brew-rebuild"
 
-                             "minimal"
-                             "bootstrap"
-                             "pipfile"
-                             "project"
-                             "show-paths"
-                             "add-paths"
-                             "rm-paths"
-                             "site"
-                             "test"
-                             "python"
-                             "run"
+                              "dependencies-init"
+                              "dependencies-upgrade"
+                              "dependencies-install"
+                              "dependencies-rebuild"
 
-                             "versions"
-                             "locked"
-                             "all"
-                             "update"
-                             "remove"
-                             "list"
+                              "modadd"
+                              "modinit"
+                              "modpull"
+                              "modrm"
 
-                             "build"
-                             "buildset"
-                             "mkrelease"
-                             "runner"
+                              "begin"
+                              "end"
+                              "bug"
+                              "close"
 
-                             "modinit"
-                             "modall"
+                              "goto"
+                              "beta"
+                              "tag"
+                              "diff"
+                              
+                              "report"
+                              "status"
 
-                             "info"
-                             "verify"
-                             "status"
-                             "fetch"
-                             "pull"
-                             "staged"
-                             "merges"
-                             "releases"
-                             "history"
-                             "summary"
-                             "delta"
-                             "ahead"
-                             "behind"
-                             "release-report"
-                             "status-report"
+                              "goto"
 
-                             "graph"
-                             "upstream"
-                             "sync"
-                             "check"
+                              "verify"
 
-                             "release"
-                             "upload"
+                              "commit"
+                              "show"
+                              "get"
+                              "rebase"
+                              "patch"
 
-                             ;; interactive commands
+                              "pending"
+                              "list"
 
-                             "global-virtual"
-                             "simple"
-                             "modadd"
-                             "modupdate"
+                              "history"
+                              "ahead"
+                              "behind"
 
-                             "track"
-                             "alpha"
-                             "beta"
+                              "up"
+                              "down"
+                              "merge"
+                              "integrate"
+                              "publish"
+                              "cat"
+                              "rb"
 
-                             "start")
-                          'string-lessp))
+                              "check"
+                              "start"
+                              "release"
 
-(defconst cvsh-with-arguments
-  '("global-virtual"
-    "simple"
-    "modadd"
-    "modupdate"
-    "track"
-    "alpha"
-    "beta"
-    "start"))
-
-(defconst cvsh-argument-prompts
-  '(("global-virtual" . "NAME,PYTHON_VERSION")
-    ("simple"    . "PKG")
-    ("modadd"    . "REPO,BRANCH,LOCALDIR")
-    ("modupdate" . "MODULE")
-    ("track"     . "REMOTE,BRANCH")
-    ("alpha"      . "FEAT,MSG")
-    ("beta"      . "FEAT,MSG")
-    ("start"     . "VERSION") ))
-
-(defun cvsh-args-for (command)
-  (let
-    ((prompt (assoc command cvsh-argument-prompts)))
-
-    (if prompt
-      (cdr prompt)
-      nil) ))
+                              "help"
+                              "man")))
 
 (defun cvsh-repo-dir ()
-  (let
-    ((directory (vc-root-dir)))
-
-    (if directory
-      directory
-      (let
-        ((found (call-interactively 'helm-find-files)))
-
-        (if found
-          (with-current-buffer found
-            (if (equal major-mode 'dired-mode)
-              (dired-current-directory)
-              buffer-file-name))
-          (message "cvsh: could not find a VC directory. exiting.")) )) ))
-
-
-(defun cvsh-args (command-name)
-  (if (member command-name cvsh-with-arguments)
     (let
-      ((args (read-from-minibuffer (concat "cvsh args [" (cvsh-args-for command-name) "]: "))))
+        ((directory (vc-root-dir)))
 
-      (if args
-        (cons command-name (split-string args))
-        (error (concat "cvsh: no args given for command with args: " command-name))) )
-    (list command-name)) )
+        (if directory
+            directory
+            (let
+                ((found (call-interactively 'helm-find-files)))
+
+                (if found
+                    (with-current-buffer found
+                        (if (equal major-mode 'dired-mode)
+                            (dired-current-directory)
+                            buffer-file-name))
+                    (message "cvsh: could not find a VC directory. exiting.")) )) ))
+
+(defun cvsh-args (command)
+    (cons command (split-string(read-from-minibuffer "vcsh parameters: " "-no-color"))))
 
 (defun cvsh-quit ()
-  (interactive)
+    (interactive)
 
-  (other-window 1)
-  (delete-other-windows)
+    (other-window 1)
+    (delete-other-windows)
 
-  (kill-buffer (get-cvsh-buffer)) )
+    (kill-buffer (get-cvsh-buffer)) )
 
-(defun cvsh ()
-  (interactive)
-  (let
-    ((command (helm
-                :sources (helm-build-sync-source
-                           "commands"
-                           :candidates cvsh-commands
-                           :fuzzy-match t)
-                :preselect "info"
-                :buffer "vc commands")))
+(defun vcsh ()
+    (interactive)
+    (let
+        ((command (helm
+                      :sources (helm-build-sync-source
+                                   "commands"
+                                   :candidates cvsh-commands
+                                   :fuzzy-match t)
+                      :preselect "info"
+                      :buffer "vc commands")))
 
-    (let*
-      ((default-directory (cvsh-repo-dir))
-        (status (apply 'call-process
-                  "vc"                             ;; program
-                  nil                                 ;; infile
-                  (get-clean-cvsh-buffer)             ;; output buffer
-                  nil                                 ;; don't display
-                  (cvsh-args command)) ))             ;; cvsh command and sometimes args
+        (let*
+            ((default-directory (cvsh-repo-dir))
+                (status (apply 'call-process
+                            "vc"                             ;; program
+                            nil                                 ;; infile
+                            (get-clean-cvsh-buffer)             ;; output buffer
+                            nil                                 ;; don't display
+                            (cvsh-args command)) ))             ;; cvsh command and sometimes args
 
-      (if (equal status 0)
-        (progn
-          (with-current-buffer (get-cvsh-buffer)
-            (keymap-local-set "q" 'cvsh-quit))
+            (if (equal status 0)
+                (progn
+                    (with-current-buffer (get-cvsh-buffer)
+                        (keymap-local-set "q" 'cvsh-quit))
 
-          (pop-to-buffer (get-cvsh-buffer)) )
-        (message "vc failed with: %d" status)) ) ))
+                    (pop-to-buffer (get-cvsh-buffer)) )
+                (message "vc failed with: %d" status)) ) ))
 
 (provide 'vcsh)

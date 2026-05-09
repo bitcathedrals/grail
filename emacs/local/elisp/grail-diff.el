@@ -1,5 +1,5 @@
 ;;
-;; grail-ediff.el
+;; grail-diff.el
 ;;
 ;; customization of ediff to make it more functional, intuitive and robust.
 ;;
@@ -46,26 +46,28 @@
 (defun grail-diff-quit-message ()
   (message "grail-diff-quit-message run"))
 
-(defun grail-diff-apply-visual (buffer guard label)
+(defun grail-diff-apply-visual (buffer label)
   (when (bufferp buffer)
     (with-current-buffer buffer
-      (when (not (boundp guard))
+      (when (not (boundp 'grail-diff-done))
         (let
           ((first-elm (car mode-line-format))
            (rest-elm  (cdr mode-line-format)))
 
           (setq mode-line-format (append first-elm (list label) rest-elm))
-          (set (make-local-variable guard) t)) ))))
+          (set (make-local-variable 'grail-diff-done) t)) ))))
 
 (defun grail-diff-visual-changes ()
   "grail-configure-ediff-change-window-names
 
    re-label the ediff windows
   "
-  (grail-diff-apply-visual ediff-buffer-A 'grail-diff-A-guard "{upstream} ")
-  (grail-diff-apply-visual ediff-buffer-B 'grail-diff-B-guard "{local} ")
-  (grail-diff-apply-visual ediff-buffer-C 'grail-diff-C-guard "{merge} ")
-  (force-mode-line-update) )
+  (grail-diff-apply-visual ediff-buffer-A "{local} ")
+  (grail-diff-apply-visual ediff-buffer-B "{upstream} ")
+  (when (and (boundp 'ediff-buffer-C)
+             (bufferp ediff-buffer-C))
+    (grail-diff-apply-visual ediff-buffer-C "{merge} "))
+  (force-mode-line-update))
 
 ;;
 ;; handle 3way merge/diff which is vertical instead of horizontally to better manage screen real estate.
@@ -113,6 +115,10 @@
         (find-file-noselect file-upstream)))
     (message "grail-diff-elisp: arguments 2way %s %s not valid"
              file-local file-upstream)) )
+
+(defun grail-diff-revision (file)
+    (interactive "fFile to diff")
+    (ediff-revision file '(grail-diff-open-session)))
 
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-3way-setup)
@@ -170,8 +176,6 @@
   (interactive)
 
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
-  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
-
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-keys)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)
