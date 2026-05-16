@@ -121,8 +121,7 @@
 
       (line-number-mode "%l")
       ">"
-      (column-number-mode "%c")
-
+         (:eval (number-to-string (current-column)))
       " "
 
       (:eval (mega-modeline-modified))
