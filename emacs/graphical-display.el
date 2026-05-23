@@ -153,7 +153,7 @@
             (diff-merge-bg "seashell4")
             (diff-merge-fg "white")
 
-            (diff-ancestor-bg "ivory4")
+            (diff-ancestor-fg "ivory4")
             (diff-ancestor-bg "OliveDrab4"))
 
         (set-face-background 'ediff-current-diff-A diff-selected-bg)
@@ -251,11 +251,15 @@
     "
     (interactive)
 
-    (set-face-foreground 'smerge-lower-face "Aquamarine4")
-    (set-face-background 'smerge-lower-face "black")
+    (set-face-foreground 'smerge-upper "Aquamarine4")
+    (set-face-background 'smerge-upper "black")
 
-    (set-face-foreground 'smerge-upper-face "goldenrod3")
-    (set-face-background 'smerge-lower-face "black") )
+    (set-face-foreground 'smerge-base "goldenrod")
+    (set-face-background 'smerge-base "black")
+
+    (set-face-foreground 'smerge-base "SteelBlue4")
+    (set-face-background 'smerge-base "black")
+    )
 
 
 (defun display-faces-graphical ()
