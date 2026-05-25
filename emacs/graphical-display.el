@@ -257,10 +257,8 @@
     (set-face-foreground 'smerge-base "goldenrod")
     (set-face-background 'smerge-base "black")
 
-    (set-face-foreground 'smerge-base "SteelBlue4")
-    (set-face-background 'smerge-base "black")
-    )
-
+    (set-face-foreground 'smerge-lower "SteelBlue4")
+    (set-face-background 'smerge-lower "black"))
 
 (defun display-faces-graphical ()
     (require 'cperl-mode)
@@ -283,6 +281,8 @@
 
     (require 'term)
     (display-faces-for-term)
+
+    (display-faces-for-smerge)
 
     (set-face-background 'region "RoyalBlue")
     (set-face-foreground 'region "grey65") )
