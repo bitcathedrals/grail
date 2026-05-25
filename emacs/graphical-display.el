@@ -282,6 +282,7 @@
     (require 'term)
     (display-faces-for-term)
 
+    (require 'smerge-mode)
     (display-faces-for-smerge)
 
     (set-face-background 'region "RoyalBlue")
