@@ -105,7 +105,7 @@
 ;; the grail system. Im on big displays so crank up the font size.
 
 (setq
-  grail-font-family '("Cousine" "Hack" "Spleen" "DejaVu Sans Mono" "Courier New")
+  grail-font-family '("Hack" "Cousine" "Spleen" "DejaVu Sans Mono" "Courier New")
   grail-font-size 22)
 
 
