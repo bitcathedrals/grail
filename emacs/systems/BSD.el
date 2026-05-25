@@ -11,3 +11,6 @@
 (setq
   epg-pinentry-mode 'loopback)
 
+(setq
+  grail-font-family '("Hack" "Cousine" "Spleen" "DejaVu Sans Mono" "Courier New")
+  grail-font-size 14)
