@@ -1,5 +1,5 @@
 ;;
-;; grail-ediff.el
+;; grail-diff.el
 ;;
 ;; customization of ediff to make it more functional, intuitive and robust.
 ;;
@@ -27,13 +27,6 @@
 ;; handle windows save/restore labeling and management
 ;;
 
-(defun grail-diff-background (color)
-  (setq buffer-face-mode-face `(:background ,color))
-  (buffer-face-mode 1))
-
-(defun grail-diff-mark-buffer ()
-  (grail-diff-background "grey10"))
-
 (defvar grail-diff-buffer-from nil "grail-diff store the buffer from")
 
 (defun grail-diff-save-buffer ()
@@ -53,29 +46,28 @@
 (defun grail-diff-quit-message ()
   (message "grail-diff-quit-message run"))
 
-(defun grail-diff-apply-visual (buffer guard label)
+(defun grail-diff-apply-visual (buffer label)
   (when (bufferp buffer)
     (with-current-buffer buffer
-      (when (not (boundp guard))
+      (when (not (boundp 'grail-diff-done))
         (let
           ((first-elm (car mode-line-format))
            (rest-elm  (cdr mode-line-format)))
 
           (setq mode-line-format (append first-elm (list label) rest-elm))
-          (force-mode-line-update)
-
-          (set (make-local-variable guard) t))
-
-        (grail-diff-mark-buffer) ))))
+          (set (make-local-variable 'grail-diff-done) t)) ))))
 
 (defun grail-diff-visual-changes ()
   "grail-configure-ediff-change-window-names
 
    re-label the ediff windows
   "
-  (grail-diff-apply-visual ediff-buffer-A 'grail-diff-A-guard "{upstream}")
-  (grail-diff-apply-visual ediff-buffer-B 'grail-diff-B-guard "{local}")
-  (grail-diff-apply-visual ediff-buffer-C 'grail-diff-C-guard "{merge}") )
+  (grail-diff-apply-visual ediff-buffer-A "{local} ")
+  (grail-diff-apply-visual ediff-buffer-B "{upstream} ")
+  (when (and (boundp 'ediff-buffer-C)
+             (bufferp ediff-buffer-C))
+    (grail-diff-apply-visual ediff-buffer-C "{merge} "))
+  (force-mode-line-update))
 
 ;;
 ;; handle 3way merge/diff which is vertical instead of horizontally to better manage screen real estate.
@@ -124,6 +116,10 @@
     (message "grail-diff-elisp: arguments 2way %s %s not valid"
              file-local file-upstream)) )
 
+(defun grail-diff-revision (file)
+    (interactive "fFile to diff")
+    (ediff-revision file '(grail-diff-open-session)))
+
 (defun grail-diff-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-3way-setup)
 
@@ -142,35 +138,12 @@
 ;; merging
 ;;
 
-(defun grail-diff-get-merge-buffer (local-file upstream-file)
-  (get-buffer-create (grail-diff-merge-file-name local-file upstream-file)) )
-
-(defun grail-diff-merge-file-name (local-file upstream-file)
-  (let*
-    ((local-base (file-name-nondirectory local-file))
-     (upstream-base (file-name-nondirectory upstream-file))
-
-     (extension (file-name-extension local-base))
-
-     (local-stripped (file-name-sans-extension local-base))
-     (upstream-stripped (file-name-sans-extension upstream-base)) )
-
-    (concat
-      "ediff-merge-"
-      local-stripped "-"
-      upstream-stripped "-"
-      (format-time-string "%H:%M")
-      "." extension)))
-
 (defun grail-diff-merge-elisp (file-local file-upstream)
   (grail-diff-open-session)
 
-  (ediff-merge-buffers
-    (find-file-noselect file-local)
+  (ediff-merge-files
     (find-file-noselect file-upstream)
-    nil
-    'ediff-merge-buffers
-    (grail-diff-merge-file-name file-local file-upstream)) )
+    (find-file-noselect file-local) ))
 
 (defun grail-diff-merge-ancestor-elisp (file-local file-upstream file-ancestor)
   (grail-diff-open-session)
@@ -178,18 +151,7 @@
   (ediff-merge-buffers-with-ancestor
     (find-file-noselect file-local)
     (find-file-noselect file-upstream)
-    (find-file-noselect file-ancestor)
-    nil
-    'ediff-merge-buffers-with-ancestor
-    (grail-diff-merge-file-name file-local file-upstream)) )
-
-;;
-;; This will not work, need to make a helm buffer of found merges.
-;;
-
-(defun grail-resume-merge (file-local file-upstream)
-  ;; make a list of merges to resume and make a helm buffer out of it
-  (interactive "fresume-local:\nfresume-upstream:") )
+    (find-file-noselect file-ancestor) ))
 
 ;;
 ;; nifty post that showed me a lot of things like save/restore
@@ -210,13 +172,10 @@
 
 (defun grail-diff-configure ()
   "grail-diff-configure
-
    configure the grail extensions and customization of the ediff tool"
   (interactive)
 
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
-  (add-hook 'ediff-after-setup-windows-hook 'grail-diff-visual-changes)
-
   (add-hook 'ediff-after-setup-windows-hook 'grail-diff-keys)
 
   (setq-default ediff-split-window-function 'split-window-horizontally)

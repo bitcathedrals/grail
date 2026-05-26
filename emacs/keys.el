@@ -64,18 +64,30 @@
   ("p" . push-mark-command)
   ("g" . pop-global-mark))
 
-(defvar swap-parens-keymap '(("[" . "(")
-                             ("]" . ")")
-                             ("(" . "[")
-                             (")" . "]")) )
 
-(defun bind-swap-parens ()
+(defun set-parens ()
   (interactive)
 
-  (mapc (lambda (key-pair) (keymap-global-set (kbd (car key-pair))
-                             `(lambda ()
-                                (interactive)
-                                (insert-char ,(aref (cdr key-pair) 0)) )) )
-    swap-parens-keymap))
+  (global-set-key (kbd "[") "(")
+  (global-set-key (kbd "]") ")")
 
-(bind-swap-parens)
+  (global-set-key (kbd "<f1>")
+    (lambda ()
+      (interactive)
+      (insert "[")))
+
+  (global-set-key (kbd "<f2>")
+    (lambda ()
+      (interactive)
+      (insert "]"))))
+
+(defun unset-parens ()
+  (interactive)
+
+  (global-set-key (kbd "[") 'self-insert-command)
+  (global-set-key (kbd "]") 'self-insert-command)
+
+  (global-set-key (kbd  "<f1>") 'self-insert-command)
+  (global-set-key (kbd  "<f2>") 'self-insert-command))
+
+(set-parens)

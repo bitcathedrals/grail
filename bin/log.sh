@@ -15,14 +15,15 @@ case $1 in
     echo >/dev/stderr "log.sh: log (not in both) ${left} ${right}"
     exec git log "${left}...${right}"
   ;;
-  *)
-   exec git log $@
-  ;;
   "help")
 cat <<HELP
-log.sh - interface for using elog with git
+log.sh - interface for using advanced git log commands easily
 
 ^   (upstream)      = log current against upstream
 @   <left> <right>  = log not in left and right revisions
 HELP
+  ;;
+  *)
+   exec git log $@
+  ;;
 esac

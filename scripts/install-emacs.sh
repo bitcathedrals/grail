@@ -15,7 +15,7 @@ EMACS_BREW_VERSION="emacs-plus@31"
 case $1 in
   "ubuntu")
     # haven't figured out jit autoconf
-    NATIVE="no"
+    export NATIVE="no"
 
     TOOLS=$HOME/tools/local/
 
@@ -114,7 +114,7 @@ case $1 in
     ;;
   "macos-deps")
     eval "$(/opt/emacs/bin/brew shellenv)" && \
-      arch -arm64 brew install autoconf automake texinfo nettle rust gnutls pkg-config libpng tree-sitter little-cms2 ctags libgccjit
+      arch -arm64 brew install autoconf automake texinfo nettle rust pkg-config libpng tree-sitter little-cms2 ctags libgccjit gnutls
     ;;
   "macos-update")
     eval "$(/opt/emacs/bin/brew shellenv)" && arch -arm64 brew update && brew ugprade
@@ -124,6 +124,8 @@ case $1 in
      eval "$(/opt/emacs/bin/brew shellenv)" && eval "arch -arm64 brew $*"
      ;;
    "macos-git")
+    export NATIVE="no"
+
     TOOLS=$HOME/tools/local/
 
     test -d $GIT || git clone https://git.savannah.gnu.org/git/emacs.git $GIT
@@ -158,6 +160,8 @@ case $1 in
       echo >/dev/stderr "gcc is required to build emacs - please install gcc."
       exit 1
     fi
+
+    export CFLAGS="$CFLAGS -Dts_language_version=ts_language_abi_version"
 
     if (cd $GIT && eval "$(/opt/emacs/bin/brew shellenv)" && \
           arch -arm64 make extraclean && git clean -fdx && \

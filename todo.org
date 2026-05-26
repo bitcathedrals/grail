@@ -1,0 +1,15 @@
+* critical fixes
+
+* finish reworking vcsh.el
+- some kind of support for ediff-revision; put the selected revision
+  into the kill ring, or some such thing. Just need output from commit
+  command first
+
+* enhancements
+- fix the colors in diff mode
+
+* bugs
+
+
+
+

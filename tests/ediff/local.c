@@ -21,15 +21,6 @@
 // with a "student type" (e.g. undergraduate, graduate) single character, 
 // followed by the student's name, age and then average.
 //
-typedef struct 
-{
-  // members for the student's type, name, age and average  
-  char type;
-  char name[50];
-  int age;
-  double average;
-} Student;
-
 // total number of students stored in the array of structs
 #define TOTAL_STUDENTS 3
 
@@ -38,12 +29,6 @@ int main(void)
   // file pointer variable for accessing the file  
   FILE *file;
   
-  // Attempt to open the file file.csv for writing, if the file does not exist
-  // it will be created and if it does any existing content will be erased 
-  // before we begin to write to the file.
-  file = fopen("file.csv", "w");
-  
-  // If the call to fopen() above is successful it will return a file pointer 
   // we can use to write to the file, and if it fails it will return NULL.  So 
   // if file is set to NULL we know there has been an error opening the file, 
   // and we exit with an error message and status.

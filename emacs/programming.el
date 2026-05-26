@@ -6,6 +6,7 @@
 (require 'borg-repl)
 
 (require 'grail-diff)
+
 (grail-diff-configure)
 
 ;;
@@ -13,6 +14,16 @@
 ;;
 
 (require 'treesit)
+
+(setq treesit-font-lock-level 4)
+
+;; disable treesit entirely until font lock issues are resolved
+(setq use-tree-sitter nil)
+
+(defun use-tree-sitter (lang)
+  (and
+   (eq use-tree-sitter t)
+   (treesit-language-available-p lang)))
 
 (require 'eglot)
 
@@ -34,11 +45,12 @@
 
 (electric-indent-mode 0)
 
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 
 ;; programming packages not dependent on third party support
 
-(use-grail-profiles 0 "code-highlighting" "code-formatting")
+;; "code-formatting" - filladapt is orphaned
+(use-grail-profiles 0 "code-highlighting")
 
 ;; higher level functionality
 
@@ -54,20 +66,43 @@
 ;; C/C++
 ;;
 
+(defun makefile-tuning ()
+  (setq indent-tabs-mode t))
+
+(add-hook 'makefile-mode-hook 'makefile-tuning)
+
 (require 'cc-mode)
 
-(setq auto-mode-alist (append '(("\\.c\\'"       . c-ts-mode)
-                                ("\\.cc\\'"      . c++-ts-mode)
-                                ("\\.cpp\\'"     . c++-ts-mode)
-                                ("\\.h\\'"       . c++-ts-mode)) auto-mode-alist))
+
+(setq auto-mode-alist (if (use-tree-sitter 'c)
+                        (append '(("\\.c\\'" . c-ts-mode)) auto-mode-alist)
+                        (append '(("\\.c\\'" . c-mode)) auto-mode-alist)))
+
+(setq auto-mode-alist (if (use-tree-sitter 'cpp)
+                        (append '(("\\.cc\\'"      . c++-ts-mode)
+                                  ("\\.cpp\\'"     . c++-ts-mode)
+                                  ("\\.h\\'"       . c++-ts-mode)) auto-mode-alist)
+                        (append '(("\\.cc\\'"      . c++-mode)
+                                  ("\\.cpp\\'"     . c++-mode)
+                                  ("\\.h\\'"       . c++-mode)) auto-mode-alist)))
+
+(defun cc-syntax-offset ()
+  (interactive)
+
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'defun-open 0))
+
+(add-hook 'c-mode-common-hook 'cc-syntax-offset)
 
 (defun c-mode-generic-setup ()
-  (c-set-style "linux")                 ;; base off of linux style
-  (setq c-basic-offset 2)               ;; tabs are 2 spaces
+  (setq
+    c-basic-offset 4
+    indent-tabs-mode nil)
 
-  (c-set-offset 'substatement-open '0)  ;; hanging braces
+  (setq c-default-style '((c++-mode . "stroustrup")
+                          (c-mode . "linux")
+                          (other . "k&r")))
 
-  ;; auto-hungry newline and whitespace delete
   (c-toggle-auto-hungry-state 1))
 
 (add-hook 'c-mode-common-hook 'c-mode-generic-setup t)
@@ -77,14 +112,14 @@
 (defun c-mode-setup ()
   (programming-mode-generic 'c))
 
-(add-hook 'c-mode-hook 'c-mode-setup t)
+ (add-hook 'c-mode-hook 'c-mode-setup t)
 
 (defconst c-mode-name "C++")
 
 (defun c++-mode-setup ()
   (programming-mode-generic 'c++))
 
-(add-hook 'c++-mode-hook 'c++mode-setup t)
+(add-hook 'c++-mode-hook 'c++-mode-setup t)
 
 ;;
 ;; bash mode
@@ -93,7 +128,7 @@
 (require 'sh-script)
 
 (setq auto-mode-alist (append
-                        (if (treesit-language-available-p 'bash)
+                        (if (use-tree-sitter 'bash)
                           '(("\\.sh\\'" . bash-ts-mode))
                           '(("\\.sh\\'" . bash-mode)))
                         auto-mode-alist))
@@ -121,7 +156,7 @@
 ;;
 
 (setq auto-mode-alist (append
-                        (if (treesit-language-available-p 'python)
+                        (if (use-tree-sitter 'python)
                           '(("\\.py\\'" . python-ts-mode))
                           '(("\\.py\\'" . python-mode)))
                         auto-mode-alist))
@@ -171,7 +206,7 @@
 ;;
 
 (setq auto-mode-alist (append
-                        (if (treesit-language-available-p 'java)
+                        (if (use-tree-sitter 'java)
                           '(("\\.java\\'" . java-ts-mode))
                           '(("\\.java\\'" . java-mode)))
                         auto-mode-alist))
@@ -180,3 +215,27 @@
 ;;
 
 (setq auto-mode-alist (append '(("\\.scheme\\'"  . scheme-mode)) auto-mode-alist))
+
+;;
+;; html
+;;
+
+(require 'sgml-mode)
+
+(defconst html-mode-config/name "html")
+
+(setq auto-mode-alist (append
+                        (if (use-tree-sitter 'html)
+                          '(("\\.html\\'" . html-ts-mode))
+                          '(("\\.html\\'" . html-mode)))
+                        auto-mode-alist))
+
+(defun html-mode/configuration ()
+;;  (company-mode)
+;;  (setq company-backends (cons 'company-capf company-backends))
+
+  (programming-mode-generic 'html nil html-mode-config/name)
+
+  (dwim-tab-make-expander 'dwim-tab/after-word 'company-complete))
+
+(add-hook 'html-mode-hook 'html-mode/configuration)

@@ -237,4 +237,11 @@
 (add-hook 'org-mode-hook 'org-mode-customize)
 (add-hook 'org-mode-hook 'flyspell-mode-on)
 
+;;
+;; org-indent
+;;
+
+(add-hook 'org-mode-hook 'org-indent-mode)
+(setq org-startup-indented t)
+
 (provide 'profile/org-mode)

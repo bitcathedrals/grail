@@ -33,9 +33,6 @@ case $1 in
     shift
     exec git mergetool $@
   ;;
-  *)
-   exec git difftool $@
-  ;;
   "help")
 cat <<HELP
 ediff.sh - interface for using ediff with git
@@ -52,4 +49,7 @@ ediff.sh - interface for using ediff with git
 
 for files use run-emacs directly.
 HELP
+  *)
+   exec git difftool $@
+  ;;
 esac

@@ -7,7 +7,7 @@
 (require 'utilities)
 (require 'subr-x)
 
-(require 'pysh)
+(require 'vcsh)
 
 (require 'eglot)
 
@@ -131,8 +131,8 @@
                                "issue"
                                "sync"
                                "merge"
-                               "alpha"
                                "beta"
+                               "tag"
                                "release"
                                "refactor"
                                "doc"))
@@ -170,24 +170,22 @@
 
 (defun delta-status ()
   (interactive)
-  (let*
-    ((report-type (if (yes-or-no-p "release? yes = release|no = status ")
-                    "release-report"
-                    "status-report"))
-      (default-directory (delta-repo-dir))
+  (let
+    ((default-directory (delta-repo-dir))
       (status (call-process
-                "py.sh"                            ;; exec py.sh
+                "vc"                               ;; exec vc
                 nil                                ;; infile
                 (get-clean-report-buffer)          ;; output buffer
                 nil                                ;; don't display
-                report-type)))                     ;; report command
+                "report"
+                "-no-color")))                     ;; report command
 
     (if (yes-or-no-p "view? yes = view|no = insert")
       (progn
         (pop-to-buffer (get-report-buffer))
         "")
       (with-current-buffer (get-report-buffer)
-        (buffer-substring (point-min) (point-max))) ) ))
+        (buffer-substring (point-min) (point-max))) )))
 
 (defun delta-insert (type)
   "delta-insert
@@ -214,7 +212,7 @@
                               nil         ;; read - dont eval as lisp
                               nil         ;; history
                               "update"    ;; default value
-                              nil)) )    ;; inherit input method ? nope don't care.
+                              nil)) )    ;; inherit input method ? nope Don't care.
 
                   (if (string-equal type "release")
                     (concat "(release): " message "\n" (delta-status))

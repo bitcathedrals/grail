@@ -17,3 +17,9 @@
   bbdb-complete-name-allow-cycling t
   bbdb-use-pop-up nil)
 
+(defun email ()
+  (interactive)
+  (let
+    ((default-directory (getenv "HOME")))
+
+    (term "neomutt")))

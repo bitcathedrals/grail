@@ -86,22 +86,3 @@
     (lambda ( hook )
       (funcall hook))
     hook-list))
-
-;;
-;; generic close proc buffer
-;;
-
-(defun proc-close-on-exit/window ( &optional proc-buffer )
-  (async-exec-sentinel
-    (or proc-buffer (current-buffer))
-    (lambda ( proc-buffer )
-      ;; if proc is dead touching the buffer except to kill is a error. trap
-      ;; those situations and just kill it anyways.
-      (condition-case nil
-        ;; this is broken for reasons unknown anyways. FUCK I hate term mode.
-        (with-current-buffer proc-buffer
-          (other-window 1)
-          (delete-other-windows proc-buffer))
-        (error nil))
-
-      (kill-buffer proc-buffer) )) )

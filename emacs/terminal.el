@@ -15,10 +15,12 @@
 ;;                 IPC shell:  comint/term mode
 ;;----------------------------------------------------------------------
 
-(defadvice term (after terminal/after-hook)
-  (proc-close-on-exit/window))
+(defadvice term-handle-exit (after terminal-profile/handle-exit)
+  "Kills the current buffer when the term process exits."
+  (message "process exited. killing buffer.")
+  (kill-buffer (current-buffer)))
 
-(ad-activate 'term)
+(ad-activate 'term-handle-exit)
 
 (setq explicit-shell-file-name "zsh"
       explicit-zsh-args '("-i"))
@@ -72,6 +74,18 @@
   (interactive)
 
   (eat "tmux"))
+
+;; zsh shell
+
+(defun hungry ()
+  (interactive)
+  (message "C-c C-e for buffer mode, C-c C-j for character mode.")
+  (eat "zsh"))
+
+(defun zapper ()
+  (interactive)
+  (message "C-c C-e for buffer mode, C-c C-j for character mode.")
+  (eat "lldb"))
 
 ;; eat
 
