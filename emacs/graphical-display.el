@@ -343,8 +343,8 @@
     (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent)))
 
 (defun grail-default-transparency (percent)
-    (grail-set-transparency percent)
-    (add-to-list 'default-frame-alist `(alpha . (,percent . ,percent)) ))
+;; modern - (add-to-list 'default-frame-alist `(alpha-background . 'alpha-background ,percent)))
+    (add-to-list 'default-frame-alist `(alpha . (,percent . ,percent))))
 
 (defun show-fonts ()
     (interactive)
