@@ -340,7 +340,9 @@
 
 (defun grail-set-transparency (percent)
     (interactive "nEnter Percent: ")
-    (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent)))
+    (if (string-equal system-type "darwin")
+        (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent))
+        (set-frame-parameter (selected-frame) `alpha-background ,percent)))
 
 (defun grail-default-transparency (percent)
 ;; modern - (add-to-list 'default-frame-alist `(alpha-background . 'alpha-background ,percent)))
