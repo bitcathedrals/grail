@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'subr-x)
-
 (defvar grail-font-size 18 "default font size")
 (defvar grail-transparency 100 "default transparency is opaque")
 
