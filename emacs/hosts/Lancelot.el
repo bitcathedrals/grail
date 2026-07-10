@@ -5,4 +5,4 @@
 (setq
   grail-font-family '("Cousine" "Oxygen" "Hack" "DejaVu Sans Mono")
   grail-font-size 20
-  grail-transparency 70)
+  grail-transparency 80)
