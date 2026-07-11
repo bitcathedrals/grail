@@ -117,7 +117,11 @@
 (defconst c-mode-name "C++")
 
 (defun c++-mode-setup ()
-  (programming-mode-generic 'c++))
+    (c-set-offset 'statement-case-intro '+)
+    (c-set-offset 'case-label '+)
+    (c-set-offset 'substatement-open 0)
+
+    (programming-mode-generic 'c++))
 
 (add-hook 'c++-mode-hook 'c++-mode-setup t)
 
