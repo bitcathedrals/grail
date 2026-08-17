@@ -50,6 +50,18 @@
       (when percentage
         (setq mega-modeline-battery-level percentage)) )) )
 
+(defun mega-modeline-battery-upower ()
+  (let
+    ((default-directory "~"))
+    (call-process "upower" nil (get-battery-buffer-for-output) nil "-b"))
+
+  (with-current-buffer (get-battery-buffer)
+    (let
+      ((percentage (extract-string-with-regex "[0-9]+%")))
+
+      (when percentage
+        (setq mega-modeline-battery-level percentage)) )) )
+
 (defun mega-modeline-battery-dummy ()
   nil)
 
@@ -63,9 +75,10 @@
       (when (executable-find (car prog))
         (setq mega-modeline-battery-command (cdr prog))) )
 
-    '(("apm" . mega-modeline-battery-apm)
-      ("pmset" . mega-modeline-battery-pmset)
-      ("acpi" . mega-modeline-battery-acpi)) ))
+      '(("apm" . mega-modeline-battery-apm)
+           ("pmset" . mega-modeline-battery-pmset)
+           ("acpi" . mega-modeline-battery-acpi)
+           ("upower" . mega-modeline-battery-upower) )) )
 
 (defun mega-modeline-update-battery-level ()
   (funcall mega-modeline-battery-command))
