@@ -1,6 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'subr-x)
 (require 'server)
 
 ;; Grail loads an Emacs configuration in a robust, modular, and mode
@@ -480,14 +479,12 @@
   (defconst grail-config-load-masked '("grail.el"
                                        "grail-load.el"
                                        "grail-profile.el"
-                                       "configure-display.el"
                                        "graphical-display.el"
-                                       "load-display.el"
+                                       "terminal-display.el"
                                        "elisp.el"))
 
   (grail-ignore
     "user-elisp loading"
-
 
     (mapc
       (lambda ( ordered-config )

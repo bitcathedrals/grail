@@ -75,6 +75,11 @@
 
   (eat "tmux"))
 
+(defun fix-terminal-scrolling ()
+    (setq scroll-conservatively 101))
+
+(add-hook 'eat-mode-hook 'fix-terminal-scrolling)
+
 ;; zsh shell
 
 (defun hungry ()

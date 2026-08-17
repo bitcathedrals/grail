@@ -24,7 +24,7 @@ case $1 in
                         libncurses5-dev libncursesw5-dev xz-utils \
                         libffi-dev liblzma-dev libtree-sitter-dev \
                         libgnutls28-dev autoconf texinfo \
-                        libgtk-3-dev
+                        libgtk-3-dev libtiff-dev libjpeg-dev
 
     if [[ $NATIVE == "yes" ]]
     then

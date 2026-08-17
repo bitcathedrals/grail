@@ -1,7 +1,5 @@
 ;; -*-no-byte-compile: t; -*-
 
-(require 'subr-x)
-
 (defvar grail-font-size 18 "default font size")
 (defvar grail-transparency 100 "default transparency is opaque")
 
@@ -340,11 +338,14 @@
 
 (defun grail-set-transparency (percent)
     (interactive "nEnter Percent: ")
+;;    (if
+;;        (string-equal system-type "darwin")
     (set-frame-parameter (selected-frame) 'alpha `(,percent . ,percent)))
+;;    (set-frame-parameter (selected-frame) 'alpha-background percent))
 
 (defun grail-default-transparency (percent)
-    (grail-set-transparency percent)
-    (add-to-list 'default-frame-alist `(alpha . (,percent . ,percent)) ))
+;; modern - (add-to-list 'default-frame-alist `(alpha-background . 'alpha-background ,percent)))
+    (add-to-list 'default-frame-alist `(alpha . (,percent . ,percent))))
 
 (defun show-fonts ()
     (interactive)
